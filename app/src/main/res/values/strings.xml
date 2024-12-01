@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Job Application MDAD</string>
+
+    <!-- Onboarding Fragment-->
+    <string name="onboarding_fragment_next">Next</string>
+    <!-- Onboarding Fragment 1 -->
+    <string name="onboarding_fragment_header_1">Find your Dream Job</string>
+    <string name="onboarding_fragment_description_1">Browse a wide range of job listings tailored to your skills and interests</string>
+
+    <!-- Onboarding Fragment 2 -->
+    <string name="onboarding_fragment_header_2">Get Personalized Notifications</string>
+    <string name="onboarding_fragment_description_2">Receive updates when your job application is accepted</string>
+
+    <!-- Onboarding Fragment 3 -->
+    <string name="onboarding_fragment_header_3">Receive Instant Payments</string>
+    <string name="onboarding_fragment_description_3">Next day payment, no delays</string>
+</resources>
