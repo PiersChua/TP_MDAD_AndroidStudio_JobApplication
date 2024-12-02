@@ -11,4 +11,8 @@
     <color name="text">#313638</color>
     <color name="placeholder_foreground">#757575</color>
     <color name="placeholder_background">#EDEDF5</color>
+
+    <!-- Onboarding Indicators -->
+    <color name="indicator_active">#757575</color>
+    <color name="indicator_inactive">#BDBDBD</color>
 </resources>

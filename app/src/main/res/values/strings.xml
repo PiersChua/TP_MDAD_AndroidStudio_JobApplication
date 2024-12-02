@@ -3,15 +3,18 @@
 
     <!-- Onboarding Fragment-->
     <string name="onboarding_fragment_next">Next</string>
-    <!-- Onboarding Fragment 1 -->
+    <string name="onboarding_fragment_get_started">Get Started</string>
+    <!-- First Onboarding Fragment -->
     <string name="onboarding_fragment_header_1">Find your Dream Job</string>
     <string name="onboarding_fragment_description_1">Browse a wide range of job listings tailored to your skills and interests</string>
 
-    <!-- Onboarding Fragment 2 -->
+    <!-- Second Onboarding Fragment -->
     <string name="onboarding_fragment_header_2">Get Personalized Notifications</string>
     <string name="onboarding_fragment_description_2">Receive updates when your job application is accepted</string>
 
-    <!-- Onboarding Fragment 3 -->
+    <!-- Third Onboarding Fragment -->
     <string name="onboarding_fragment_header_3">Receive Instant Payments</string>
     <string name="onboarding_fragment_description_3">Next day payment, no delays</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

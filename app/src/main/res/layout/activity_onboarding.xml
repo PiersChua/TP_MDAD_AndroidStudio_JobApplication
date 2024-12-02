@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llOnboarding"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.OnboardingActivity">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vpOnboarding"
+        android:layout_width="match_parent"
+        android:layout_height="485dp" />
+
+    <LinearLayout
+        android:id="@+id/llOnboardingIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp" />
+
+
+    <android.widget.Button
+        android:id="@+id/btnOnboardingNext"
+        android:textAllCaps="false"
+        android:layout_width="291dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button"
+        android:backgroundTint="@color/primary"
+        android:text="@string/onboarding_fragment_next"
+        android:textStyle="bold"
+        android:textColor="@color/background"
+        android:textSize="26sp"
+        tools:layout_editor_absoluteX="78dp"
+        tools:layout_editor_absoluteY="647dp" />
+
+</LinearLayout>
