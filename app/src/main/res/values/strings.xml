@@ -15,6 +15,19 @@
     <!-- Third Onboarding Fragment -->
     <string name="onboarding_fragment_header_3">Receive Instant Payments</string>
     <string name="onboarding_fragment_description_3">Next day payment, no delays</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Form hints -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_full_name">Full Name</string>
+
+    <!-- Button-->
+
+
+
+    <!-- Login Activity -->
+    <string name="login_activity_header">Login</string>
+
+    <!-- Register Activity -->
+    <string name="register_activity_header">Register</string>
 </resources>

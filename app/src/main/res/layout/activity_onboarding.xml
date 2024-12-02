@@ -25,17 +25,18 @@
 
     <android.widget.Button
         android:id="@+id/btnOnboardingNext"
-        android:textAllCaps="false"
         android:layout_width="291dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:background="@drawable/button"
         android:backgroundTint="@color/primary"
+        android:fontFamily="@font/inter"
         android:text="@string/onboarding_fragment_next"
-        android:textStyle="bold"
+        android:textAllCaps="false"
         android:textColor="@color/background"
         android:textSize="26sp"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="78dp"
         tools:layout_editor_absoluteY="647dp" />
 
