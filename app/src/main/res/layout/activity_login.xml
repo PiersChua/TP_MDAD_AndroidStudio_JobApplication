@@ -20,54 +20,55 @@
     <LinearLayout
         android:id="@+id/llLoginForm"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:paddingHorizontal="20dp">
 
         <TextView
-            android:id="@+id/tvRegister"
+            android:id="@+id/tvLogin"
             android:layout_width="wrap_content"
-            android:textColor="@color/foreground"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_bold"
             android:layout_marginBottom="16dp"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/login_activity_header"
+            android:textColor="@color/foreground"
             android:textSize="32sp"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginBottom="20dp"
-            app:cursorColor="@color/foreground"
-            app:boxStrokeColor="@color/foreground"
             android:id="@+id/etEmailLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:ems="10"
             android:hint="@string/hint_email"
-            app:hintTextColor="@color/foreground"
+            android:inputType="textEmailAddress"
             android:textColorHint="@color/placeholder_foreground"
-            app:boxBackgroundColor="@color/placeholder_background">
+            app:boxBackgroundColor="@color/placeholder_background"
+            app:boxStrokeColor="@color/foreground"
+            app:cursorColor="@color/foreground"
+            app:hintTextColor="@color/foreground">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etPasswordLogin"
-            app:boxStrokeColor="@color/foreground"
-            app:cursorColor="@color/foreground"
-            app:helperTextEnabled="true"
-            app:hintTextColor="@color/foreground"
-            app:helperText="At least 8 characters"
-            android:layout_marginBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="password_toggle"
+            android:layout_marginBottom="20dp"
             android:hint="@string/hint_password"
             android:textColorHint="@color/placeholder_foreground"
-            app:boxBackgroundColor="@color/placeholder_background">
+            app:boxBackgroundColor="@color/placeholder_background"
+            app:boxStrokeColor="@color/foreground"
+            app:cursorColor="@color/foreground"
+            app:endIconMode="password_toggle"
+            app:helperText="At least 8 characters"
+            app:helperTextEnabled="true"
+            app:hintTextColor="@color/foreground">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -76,17 +77,59 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <android.widget.Button
-            android:id="@+id/button"
-            android:textAllCaps="false"
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/button"
+            android:fontFamily="@font/inter_bold"
             android:text="@string/login_activity_header"
-            android:textSize="26sp"
-            android:textStyle="bold"
+            android:textAllCaps="false"
             android:textColor="@color/background"
-            android:fontFamily="@font/inter_bold" />
+            android:textSize="26sp"
+            android:textStyle="bold" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Left line -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/indicator_active" />
+
+            <!-- Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/login_activity_redirect_prompt"
+                android:textColor="@color/indicator_active"
+                android:textSize="14sp" />
+
+            <!-- Right line -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@color/indicator_active" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvRedirectToRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="none"
+            android:clickable="true"
+            android:text="@string/login_activity_redirect"
+android:layout_gravity="center"
+            android:textColor="@color/foreground"
+            android:fontFamily="@font/inter_medium"
+            android:textSize="14sp" />
     </LinearLayout>
-
 </LinearLayout>

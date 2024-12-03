@@ -20,14 +20,18 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_full_name">Full Name</string>
+    <string name="hint_phone_number">Phone Number</string>
 
     <!-- Button-->
 
 
-
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>
+    <string name="login_activity_redirect_prompt">Don\'t have an account?</string>
+    <string name="login_activity_redirect"><u>Register here</u></string>
 
     <!-- Register Activity -->
-    <string name="register_activity_header">Register</string>
+    <string name="register_activity_header">Sign Up</string>
+    <string name="register_activity_redirect_prompt">Already have an account?</string>
+    <string name="register_activity_redirect"><u>Login here</u></string>
 </resources>

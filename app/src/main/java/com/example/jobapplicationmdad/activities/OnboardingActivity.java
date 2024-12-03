@@ -59,6 +59,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 } else {
                     // Go to the sign-up or login activity
                     Intent i = new Intent(OnboardingActivity.this, LoginActivity.class);
+                    //Intent i = new Intent(OnboardingActivity.this, RegisterActivity.class);
                     startActivity(i);
                     finish(); // don't allow user to come back to this page
                 }
