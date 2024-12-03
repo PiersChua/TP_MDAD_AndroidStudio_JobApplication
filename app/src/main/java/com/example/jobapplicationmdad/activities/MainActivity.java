@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.jobapplicationmdad.R;
 
 public class MainActivity extends AppCompatActivity {
-
+public static String root_url = "http://192.168.0.5/job-application";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

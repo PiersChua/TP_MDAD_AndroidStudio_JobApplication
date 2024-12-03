@@ -29,9 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="vertical"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:orientation="vertical"
         android:paddingHorizontal="20dp">
 
         <TextView
@@ -46,7 +46,8 @@
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etEmailLogin"
+            android:id="@+id/etEmailLoginLayout"
+            app:startIconDrawable="@drawable/ic_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -60,12 +61,14 @@
             app:hintTextColor="@color/foreground">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPasswordLogin"
+            app:startIconDrawable="@drawable/ic_lock"
+            android:id="@+id/etPasswordLoginLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
@@ -74,14 +77,17 @@
             app:boxBackgroundColor="@color/placeholder_background"
             app:boxStrokeColor="@color/foreground"
             app:cursorColor="@color/foreground"
-            app:endIconMode="password_toggle"
             app:helperText="At least 8 characters"
+
             app:helperTextEnabled="true"
-            app:hintTextColor="@color/foreground">
+            app:hintTextColor="@color/foreground"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordLogin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,12 +139,12 @@
             android:id="@+id/tvRedirectToRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:autoLink="none"
             android:clickable="true"
-            android:text="@string/login_activity_redirect"
-android:layout_gravity="center"
-            android:textColor="@color/foreground"
             android:fontFamily="@font/inter_medium"
+            android:text="@string/login_activity_redirect"
+            android:textColor="@color/foreground"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
