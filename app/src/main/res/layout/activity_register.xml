@@ -4,15 +4,16 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="16dp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/llRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="20dp"
+        android:focusableInTouchMode="true"
         tools:context=".activities.RegisterActivity">
+
 
         <ImageView
             android:id="@+id/imageView"
@@ -22,11 +23,19 @@
             android:layout_marginTop="30dp"
             app:srcCompat="@drawable/app_icon" />
 
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
         <LinearLayout
             android:id="@+id/llRegisterForm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="vertical"
             android:paddingHorizontal="20dp">
 
@@ -102,6 +111,27 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:hint="@string/hint_password"
+                android:textColorHint="@color/placeholder_foreground"
+                app:boxBackgroundColor="@color/placeholder_background"
+                app:boxStrokeColor="@color/foreground"
+                app:cursorColor="@color/foreground"
+                app:endIconMode="password_toggle"
+                app:helperText="At least 8 characters"
+                app:helperTextEnabled="true"
+                app:hintTextColor="@color/foreground">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etConfirmPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="@string/hint_confirm_password"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
