@@ -66,12 +66,12 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etFullNameRegister"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etEmailRegisterLayout"
-                app:startIconDrawable="@drawable/ic_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -82,33 +82,58 @@
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/foreground">
+                app:hintTextColor="@color/foreground"
+                app:startIconDrawable="@drawable/ic_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmailRegister"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                app:startIconDrawable="@drawable/ic_phone"
                 android:id="@+id/etPhoneNumberRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:hint="@string/hint_phone_number"
+                app:prefixText="+65 "
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/foreground">
+                app:hintTextColor="@color/foreground"
+                app:startIconDrawable="@drawable/ic_phone">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPhoneNumberRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="phone"
-                    android:maxLength="8" />
+                    android:maxLength="8"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:startIconDrawable="@drawable/ic_role"
+                android:id="@+id/etRoleRegisterLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:hint="@string/hint_role"
+
+                android:textColorHint="@color/placeholder_foreground"
+                app:boxBackgroundColor="@color/placeholder_background"
+                app:boxStrokeColor="@color/foreground"
+                app:cursorColor="@color/foreground">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/role_items" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -133,34 +158,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
+                    android:singleLine="true"
                     app:startIconDrawable="@drawable/ic_lock" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                app:startIconDrawable="@drawable/ic_lock"
                 android:id="@+id/etConfirmPasswordRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:hint="@string/hint_confirm_password"
-
                 android:textColorHint="@color/placeholder_foreground"
+
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
                 app:helperText="At least 8 characters"
                 app:helperTextEnabled="true"
                 app:hintTextColor="@color/foreground"
-                app:passwordToggleEnabled="true">
+                app:passwordToggleEnabled="true"
+                app:startIconDrawable="@drawable/ic_lock">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etConfirmPasswordRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <android.widget.Button
                 android:id="@+id/btnRegister"
