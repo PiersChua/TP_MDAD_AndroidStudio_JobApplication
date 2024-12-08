@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bottom_nav_job_seeker_item_1"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home"/>
+    <item
+        android:id="@+id/bottom_nav_job_seeker_item_2"
+        android:enabled="true"
+        android:icon="@drawable/ic_work"
+        android:title="@string/nav_jobs"/>
+    <item
+        android:id="@+id/bottom_nav_job_seeker_item_3"
+        android:enabled="true"
+        android:icon="@drawable/ic_application"
+        android:title="@string/nav_applications"/>
+    <item
+        android:id="@+id/bottom_nav_job_seeker_item_4"
+        android:enabled="true"
+        android:icon="@drawable/ic_favourite"
+        android:title="@string/nav_favourites"/>
+    <item
+        android:id="@+id/bottom_nav_job_seeker_item_5"
+        android:enabled="true"
+        android:icon="@drawable/ic_person_outline"
+        android:title="@string/nav_profile"/>
+</menu>

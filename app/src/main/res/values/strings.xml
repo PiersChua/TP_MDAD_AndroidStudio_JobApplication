@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Job Application MDAD</string>
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_jobs">Jobs</string>
+    <string name="nav_applications">Applications</string>
+    <string name="nav_favourites">Favourites</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_listings">Listings</string>
+    <string name="nav_agents">Agents</string>
+    <string name="nav_agencies">Agencies</string>
+    <string name="nav_users">Users</string>
 
     <!-- Onboarding Fragment-->
     <string name="onboarding_fragment_next">Next</string>

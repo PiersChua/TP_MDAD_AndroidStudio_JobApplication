@@ -6,25 +6,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.adapters.OnboardingPagerAdapter;
-import com.example.jobapplicationmdad.fragments.onboarding.FirstOnboardingFragment;
-import com.example.jobapplicationmdad.fragments.onboarding.SecondOnboardingFragment;
-import com.example.jobapplicationmdad.fragments.onboarding.ThirdOnboardingFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OnboardingActivity extends AppCompatActivity {
     private FragmentStateAdapter onboardingPagerAdapter;
@@ -79,7 +71,7 @@ public class OnboardingActivity extends AppCompatActivity {
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.llOnboarding), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.llMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
