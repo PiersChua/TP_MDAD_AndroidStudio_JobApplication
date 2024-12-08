@@ -84,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user = getUserFromForm();
                 if (validateUser(user)) {
-                    createUser(user);
+                    registerUser(user);
                 } else {
                     return;
                 }
@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
         return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword;
     }
 
-    private void createUser(User user) {
+    private void registerUser(User user) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("fullName", user.getFullName());
         params.put("email", user.getEmail());

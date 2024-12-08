@@ -14,7 +14,7 @@ public class User {
     //private String createdAt;  // Nullable (Timestamp)
     //private String updatedAt;  // Nullable (Timestamp)
 
- // Register
+    // Register
     public User(String fullName, String email, String phoneNumber, String role, String password, String confirmPassword) {
         this.fullName = fullName;
         this.email = email;
@@ -22,6 +22,12 @@ public class User {
         this.role = role;
         this.password = password;
         this.confirmPassword = confirmPassword;
+    }
+
+    // Login
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     public String getFullName() {
