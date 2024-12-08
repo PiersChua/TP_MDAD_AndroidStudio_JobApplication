@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +14,22 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.model.User;
+import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.google.android.material.textfield.TextInputLayout;
 
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity {
+    private static final String login_url = MainActivity.root_url + "/api/auth/login.php";
     TextView tvRedirectToRegister;
     Button btnLogin;
     EditText etEmailLogin, etPasswordLogin;
@@ -72,13 +83,29 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateUser(User user) {
         boolean isValidEmail = AuthValidation.validateEmail(etEmailLoginLayout, user.getEmail());
-        boolean isValidPassword = AuthValidation.validatePassword(etPasswordLoginLayout, user.getPassword());
+        boolean isValidPassword = AuthValidation.validatePassword(etPasswordLoginLayout, user.getPassword(),true);
         return isValidEmail && isValidPassword;
     }
 
     private void loginUser(User user) {
-        /*
-         * TODO: Add login function
-         * */
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", user.getEmail());
+        params.put("password", user.getPassword());
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, login_url, params, response -> {
+            try {
+                if (response.getString("type").equals("Success")) {
+                    Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);
+                    finish();
+                } else if (response.getString("type").equals("Error")) {
+                    Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        }, VolleyErrorHandler.newErrorListener(getApplicationContext()));
+        VolleySingleton.getInstance(this).addToRequestQueue(req);
     }
 }

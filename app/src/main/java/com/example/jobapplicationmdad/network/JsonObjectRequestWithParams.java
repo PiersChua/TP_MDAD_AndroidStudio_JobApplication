@@ -12,28 +12,54 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+/**
+ * A custom implementation of Volley 'Request' to send HTTP requests and receive JSON responses
+ *
+ * @warning
+ */
 public class JsonObjectRequestWithParams extends Request<JSONObject> {
 
     private Response.Listener<JSONObject> listener;
     private Map<String, String> params;
 
+    /**
+     * Default constructor if no method is specified
+     *
+     * @param url              The URL to send the request to
+     * @param params           A map of key-value pairs to include as parameters
+     * @param responseListener The listener for handling a successful JSON response
+     * @param errorListener    The listener for handling errors during the request
+     */
     public JsonObjectRequestWithParams(String url, Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
         super(Method.GET, url, errorListener);
         this.listener = responseListener;
         this.params = params;
     }
 
-    public JsonObjectRequestWithParams(int method, String url, Map<String, String> params, Response.Listener<JSONObject> reponseListener, Response.ErrorListener errorListener) {
+    /**
+     * @param method           The HTTP method to use for the request
+     * @param url              The URL to send the request to
+     * @param params           A map of key-value pairs to include as parameters
+     * @param responseListener The listener for handling a successful JSON response
+     * @param errorListener    The listener for handling errors during the request
+     */
+    public JsonObjectRequestWithParams(int method, String url, Map<String, String> params, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
         super(method, url, errorListener);
-        this.listener = reponseListener;
+        this.listener = responseListener;
         this.params = params;
     }
 
     @Override
     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
         return params;
-    };
+    }
 
+    /**
+     * Overridden method to handle JSONObject response
+     *
+     * @param response The raw network response received
+     * @return JSONObject response
+     */
     @Override
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
@@ -41,8 +67,8 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
-        } catch (JSONException je) {
-            return Response.error(new ParseError(je));
+        } catch (JSONException e) {
+            return Response.error(new ParseError(e));
         }
     }
 

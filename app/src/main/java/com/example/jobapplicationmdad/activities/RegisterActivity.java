@@ -28,6 +28,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.textfield.TextInputLayout;
@@ -112,7 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isValidEmail = AuthValidation.validateEmail(etEmailRegisterLayout, user.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberRegisterLayout, user.getPhoneNumber());
         boolean isValidRole = AuthValidation.validateRole(etRoleRegisterLayout, user.getRole());
-        boolean isValidPassword = AuthValidation.validatePassword(etPasswordRegisterLayout, user.getPassword());
+        boolean isValidPassword = AuthValidation.validatePassword(etPasswordRegisterLayout, user.getPassword(), false);
         boolean isValidConfirmPassword = AuthValidation.validateConfirmPassword(etConfirmPasswordRegisterLayout, user.getPassword(), user.getConfirmPassword());
 
         return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword;
@@ -139,24 +140,7 @@ public class RegisterActivity extends AppCompatActivity {
                 throw new RuntimeException(e);
             }
 
-        }, volleyError ->
-        {
-            if (volleyError.networkResponse != null) {
-                try {
-                    // Convert byte array response to string with the correct character encoding (eg. Content-type: application/json; charset=UTF-8)
-                    String errorBody = new String(volleyError.networkResponse.data, HttpHeaderParser.parseCharset(volleyError.networkResponse.headers));
-                    JSONObject errorResponse = new JSONObject(errorBody);
-                    String errorMessage = errorResponse.getString("message");
-                    Toast.makeText(RegisterActivity.this, "Error: " + errorMessage, Toast.LENGTH_LONG).show();
-                } catch (JSONException | UnsupportedEncodingException e) {
-                    Toast.makeText(RegisterActivity.this, "Error parsing error response", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                // Handle the case when there is no network response or it is not a server-side error
-                Toast.makeText(RegisterActivity.this, "Network error: " + volleyError.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-        );
+        }, VolleyErrorHandler.newErrorListener(getApplicationContext()));
         VolleySingleton.getInstance(this).addToRequestQueue(req);
     }
 }
