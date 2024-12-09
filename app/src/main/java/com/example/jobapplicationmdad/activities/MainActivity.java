@@ -1,8 +1,11 @@
 package com.example.jobapplicationmdad.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         bottom_navigation.setPadding(0, 0, 0, 0);
         bottom_navigation.setOnApplyWindowInsetsListener(null);
 
+        SharedPreferences sp = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        String name = sp.getString("name", "user");
+
+        TextView tv = findViewById(R.id.textView);
+        tv.setText(name);
         bottom_navigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -37,10 +45,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 } else if (id == R.id.bottom_nav_job_seeker_item_3) {
                     return true;
-                }else if (id == R.id.bottom_nav_job_seeker_item_4) {
+                } else if (id == R.id.bottom_nav_job_seeker_item_4) {
                     return true;
-                }
-                else if (id == R.id.bottom_nav_job_seeker_item_5) {
+                } else if (id == R.id.bottom_nav_job_seeker_item_5) {
                     return true;
                 }
 

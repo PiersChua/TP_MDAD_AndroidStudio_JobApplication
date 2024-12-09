@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Job Application MDAD</string>
+
+    <!-- Shared Preferences -->
+    <string name="preference_file_key">AppPreferences</string>
+
     <!-- Navigation -->
     <string name="nav_home">Home</string>
     <string name="nav_jobs">Jobs</string>

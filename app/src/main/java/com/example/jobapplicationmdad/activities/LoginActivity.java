@@ -1,6 +1,8 @@
 package com.example.jobapplicationmdad.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     EditText etEmailLogin, etPasswordLogin;
     TextInputLayout etEmailLoginLayout, etPasswordLoginLayout;
+    SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         tvRedirectToRegister = findViewById(R.id.tvRedirectToRegister);
         btnLogin = findViewById(R.id.btnLogin);
+
+        sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         // Form
         etEmailLogin = findViewById(R.id.etEmailLogin);
@@ -83,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean validateUser(User user) {
         boolean isValidEmail = AuthValidation.validateEmail(etEmailLoginLayout, user.getEmail());
-        boolean isValidPassword = AuthValidation.validatePassword(etPasswordLoginLayout, user.getPassword(),true);
+        boolean isValidPassword = AuthValidation.validatePassword(etPasswordLoginLayout, user.getPassword(), true);
         return isValidEmail && isValidPassword;
     }
 
@@ -94,6 +99,19 @@ public class LoginActivity extends AppCompatActivity {
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, login_url, params, response -> {
             try {
                 if (response.getString("type").equals("Success")) {
+                    // retrieve user details and token from response
+                    String name = response.getString("fullName");
+                    String userId = response.getString("userId");
+                    String role = response.getString("role");
+                    String token = response.getString("token");
+
+                    // store the details in shared preferences
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("name", name);
+                    editor.putString("userId", userId);
+                    editor.putString("role", role);
+                    editor.putString("token", token);
+                    editor.apply(); // use apply to write update asynchronously, alternatively can use commit()
                     Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(i);

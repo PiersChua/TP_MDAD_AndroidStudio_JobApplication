@@ -78,9 +78,6 @@
             app:boxBackgroundColor="@color/placeholder_background"
             app:boxStrokeColor="@color/foreground"
             app:cursorColor="@color/foreground"
-            app:helperText="At least 8 characters"
-
-            app:helperTextEnabled="true"
             app:hintTextColor="@color/foreground"
             app:passwordToggleEnabled="true">
 
