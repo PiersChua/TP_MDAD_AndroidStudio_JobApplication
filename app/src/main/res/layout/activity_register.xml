@@ -147,7 +147,7 @@
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
-                app:helperText="At least 8 characters"
+                app:helperText="We will never share your password"
                 app:helperTextEnabled="true"
                 app:hintTextColor="@color/foreground"
                 app:passwordToggleEnabled="true"
@@ -174,8 +174,6 @@
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
-                app:helperText="At least 8 characters"
-                app:helperTextEnabled="true"
                 app:hintTextColor="@color/foreground"
                 app:passwordToggleEnabled="true"
                 app:startIconDrawable="@drawable/ic_lock">

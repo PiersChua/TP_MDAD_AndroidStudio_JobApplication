@@ -49,7 +49,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 if (currentItem < OnboardingPagerAdapter.NUM_PAGES-1) {
                     viewPager.setCurrentItem(currentItem + 1);
                 } else {
-                    // Go to the sign-up or login activity
+                    // Go to the login activity
                     Intent i = new Intent(OnboardingActivity.this, LoginActivity.class);
                     startActivity(i);
                     finish(); // don't allow user to come back to this page

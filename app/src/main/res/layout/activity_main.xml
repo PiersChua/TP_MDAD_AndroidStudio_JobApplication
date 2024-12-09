@@ -10,15 +10,10 @@
     tools:context=".activities.MainActivity">
 
     <FrameLayout
+        android:id="@+id/flMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -27,5 +22,5 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu_job_seeker" />
+        />
 </LinearLayout>

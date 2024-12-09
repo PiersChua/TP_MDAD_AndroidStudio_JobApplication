@@ -124,7 +124,7 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("fullName", user.getFullName());
         params.put("email", user.getEmail());
         params.put("phoneNumber", user.getPhoneNumber());
-        params.put("role", user.getRole().replace(" ", ""));
+        params.put("role", user.getRole());
         params.put("password", user.getPassword());
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
             try {
