@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         String role = sp.getString("role", "");
         initBottomNavMenu(role);
         initFragments(role);
+        loadDefaultFragment();
 
         bottom_navigation.setOnItemSelectedListener(menuItem -> {
             if (fragments != null && fragments.containsKey(menuItem.getItemId())) {
@@ -106,5 +107,13 @@ public class MainActivity extends AppCompatActivity {
             case "Agent":
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());
         }
+    }
+
+    /**
+     *  Loads the first fragment in the 'fragments' map
+     */
+    private void loadDefaultFragment(){
+        Fragment defaultFragment = fragments.values().iterator().next();
+        getSupportFragmentManager().beginTransaction().replace(R.id.flMain, defaultFragment).commit();
     }
 }
