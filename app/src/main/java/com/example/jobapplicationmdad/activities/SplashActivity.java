@@ -36,9 +36,9 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-            Intent i = new Intent(SplashActivity.this, OnboardingActivity.class);
-            startActivity(i);
-            finish();
+            //Intent i = new Intent(SplashActivity.this, OnboardingActivity.class);
+            //startActivity(i);
+            //finish();
         }, 2000);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.llMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
