@@ -36,72 +36,44 @@
 
         <TextView
             android:id="@+id/tvLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Text.FormHeader"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/inter_bold"
-            android:text="@string/login_activity_header"
-            android:textColor="@color/foreground"
-            android:textSize="32sp"
-            android:textStyle="bold" />
+            android:text="@string/login_activity_header" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etEmailLoginLayout"
-            app:startIconDrawable="@drawable/ic_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/EditTextLayout"
             android:layout_marginBottom="20dp"
-            android:ems="10"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
-            android:textColorHint="@color/placeholder_foreground"
-            app:boxBackgroundColor="@color/placeholder_background"
-            app:boxStrokeColor="@color/foreground"
-            app:cursorColor="@color/foreground"
-            app:hintTextColor="@color/foreground">
+            app:startIconDrawable="@drawable/ic_email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmailLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true" />
+                style="@style/EditText" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            app:startIconDrawable="@drawable/ic_lock"
             android:id="@+id/etPasswordLoginLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/EditTextLayout"
             android:layout_marginBottom="20dp"
             android:hint="@string/hint_password"
-            android:textColorHint="@color/placeholder_foreground"
-            app:boxBackgroundColor="@color/placeholder_background"
-            app:boxStrokeColor="@color/foreground"
-            app:cursorColor="@color/foreground"
-            app:hintTextColor="@color/foreground"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPasswordLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                />
+                style="@style/EditText"
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <android.widget.Button
             android:id="@+id/btnLogin"
+            style="@style/ButtonPrimary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:fontFamily="@font/inter_bold"
             android:text="@string/login_activity_header"
-            android:textAllCaps="false"
-            android:textColor="@color/background"
-            android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textSize="26sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -120,8 +92,7 @@
 
             <!-- Text -->
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Text"
                 android:layout_marginHorizontal="8dp"
                 android:text="@string/login_activity_redirect_prompt"
                 android:textColor="@color/indicator_active"
@@ -137,14 +108,12 @@
 
         <TextView
             android:id="@+id/tvRedirectToRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Text"
             android:layout_gravity="center"
             android:autoLink="none"
             android:clickable="true"
             android:fontFamily="@font/inter_medium"
             android:text="@string/login_activity_redirect"
-            android:textColor="@color/foreground"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Button Styles-->
+    <style name="ButtonPrimary">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textColor">@color/background</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <!-- Text Styles -->
+    <style name="Text">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textColor">@color/foreground</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Text.Small">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="Text.Large">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="Text.FormHeader">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- EditText Styles -->
+    <style name="EditTextLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@color/placeholder_foreground</item>
+        <item name="boxBackgroundColor">@color/placeholder_background</item>
+        <item name="boxStrokeColor">@color/foreground</item>
+        <item name="cursorColor">@color/foreground</item>
+        <item name="hintTextColor">@color/foreground</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+
+</resources>

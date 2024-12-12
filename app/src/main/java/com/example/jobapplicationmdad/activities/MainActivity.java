@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         bottom_navigation.setPadding(0, 0, 0, 0);
         bottom_navigation.setOnApplyWindowInsetsListener(null);
 
-        SharedPreferences sp = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         String name = sp.getString("name", "user"); // default value is 'user'
         String role = sp.getString("role", "");
         initBottomNavMenu(role);
