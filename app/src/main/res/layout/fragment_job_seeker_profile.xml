@@ -5,17 +5,17 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:backgroundTint="@color/primary"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/primary">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBarJobSeekerProfile"
-            app:navigationIconTint="@color/background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/menu_job_seeker_profile"
+            app:theme="@style/ToolbarThemeLight"
             app:title="@string/title_menu_profile"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
@@ -27,7 +27,47 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Scrollable content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Circular Profile Avatar -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="4dp">
+
+                <TextView
+                    android:id="@+id/tvJobSeekerProfileName"
+                    style="@style/Text"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="32sp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="16dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </FrameLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

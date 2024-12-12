@@ -9,17 +9,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
+import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.model.User;
+import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
+import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.StringUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -37,7 +54,13 @@ public class JobSeekerProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     MaterialToolbar topAppBar;
+    TextView tvName;
+    RecyclerView recyclerView;
+    ProfileAdapter profileAdapter;
+    ArrayList<HashMap<String, String>> profileItems;
+
 
     public JobSeekerProfileFragment() {
         // Required empty public constructor
@@ -79,6 +102,7 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getUserDetails();
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -101,6 +125,66 @@ public class JobSeekerProfileFragment extends Fragment {
 
             }
         });
+        tvName = view.findViewById(R.id.tvJobSeekerProfileName);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                // If the position is the last item and the list size is odd, take up 2 columns
+                if (position == profileItems.size() - 1 && profileItems.size() % 2 != 0) {
+                    return 2;
+                }
+                return 1;
+            }
+        });
+        profileItems = new ArrayList<>();
+
+
     }
+
+    private void getUserDetails() {
+        SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, get_user_url, params, headers, response -> {
+            try {
+                if (response.getString("type").equals("Success")) {
+                    // retrieve user details
+                    tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
+                    profileItems.clear();
+                    addProfileItem("Full Name", response.getString("fullName"));
+                    addProfileItem("Email Address", response.getString("email"));
+                    addProfileItem("Date of Birth", response.getString("dateOfBirth"));
+                    addProfileItem("Phone Number", response.getString("phoneNumber"));
+                    addProfileItem("Race", response.getString("race"));
+                    addProfileItem("Nationality", response.getString("nationality"));
+                    addProfileItem("Gender", response.getString("gender"));
+
+                    // Set the adapter
+                    profileAdapter = new ProfileAdapter(profileItems);
+                    recyclerView.setAdapter(profileAdapter);
+
+                } else if (response.getString("type").equals("Error")) {
+                    Toast.makeText(requireContext().getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+        }, VolleyErrorHandler.newErrorListener(requireContext().getApplicationContext()));
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
+    private void addProfileItem(String label, String value) {
+        HashMap<String, String> item = new HashMap<>();
+        item.put("label", label);
+        item.put("value", value);
+        profileItems.add(item);
+    }
+
 
 }

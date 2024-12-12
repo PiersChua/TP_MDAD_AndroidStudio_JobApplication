@@ -1,5 +1,6 @@
 package com.example.jobapplicationmdad.network;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -10,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,6 +23,7 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
 
     private Response.Listener<JSONObject> listener;
     private Map<String, String> params;
+    private Map<String, String> headers;
 
     /**
      * Default constructor if no method is specified
@@ -49,6 +52,13 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
         this.params = params;
     }
 
+    public JsonObjectRequestWithParams(int method, String url, Map<String, String> params, Map<String, String> headers, Response.Listener<JSONObject> responseListener, Response.ErrorListener errorListener) {
+        super(method, url, errorListener);
+        this.listener = responseListener;
+        this.params = params;
+        this.headers = headers;
+    }
+
     @Override
     protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
         return params;
@@ -75,5 +85,10 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
     @Override
     protected void deliverResponse(JSONObject response) {
         listener.onResponse(response);
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        return headers != null ? headers : super.getHeaders();
     }
 }

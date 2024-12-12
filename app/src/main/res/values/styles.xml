@@ -2,9 +2,10 @@
 <resources>
     <!-- AppBar-->
     <style name="AppBarTitleTextAppearance" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:fontFamily">@font/inter</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/inter</item>
         <item name="android:textColor">@color/background</item>
+
     </style>
     <!-- Button Styles-->
     <style name="ButtonPrimary">

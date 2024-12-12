@@ -7,8 +7,10 @@ public class User {
     private String role;
     private String password;
     private String confirmPassword;
-    //private String dateOfBirth; // Nullable
-    //private String gender;  // Nullable
+    private String dateOfBirth; // Nullable
+    private String gender;  // Nullable
+    private String race;
+    private String nationality;
     //private String resume;  // Nullable
     //private String agencyId;  // Nullable (Foreign Key)
     //private String createdAt;  // Nullable (Timestamp)
@@ -29,6 +31,10 @@ public class User {
         this.email = email;
         this.password = password;
     }
+    public User(){
+
+    }
+
 
     public String getFullName() {
         return fullName;
@@ -78,4 +84,35 @@ public class User {
         this.confirmPassword = confirmPassword;
     }
 
+    public String getRace() {
+        return race;
+    }
+
+    public void setRace(String race) {
+        this.race = race;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
 }
