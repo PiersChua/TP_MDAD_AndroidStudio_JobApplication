@@ -54,12 +54,14 @@ public class JobSeekerProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
+    private User user;
     MaterialToolbar topAppBar;
     TextView tvName;
     RecyclerView recyclerView;
     ProfileAdapter profileAdapter;
     ArrayList<HashMap<String, String>> profileItems;
-    Button btnEditProfile;
+    Button btnNavigateToEditProfile;
+
 
     public JobSeekerProfileFragment() {
         // Required empty public constructor
@@ -101,8 +103,13 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getUserDetails();
+        getUserDetails(); // fetch from db
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
+        tvName = view.findViewById(R.id.tvJobSeekerProfileName);
+        recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
+        profileItems = new ArrayList<>();
+        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditJobSeekerProfile);
+
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -124,8 +131,7 @@ public class JobSeekerProfileFragment extends Fragment {
 
             }
         });
-        tvName = view.findViewById(R.id.tvJobSeekerProfileName);
-        recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -138,12 +144,12 @@ public class JobSeekerProfileFragment extends Fragment {
                 return 1;
             }
         });
-        profileItems = new ArrayList<>();
-        btnEditProfile = view.findViewById(R.id.btnEditJobSeekerProfile);
-        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+
+        btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(name, null)).commit();
+                // addToBackStack() allows the back button to return to the current page
+                getParentFragmentManager().beginTransaction().replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
 
@@ -161,28 +167,28 @@ public class JobSeekerProfileFragment extends Fragment {
                 if (response.getString("type").equals("Success")) {
                     // retrieve user details
                     tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
-                    profileItems.clear();
-                    User user = new User();
-                    addProfileItem("Full Name", response.getString("fullName"));
-                    addProfileItem("Email Address", response.getString("email"));
-                    addProfileItem("Date of Birth", response.getString("dateOfBirth"));
-                    addProfileItem("Phone Number", response.getString("phoneNumber"));
-                    addProfileItem("Race", response.getString("race"));
-                    addProfileItem("Nationality", response.getString("nationality"));
-                    addProfileItem("Gender", response.getString("gender"));
+                    user = new User();
+                    user.setFullName(response.getString("fullName"));
+                    user.setEmail(response.getString("email"));
+                    user.setDateOfBirth(response.getString("dateOfBirth"));
+                    user.setPhoneNumber(response.getString("phoneNumber"));
+                    user.setRace(response.getString("race"));
+                    user.setNationality(response.getString("nationality"));
+                    user.setGender(response.getString("gender"));
+                    populateProfileItems(user);
 
                     // Set the adapter
                     profileAdapter = new ProfileAdapter(profileItems);
                     recyclerView.setAdapter(profileAdapter);
 
                 } else if (response.getString("type").equals("Error")) {
-                    Toast.makeText(requireContext().getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
 
-        }, VolleyErrorHandler.newErrorListener(requireContext().getApplicationContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -191,6 +197,17 @@ public class JobSeekerProfileFragment extends Fragment {
         item.put("label", label);
         item.put("value", value);
         profileItems.add(item);
+    }
+
+    private void populateProfileItems(User user) {
+        profileItems.clear();
+        addProfileItem("Full Name", user.getFullName());
+        addProfileItem("Email Address", user.getEmail());
+        addProfileItem("Date of Birth", user.getDateOfBirth());
+        addProfileItem("Phone Number", user.getPhoneNumber());
+        addProfileItem("Race", user.getRace());
+        addProfileItem("Nationality", user.getNationality());
+        addProfileItem("Gender", user.getGender());
     }
 
 

@@ -1,6 +1,8 @@
 package com.example.jobapplicationmdad.model;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String fullName;
     private String email;
     private String phoneNumber;
@@ -31,7 +33,14 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    public User(){
+
+    public User(String fullName, String email, String phoneNumber) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User() {
 
     }
 
