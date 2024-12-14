@@ -70,7 +70,7 @@
 
         <android.widget.Button
             android:id="@+id/btnLogin"
-            style="@style/ButtonPrimary"
+            style="@style/Button.Primary"
             android:layout_width="match_parent"
             android:text="@string/login_activity_header"
             android:textSize="26sp" />

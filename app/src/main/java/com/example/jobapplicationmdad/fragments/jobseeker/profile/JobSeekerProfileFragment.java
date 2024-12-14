@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.jobseeker;
+package com.example.jobapplicationmdad.fragments.jobseeker.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,13 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +37,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +59,7 @@ public class JobSeekerProfileFragment extends Fragment {
     RecyclerView recyclerView;
     ProfileAdapter profileAdapter;
     ArrayList<HashMap<String, String>> profileItems;
-
+    Button btnEditProfile;
 
     public JobSeekerProfileFragment() {
         // Required empty public constructor
@@ -126,7 +125,7 @@ public class JobSeekerProfileFragment extends Fragment {
             }
         });
         tvName = view.findViewById(R.id.tvJobSeekerProfileName);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -140,6 +139,13 @@ public class JobSeekerProfileFragment extends Fragment {
             }
         });
         profileItems = new ArrayList<>();
+        btnEditProfile = view.findViewById(R.id.btnEditJobSeekerProfile);
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(name, null)).commit();
+            }
+        });
 
 
     }
@@ -156,6 +162,7 @@ public class JobSeekerProfileFragment extends Fragment {
                     // retrieve user details
                     tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                     profileItems.clear();
+                    User user = new User();
                     addProfileItem("Full Name", response.getString("fullName"));
                     addProfileItem("Email Address", response.getString("email"));
                     addProfileItem("Date of Birth", response.getString("dateOfBirth"));

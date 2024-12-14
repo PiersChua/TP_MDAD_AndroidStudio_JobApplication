@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llRegister"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:id="@+id/llRegisterForm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp">
+
+        <TextView
+            android:id="@+id/tvRegister"
+            style="@style/Text.FormHeader"
+            android:layout_marginBottom="16dp"
+            android:text="@string/register_activity_header" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etFullNameRegisterLayout"
+            style="@style/EditTextLayout"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_full_name"
+            app:startIconDrawable="@drawable/ic_person">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFullNameRegister"
+                style="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etEmailRegisterLayout"
+            style="@style/EditTextLayout"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_email"
+            android:inputType="textEmailAddress"
+            app:startIconDrawable="@drawable/ic_email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmailRegister"
+                style="@style/EditText" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etPhoneNumberRegisterLayout"
+            style="@style/EditTextLayout"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_phone_number"
+            app:prefixText="+65 "
+            app:startIconDrawable="@drawable/ic_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhoneNumberRegister"
+                style="@style/EditText"
+                android:inputType="phone"
+                android:maxLength="8"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etRoleRegisterLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_role"
+            android:textColorHint="@color/placeholder_foreground"
+
+            app:boxBackgroundColor="@color/placeholder_background"
+            app:boxStrokeColor="@color/foreground"
+            app:cursorColor="@color/foreground"
+            app:startIconDrawable="@drawable/ic_role">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                app:simpleItems="@array/role_items" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etPasswordRegisterLayout"
+            style="@style/EditTextLayout"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_password"
+            app:helperText="We will never share your password"
+            app:helperTextEnabled="true"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordRegister"
+                style="@style/EditText"
+                android:inputType="textPassword"
+                app:startIconDrawable="@drawable/ic_lock" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/etConfirmPasswordRegisterLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/hint_confirm_password"
+            android:textColorHint="@color/placeholder_foreground"
+
+            app:boxBackgroundColor="@color/placeholder_background"
+            app:boxStrokeColor="@color/foreground"
+            app:cursorColor="@color/foreground"
+            app:hintTextColor="@color/foreground"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_lock">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etConfirmPasswordRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+</LinearLayout>

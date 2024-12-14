@@ -3,12 +3,8 @@ package com.example.jobapplicationmdad.activities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,7 +17,7 @@ import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerApplicationsF
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerFavouriteFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerHomeFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerJobsFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerProfileFragment;
+import com.example.jobapplicationmdad.fragments.jobseeker.profile.JobSeekerProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.HashMap;
@@ -29,6 +25,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static String root_url = "http://192.168.0.5/job-application";
+    //public static String root_url = "http://172.30.133.194/job-application";
     NavigationBarView bottom_navigation;
     private Map<Integer, Fragment> fragments;
 

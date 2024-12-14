@@ -24,7 +24,7 @@
 
 
     <android.widget.Button
-        style="@style/ButtonPrimary"
+        style="@style/Button.Primary"
         android:id="@+id/btnOnboardingNext"
         android:layout_width="291dp"
         android:layout_gravity="center_horizontal"
