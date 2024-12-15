@@ -117,7 +117,7 @@ public class JobSeekerProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""))).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
                     Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();

@@ -75,7 +75,6 @@ public class AgencyApplication {
 
     // For job seeker
     public AgencyApplication(String name, String email, String phoneNumber, String address, String userId) {
-        this.status = Status.PENDING;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;

@@ -11,13 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.model.AgencyApplication;
 import com.example.jobapplicationmdad.model.User;
+import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
+import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,8 +40,11 @@ import com.google.android.material.textfield.TextInputLayout;
 public class CreateAgencyApplicationFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "userId";
+    private static final String ARG_PARAM2 = "token";
+    private static final String create_agency_application_url = MainActivity.root_url + "/api/job-seeker/create-agency-application.php";
 
     private String userId;
+    private String token;
     MaterialToolbar topAppBar;
     EditText etNameAgencyApplication, etEmailAgencyApplication, etPhoneNumberAgencyApplication, etAddressAgencyApplication;
     TextInputLayout etNameAgencyApplicationLayout, etEmailAgencyApplicationLayout, etPhoneNumberAgencyApplicationLayout, etAddressAgencyApplicationLayout;
@@ -43,13 +59,16 @@ public class CreateAgencyApplicationFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param param1 The userId of the user that will be submitting the application
-     * @return A new instance of fragment CreateAgencyApplicationFragment.
+     * @param param2 The JSON Web Token (JWT) that is stored in shared preferences
+     * @return A new instance of fragment CreateAgencyApplicationFragment
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateAgencyApplicationFragment newInstance(String param1) {
+    public static CreateAgencyApplicationFragment newInstance(String param1, String param2) {
         CreateAgencyApplicationFragment fragment = new CreateAgencyApplicationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,12 +78,12 @@ public class CreateAgencyApplicationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userId = getArguments().getString(ARG_PARAM1);
+            token = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_agency_application, container, false);
     }
@@ -104,11 +123,11 @@ public class CreateAgencyApplicationFragment extends Fragment {
     }
 
     private AgencyApplication getAgencyApplicationFromForm() {
-        String fullName = etNameAgencyApplication.getText().toString().trim();
+        String name = etNameAgencyApplication.getText().toString().trim();
         String email = etEmailAgencyApplication.getText().toString();
         String phoneNumber = etPhoneNumberAgencyApplication.getText().toString();
         String address = etAddressAgencyApplication.getText().toString();
-        return new AgencyApplication(fullName, email, phoneNumber, address, userId);
+        return new AgencyApplication(name, email, phoneNumber, address, userId);
     }
 
     private boolean validateAgencyApplication(AgencyApplication application) {
@@ -119,6 +138,27 @@ public class CreateAgencyApplicationFragment extends Fragment {
     }
 
     private void createAgencyApplication(AgencyApplication application) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("name", application.getName());
+        params.put("email", application.getEmail());
+        params.put("phoneNumber", application.getPhoneNumber());
+        params.put("address", application.getAddress());
+        params.put("userId",userId);
 
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + token);
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, create_agency_application_url, params, headers, response -> {
+            try {
+                if (response.getString("type").equals("Success")) {
+                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    getParentFragmentManager().popBackStack();
+                } else if (response.getString("type").equals("Error")) {
+                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                }
+            } catch(JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }
