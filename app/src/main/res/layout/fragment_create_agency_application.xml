@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".fragments.jobseeker.profile.CreateAgencyApplicationFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -11,14 +13,14 @@
         android:background="@color/primary">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarEditJobSeekerProfile"
+            android:id="@+id/topAppBarAgencyApplication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile_edit"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/background"
+            app:theme="@style/ToolbarThemeLight"
+            app:title="@string/title_menu_agency_application"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -27,15 +29,42 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
-            android:id="@+id/llEditJobSeekerProfile"
+            android:id="@+id/llCreateAgencyApplication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp">
 
+            <ImageView
+                android:id="@+id/ivAgencyApplicationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/application_icon" />
+
+            <TextView
+                android:id="@+id/tvAgencyApplication"
+                style="@style/Text.FormHeader"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:text="Join SgJobMarket!" />
+
+            <TextView
+                android:id="@+id/tvAgencyApplicationDescription"
+                style="@style/Text.FormDescription"
+                android:layout_marginBottom="16dp"
+
+                android:text="Are you interested in connecting talented job seekers with the right opportunities? Complete the form below to register your agency and start using our platform!" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dividerColor="@color/placeholder_background" />
             <LinearLayout
-                android:id="@+id/llProfileForm"
+                android:id="@+id/llAgencyApplicationForm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
@@ -45,19 +74,19 @@
                 android:paddingHorizontal="20dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etFullNameProfileLayout"
+                    android:id="@+id/etNameAgencyApplicationLayout"
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="20dp"
-                    android:hint="@string/hint_full_name"
-                    app:startIconDrawable="@drawable/ic_person">
+                    android:hint="@string/hint_name"
+                    app:startIconDrawable="@drawable/ic_agency">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFullNameProfile"
+                        android:id="@+id/etNameAgencyApplication"
                         style="@style/EditText" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etEmailProfileLayout"
+                    android:id="@+id/etEmailAgencyApplicationLayout"
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="20dp"
                     android:hint="@string/hint_email"
@@ -65,12 +94,12 @@
                     app:startIconDrawable="@drawable/ic_email">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etEmailProfile"
+                        android:id="@+id/etEmailAgencyApplication"
                         style="@style/EditText" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etPhoneNumberProfileLayout"
+                    android:id="@+id/etPhoneNumberAgencyApplicationLayout"
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="20dp"
                     android:hint="@string/hint_phone_number"
@@ -78,19 +107,32 @@
                     app:startIconDrawable="@drawable/ic_phone">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPhoneNumberProfile"
+                        android:id="@+id/etPhoneNumberAgencyApplication"
                         style="@style/EditText"
                         android:inputType="phone"
                         android:maxLength="8" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etAddressAgencyApplicationLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_marginBottom="20dp"
+                    android:hint="@string/hint_address"
+                    app:startIconDrawable="@drawable/ic_location">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAddressAgencyApplication"
+                        style="@style/EditText" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <android.widget.Button
-                    android:id="@+id/btnEditJobSeekerProfile"
+                    android:id="@+id/btnCreateAgencyApplication"
                     style="@style/Button.Primary"
                     android:layout_width="match_parent"
-                    android:text="@string/btn_text_update"
+                    android:text="@string/btn_text_apply"
                     android:textSize="26sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

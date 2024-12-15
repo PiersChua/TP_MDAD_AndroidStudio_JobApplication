@@ -82,8 +82,7 @@
                     android:id="@+id/etPhoneNumberRegister"
                     style="@style/EditText"
                     android:inputType="phone"
-                    android:maxLength="8"
-                    android:singleLine="true" />
+                    android:maxLength="8" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

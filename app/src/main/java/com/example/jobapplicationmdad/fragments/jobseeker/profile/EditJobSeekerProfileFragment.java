@@ -121,8 +121,6 @@ public class EditJobSeekerProfileFragment extends Fragment {
                 User user = getUserFromForm();
                 if (validateUser(user)) {
                     updateUser(user);
-                } else {
-                    return;
                 }
             }
         });

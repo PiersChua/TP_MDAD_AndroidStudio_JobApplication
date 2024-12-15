@@ -86,8 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
                 User user = getUserFromForm();
                 if (validateUser(user)) {
                     registerUser(user);
-                } else {
-                    return;
                 }
             }
         });

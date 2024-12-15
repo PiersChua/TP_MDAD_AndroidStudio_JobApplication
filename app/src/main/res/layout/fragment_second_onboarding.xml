@@ -10,7 +10,7 @@
     tools:context=".fragments.onboarding.SecondOnboardingFragment">
 
     <ImageView
-        android:id="@+id/iVOnboardingIcon2"
+        android:id="@+id/ivOnboardingIcon2"
         android:layout_width="wrap_content"
         android:layout_height="285dp"
         android:layout_marginTop="32dp"

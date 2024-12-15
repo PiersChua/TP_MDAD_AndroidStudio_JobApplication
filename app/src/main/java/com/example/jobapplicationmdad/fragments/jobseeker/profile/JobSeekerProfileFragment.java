@@ -61,6 +61,7 @@ public class JobSeekerProfileFragment extends Fragment {
     ProfileAdapter profileAdapter;
     ArrayList<HashMap<String, String>> profileItems;
     Button btnNavigateToEditProfile;
+    SharedPreferences sp;
 
 
     public JobSeekerProfileFragment() {
@@ -103,6 +104,7 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         getUserDetails(); // fetch from db
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
         tvName = view.findViewById(R.id.tvJobSeekerProfileName);
@@ -115,13 +117,13 @@ public class JobSeekerProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.job_seeker_profile_item_1) {
+                    getParentFragmentManager().beginTransaction().replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
                     Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_3) {
                     // clear shared preferences
-                    SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
                     startActivity(i);
@@ -157,7 +159,6 @@ public class JobSeekerProfileFragment extends Fragment {
     }
 
     private void getUserDetails() {
-        SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         Map<String, String> headers = new HashMap<String, String>();

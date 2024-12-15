@@ -3,6 +3,8 @@ package com.example.jobapplicationmdad.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
+
+    private String userId;
     private String fullName;
     private String email;
     private String phoneNumber;
@@ -123,5 +125,13 @@ public class User implements Serializable {
 
     public void setNationality(String nationality) {
         this.nationality = nationality;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
