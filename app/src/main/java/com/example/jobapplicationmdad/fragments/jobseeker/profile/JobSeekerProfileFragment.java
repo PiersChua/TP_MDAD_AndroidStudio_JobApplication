@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class JobSeekerProfileFragment extends Fragment {
     private String mParam2;
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private User user;
+    ProgressBar progressBar;
     MaterialToolbar topAppBar;
     TextView tvName;
     RecyclerView recyclerView;
@@ -104,6 +106,7 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        progressBar = view.findViewById(R.id.pbJobSeekerProfile); // Find ProgressBar by ID
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         getUserDetails(); // fetch from db
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
@@ -182,6 +185,10 @@ public class JobSeekerProfileFragment extends Fragment {
                     profileAdapter = new ProfileAdapter(profileItems);
                     recyclerView.setAdapter(profileAdapter);
 
+                    // toggle the visibility of loader
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
                 } else if (response.getString("type").equals("Error")) {
                     Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                 }
@@ -191,6 +198,7 @@ public class JobSeekerProfileFragment extends Fragment {
 
         }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+
     }
 
     private void addProfileItem(String label, String value) {

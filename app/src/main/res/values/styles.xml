@@ -5,8 +5,8 @@
         <item name="android:textStyle">bold</item>
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textColor">@color/background</item>
-
     </style>
+
     <!-- Button Styles-->
     <style name="Button">
         <item name="android:layout_width">wrap_content</item>
@@ -80,6 +80,13 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
+    </style>
+
+    <!-- ProgressBar Styles -->
+    <style name="ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
 

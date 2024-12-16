@@ -28,7 +28,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
-
         <!-- Circular Profile Avatar -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="100dp"
@@ -76,11 +75,17 @@
                         app:icon="@drawable/ic_edit" />
                 </LinearLayout>
 
+                <ProgressBar
+                    android:id="@+id/pbJobSeekerProfile"
+                    style="@style/ProgressBar"
+                   />
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:overScrollMode="never"
                     android:id="@+id/rvJobSeekerProfile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:visibility="gone" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
