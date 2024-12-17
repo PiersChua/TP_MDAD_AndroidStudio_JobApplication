@@ -21,6 +21,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ButtonIcon" parent="Widget.Material3.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">8dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="backgroundTint">@color/background</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/foreground</item>
+    </style>
+
     <style name="ButtonRoundedIconOutline" parent="Widget.Material3.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

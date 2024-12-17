@@ -50,6 +50,9 @@
     <string name="hint_role">Role*</string>
     <string name="hint_address">Address</string>
 
+    <!-- Search hints -->
+    <string name="hint_search_market">Search in the market</string>
+    <string name="hint_search_jobs">Search for jobs</string>
 
     <!-- Button-->
     <string name="btn_text_update">Update</string>
@@ -65,6 +68,8 @@
     <string name="register_activity_redirect_prompt">Already have an account?</string>
     <string name="register_activity_redirect"><u>Login here</u></string>
 
+    <!-- Job Seeker Home Fragment -->
+    <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>
     <!-- Profile Fragment -->
     <string name="profile_fragment_header_card">Profile Information</string>
     <!--TODO: Remove later-->

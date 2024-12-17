@@ -31,8 +31,7 @@
             android:id="@+id/llEditJobSeekerProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/llProfileForm"
@@ -42,12 +41,12 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etFullNameProfileLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_full_name"
                     app:startIconDrawable="@drawable/ic_person">
 
@@ -59,7 +58,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etEmailProfileLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
                     app:startIconDrawable="@drawable/ic_email">
@@ -72,7 +71,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etPhoneNumberProfileLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_phone_number"
                     app:prefixText="+65 "
                     app:startIconDrawable="@drawable/ic_phone">

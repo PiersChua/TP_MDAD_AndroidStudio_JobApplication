@@ -34,35 +34,41 @@
             android:id="@+id/llCreateAgencyApplication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/ivAgencyApplicationIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="150dp"
-                android:layout_gravity="center"
-                android:src="@drawable/application_icon" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
-            <TextView
-                android:id="@+id/tvAgencyApplication"
-                style="@style/Text.FormHeader"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:text="Join SgJobMarket!" />
+                <ImageView
+                    android:id="@+id/ivAgencyApplicationIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/application_icon" />
 
-            <TextView
-                android:id="@+id/tvAgencyApplicationDescription"
-                style="@style/Text.FormDescription"
-                android:layout_marginBottom="16dp"
+                <TextView
+                    android:id="@+id/tvAgencyApplication"
+                    style="@style/Text.FormHeader"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp"
+                    android:text="Join SgJobMarket!" />
 
-                android:text="Are you interested in connecting talented job seekers with the right opportunities? Complete the form below to register your agency and start using our platform!" />
+                <TextView
+                    android:id="@+id/tvAgencyApplicationDescription"
+                    style="@style/Text.FormDescription"
+                    android:layout_marginBottom="16dp"
+                    android:text="Are you interested in connecting talented job seekers with the right opportunities? Complete the form below to register your agency and start using our platform!" />
+            </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:dividerColor="@color/placeholder_background" />
+
             <LinearLayout
                 android:id="@+id/llAgencyApplicationForm"
                 android:layout_width="match_parent"
@@ -71,12 +77,12 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etNameAgencyApplicationLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_name"
                     app:startIconDrawable="@drawable/ic_agency">
 
@@ -88,7 +94,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etEmailAgencyApplicationLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_email"
                     android:inputType="textEmailAddress"
                     app:startIconDrawable="@drawable/ic_email">
@@ -101,7 +107,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etPhoneNumberAgencyApplicationLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_phone_number"
                     app:prefixText="+65 "
                     app:startIconDrawable="@drawable/ic_phone">
@@ -116,7 +122,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etAddressAgencyApplicationLayout"
                     style="@style/EditTextLayout"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="16dp"
                     android:hint="@string/hint_address"
                     app:startIconDrawable="@drawable/ic_location">
 

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:padding="20dp"
+        android:padding="16dp"
         tools:context=".activities.RegisterActivity">
 
 
@@ -37,7 +37,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
-            android:paddingHorizontal="20dp">
+            android:paddingHorizontal="16dp">
 
             <TextView
                 android:id="@+id/tvRegister"
@@ -48,7 +48,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etFullNameRegisterLayout"
                 style="@style/EditTextLayout"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_full_name"
                 app:startIconDrawable="@drawable/ic_person">
 
@@ -60,7 +60,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etEmailRegisterLayout"
                 style="@style/EditTextLayout"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
                 app:startIconDrawable="@drawable/ic_email">
@@ -73,7 +73,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPhoneNumberRegisterLayout"
                 style="@style/EditTextLayout"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_phone_number"
                 app:prefixText="+65 "
                 app:startIconDrawable="@drawable/ic_phone">
@@ -90,7 +90,7 @@
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_role"
                 android:textColorHint="@color/placeholder_foreground"
 
@@ -109,7 +109,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etPasswordRegisterLayout"
                 style="@style/EditTextLayout"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_password"
                 app:helperText="We will never share your password"
                 app:helperTextEnabled="true"
@@ -128,7 +128,7 @@
                 android:id="@+id/etConfirmPasswordRegisterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="16dp"
                 android:hint="@string/hint_confirm_password"
                 android:textColorHint="@color/placeholder_foreground"
 

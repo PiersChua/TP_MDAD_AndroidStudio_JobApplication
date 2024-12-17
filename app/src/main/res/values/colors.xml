@@ -11,6 +11,7 @@
     </color>
     <color name="placeholder_foreground">#757575</color>
     <color name="placeholder_background">#EDEDF5</color>
+    <color name="ripple">#1F000000</color>
 
     <!-- Onboarding Indicators -->
     <color name="indicator_active">#757575</color>

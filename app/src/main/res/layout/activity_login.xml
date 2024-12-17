@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="20dp"
     tools:context=".activities.LoginActivity">
 
 
@@ -32,7 +31,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp">
+        android:paddingHorizontal="16dp">
 
         <TextView
             android:id="@+id/tvLogin"
@@ -43,7 +42,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etEmailLoginLayout"
             style="@style/EditTextLayout"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             app:startIconDrawable="@drawable/ic_email">
@@ -56,7 +55,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etPasswordLoginLayout"
             style="@style/EditTextLayout"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="16dp"
             android:hint="@string/hint_password"
             app:passwordToggleEnabled="true"
             app:startIconDrawable="@drawable/ic_lock">
