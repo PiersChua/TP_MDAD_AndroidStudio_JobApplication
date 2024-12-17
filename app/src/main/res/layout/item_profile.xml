@@ -7,7 +7,7 @@
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/labelTextView"
+        android:id="@+id/tvProfileLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Label"
@@ -15,7 +15,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/valueTextView"
+        android:id="@+id/tvProfileValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxLines="1"

@@ -9,20 +9,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobapplicationmdad.R;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
-    private ArrayList<HashMap<String, String>> profileItems;
+    private List<HashMap<String, String>> profileItems;
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView labelTextView;
-        private final TextView valueTextView;
+        private final TextView tvLabel;
+        private final TextView tvValue;
 
         /**
          * Holds references to the views within an item's layout
@@ -31,25 +31,25 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            labelTextView = (TextView) view.findViewById(R.id.labelTextView);
-            valueTextView = (TextView) view.findViewById(R.id.valueTextView);
+            tvLabel = (TextView) view.findViewById(R.id.tvProfileLabel);
+            tvValue = (TextView) view.findViewById(R.id.tvProfileValue);
         }
 
         public TextView getLabelTextView() {
-            return labelTextView;
+            return tvLabel;
         }
         public TextView getValueTextView() {
-            return valueTextView;
+            return tvValue;
         }
     }
 
     /**
      * Initialize the dataset of the Adapter
      *
-     * @param dataSet ArrayList<HashMap<String, String>> containing the data to populate views to be used
+     * @param dataSet List<HashMap<String, String>> containing the data to populate views to be used
      * by RecyclerView
      */
-    public ProfileAdapter(ArrayList<HashMap<String, String>> dataSet) {
+    public ProfileAdapter(List<HashMap<String, String>> dataSet) {
         profileItems = dataSet;
     }
 

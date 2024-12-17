@@ -1,0 +1,121 @@
+package com.example.jobapplicationmdad.adapters;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.model.Job;
+
+import java.util.List;
+
+public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHolder> {
+
+    private List<Job> jobs;
+    private final OnJobClickListener listener;
+
+    // Interface for handling button click events
+    public interface OnJobClickListener {
+        void onViewJobDetails(String jobId);
+    }
+
+    /**
+     * Initialize the dataset of the Adapter
+     *
+     * @param dataSet List<Job></Job> containing the data to populate views to be used
+     *                by RecyclerView
+     */
+    public JobCardAdapter(List<Job> dataSet, OnJobClickListener listener) {
+        jobs = dataSet;
+        this.listener = listener;
+    }
+
+    /**
+     * Provide a reference to the type of views that you are using
+     * (custom ViewHolder)
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView tvJobCardTitle;
+        private final TextView tvJobCardDescription;
+        private final TextView tvJobCardSalary;
+        private final TextView tvJobCardLocations;
+        private final Button btnNavigateToViewJobDetails;
+
+        public ViewHolder(View view) {
+            super(view);
+            // Define click listener for the ViewHolder's View
+            tvJobCardTitle = view.findViewById(R.id.tvJobCardTitle);
+            tvJobCardDescription = view.findViewById(R.id.tvJobCardDescription);
+            tvJobCardSalary = view.findViewById(R.id.tvJobCardSalary);
+            tvJobCardLocations = view.findViewById(R.id.tvJobCardLocations);
+            btnNavigateToViewJobDetails = view.findViewById(R.id.btnNavigateToViewJobDetails);
+        }
+
+        public TextView getTvJobCardTitle() {
+            return tvJobCardTitle;
+        }
+
+        public TextView getTvJobCardDescription() {
+            return tvJobCardDescription;
+        }
+
+        public TextView getTvJobCardSalary() {
+            return tvJobCardSalary;
+        }
+
+        public TextView getTvJobCardLocations() {
+            return tvJobCardLocations;
+        }
+
+        public Button getBtnNavigateToViewJobDetails() {
+            return btnNavigateToViewJobDetails;
+        }
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Create a new view, which defines the UI of the list item
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_card, viewGroup, false);
+        return new ViewHolder(view);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
+        // Get element from your dataset at this position and replace the
+        // contents of the view with that element
+        Job job = jobs.get(position);
+        viewHolder.getTvJobCardTitle().setText(job.getPosition());
+        viewHolder.getTvJobCardDescription().setText(job.getResponsibilities());
+        StringBuilder salary = new StringBuilder();
+        if (job.getPartTimeSalary() != 0.0) {
+            salary.append(job.getPartTimeSalary() + " per hour");
+        }
+        if (job.getFullTimeSalary() != 0.0) {
+            if (salary.length() > 0) {
+                salary.append("/");
+            }
+            salary.append(job.getFullTimeSalary()).append(" per month");
+        }
+        if (salary.length() == 0) {
+            viewHolder.getTvJobCardSalary().setVisibility(View.GONE);
+        }
+        viewHolder.getTvJobCardSalary().setText(salary);
+        viewHolder.getTvJobCardLocations().setText(job.getLocation());
+        viewHolder.getBtnNavigateToViewJobDetails().setOnClickListener(v -> listener.onViewJobDetails(job.getJobId()));
+
+
+    }
+
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return jobs.size();
+    }
+}

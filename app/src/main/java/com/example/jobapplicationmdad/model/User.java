@@ -3,7 +3,6 @@ package com.example.jobapplicationmdad.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-
     private String userId;
     private String fullName;
     private String email;

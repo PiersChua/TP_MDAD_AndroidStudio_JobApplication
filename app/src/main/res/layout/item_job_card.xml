@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card"
+    android:layout_width="200dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="0dp">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                android:id="@+id/tvJobCardTitle"
+                style="@style/Text.Medium"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Position"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvJobCardDescription"
+                style="@style/Text.Small"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="Responsbilities" />
+
+            <TextView
+                android:id="@+id/tvJobCardSalary"
+                style="@style/Text.Small"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="2dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="Salary"
+                android:textColor="@color/secondary"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_money" />
+
+            <TextView
+                android:id="@+id/tvJobCardLocations"
+                style="@style/Text.Small"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="Locations"
+                app:drawableStartCompat="@drawable/ic_location" />
+
+        </LinearLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:orientation="horizontal">
+
+            <android.widget.Button
+                android:id="@+id/btnNavigateToViewJobDetails"
+                style="@style/Button.Primary"
+                android:background="@drawable/button_small"
+                android:minHeight="0dp"
+                android:paddingVertical="2dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="12dp"
+                android:text="@string/btn_text_view"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

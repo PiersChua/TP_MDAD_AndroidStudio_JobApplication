@@ -57,6 +57,7 @@
     <!-- Button-->
     <string name="btn_text_update">Update</string>
     <string name="btn_text_apply">Apply</string>
+    <string name="btn_text_view">View</string>
 
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>
@@ -72,6 +73,11 @@
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>
     <!-- Profile Fragment -->
     <string name="profile_fragment_header_card">Profile Information</string>
+
+    <!-- Create Agency Application Fragment -->
+    <string name="create_agency_application_fragment_header">Join SgJobMarket!</string>
+    <string name="create_agency_application_fragment_description">Are you interested in connecting talented job seekers with the right opportunities? Complete the form below to register your agency and start using our platform!</string>
+
     <!--TODO: Remove later-->
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
 </resources>
