@@ -22,6 +22,7 @@ import com.example.jobapplicationmdad.fragments.jobseeker.profile.JobSeekerProfi
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -93,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
      * @param role The role of the user when logged in
      */
     private void initFragments(String role) {
-        fragments = new HashMap<>();
+        // use linked hashmap to maintain insertion order
+        fragments = new LinkedHashMap<>();
         switch (role) {
             case "Job Seeker":
                 fragments.put(R.id.bottom_nav_job_seeker_item_1, new JobSeekerHomeFragment());
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 fragments.put(R.id.bottom_nav_job_seeker_item_3,new JobSeekerApplicationsFragment());
                 fragments.put(R.id.bottom_nav_job_seeker_item_4,new JobSeekerFavouriteFragment());
                 fragments.put(R.id.bottom_nav_job_seeker_item_5,new JobSeekerProfileFragment());
-
+                break;
             case "Agent":
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());
         }
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
      *  Loads the first fragment in the 'fragments' map
      */
     private void loadDefaultFragment(){
-        // get the first fragment in the map
+        // loads the first fragment inserted in the LinkedHashMap
         Fragment defaultFragment = fragments.values().iterator().next();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMain, defaultFragment).commit();
     }

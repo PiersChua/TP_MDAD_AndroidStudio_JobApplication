@@ -41,31 +41,34 @@
                 app:navigationIconTint="@color/background" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/piJobSeekerJobDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:indeterminate="true" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsvJobSeekerJobDetails"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <!-- Job Details-->
         <LinearLayout
-            android:layout_marginBottom="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
+
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsPosition"
                     style="@style/Text.Large"
@@ -92,6 +95,7 @@
                     android:textColor="@color/secondary"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_building_18" />
+
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsEmploymentType"
                     style="@style/Text.Small"
@@ -114,6 +118,7 @@
                     android:gravity="top"
                     app:drawableStartCompat="@drawable/ic_time_18" />
             </LinearLayout>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,20 +130,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:paddingHorizontal="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     style="@style/Text.Medium"
                     android:layout_marginTop="8dp"
                     android:text="Description"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsDescription"
                     style="@style/Text.Small"
-                    android:layout_marginTop="8dp"
-                   />
+                    android:layout_marginTop="8dp" />
             </LinearLayout>
+
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -150,14 +156,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:paddingHorizontal="16dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
                 <TextView
                     style="@style/Text.Medium"
                     android:layout_marginTop="8dp"
                     android:text="Responsibilities"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsResponsibilities"
                     style="@style/Text.Small"
@@ -171,13 +178,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
+        app:maxImageSize="32dp"
         android:backgroundTint="@color/secondary"
         android:baselineAlignBottom="true"
         android:clickable="true"
         app:fabSize="normal"
+        app:tint="@null"
         app:layout_anchor="@id/appBarJobSeekerJobDetails"
         app:layout_anchorGravity="end|bottom"
-        app:srcCompat="@drawable/ic_home" />
+        app:srcCompat="@drawable/whatsapp_icon" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        style="@style/Widget.Material3.BottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+        <android.widget.Button
+            android:layout_marginTop="16dp"
+            android:id="@+id/btnApplyJob"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:text="Apply now"
+            android:textSize="18sp" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
