@@ -88,10 +88,9 @@
                     android:text="Recommended for you"
                     android:textStyle="bold" />
 
-                <ProgressBar
-                    android:id="@+id/pbJobSeekerHome"
-                    style="@style/ProgressBar" />
-
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/piJobSeekerHome"
+                    style="@style/ProgressIndicator" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvJobSeekerJobCard"
                     android:layout_width="match_parent"
@@ -101,7 +100,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.search.SearchView

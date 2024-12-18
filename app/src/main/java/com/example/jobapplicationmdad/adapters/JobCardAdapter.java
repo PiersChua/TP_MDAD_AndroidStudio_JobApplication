@@ -71,18 +71,20 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
             tvJobCardDescription.setText(job.getResponsibilities());
             StringBuilder salary = new StringBuilder();
             if (job.getPartTimeSalary() != 0.0) {
-                salary.append(job.getPartTimeSalary() + " per hour");
+                salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hour");
             }
             if (job.getFullTimeSalary() != 0.0) {
                 if (salary.length() > 0) {
                     salary.append("/");
                 }
-                salary.append(job.getFullTimeSalary()).append(" per month");
+                salary.append("$").append(String.format("%.2f",job.getFullTimeSalary())).append(" per month");
             }
             if (salary.length() == 0) {
                 tvJobCardSalary.setVisibility(View.GONE);
             }
-            tvJobCardSalary.setText(salary);
+            else {
+                tvJobCardSalary.setText(salary);
+            }
             tvJobCardLocations.setText(job.getLocation());
             tvJobCardUpdatedAt.setText(DateConverter.formatDate(DateConverter.convertDateTimeToDate(job.getUpdatedAt())));
         }

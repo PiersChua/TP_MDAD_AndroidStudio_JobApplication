@@ -26,6 +26,7 @@ import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +55,7 @@ public class JobSeekerHomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     SharedPreferences sp;
-    ProgressBar progressBar;
+    CircularProgressIndicator progressIndicator;
     RecyclerView recyclerView;
     List<Job> jobList;
     JobCardAdapter jobCardAdapter;
@@ -100,13 +102,13 @@ public class JobSeekerHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        progressBar = view.findViewById(R.id.pbJobSeekerHome);
+        getJobs();
+        progressIndicator = view.findViewById(R.id.piJobSeekerHome);
         recyclerView = view.findViewById(R.id.rvJobSeekerJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         jobList = new ArrayList<>();
-        getJobs();
-
     }
+
 
     private void getJobs() {
         Map<String, String> params = new HashMap<String, String>();
@@ -128,14 +130,13 @@ public class JobSeekerHomeFragment extends Fragment {
                         jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
                             @Override
                             public void onViewJobDetails(String jobId) {
-                                //getParentFragmentManager().beginTransaction().replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
-                                Toast.makeText(requireContext(), jobId, Toast.LENGTH_LONG).show();
+                                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
                             }
                         });
                         recyclerView.setAdapter(jobCardAdapter);
-
+                        startPostponedEnterTransition();
                         // toggle the visibility of loader
-                        progressBar.setVisibility(View.GONE);
+                        progressIndicator.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();

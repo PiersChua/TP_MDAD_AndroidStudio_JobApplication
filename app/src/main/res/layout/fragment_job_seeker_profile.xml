@@ -75,10 +75,9 @@
                         app:icon="@drawable/ic_edit" />
                 </LinearLayout>
 
-                <ProgressBar
-                    android:id="@+id/pbJobSeekerProfile"
-                    style="@style/ProgressBar"
-                   />
+                <com.google.android.material.progressindicator.CircularProgressIndicator
+                    android:id="@+id/piJobSeekerProfile"
+                    style="@style/ProgressIndicator"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvJobSeekerProfile"

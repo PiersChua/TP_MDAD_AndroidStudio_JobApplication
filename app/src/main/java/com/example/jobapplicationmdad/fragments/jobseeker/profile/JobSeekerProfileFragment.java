@@ -32,6 +32,7 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONException;
 
@@ -56,7 +57,7 @@ public class JobSeekerProfileFragment extends Fragment {
     private String mParam2;
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private User user;
-    ProgressBar progressBar;
+    CircularProgressIndicator progressIndicator;
     MaterialToolbar topAppBar;
     TextView tvName;
     RecyclerView recyclerView;
@@ -106,7 +107,7 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressBar = view.findViewById(R.id.pbJobSeekerProfile); // Find ProgressBar by ID
+        progressIndicator = view.findViewById(R.id.piJobSeekerProfile); // Find ProgressBar by ID
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         getUserDetails(); // fetch from db
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
@@ -120,7 +121,7 @@ public class JobSeekerProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
                     Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();
@@ -154,7 +155,7 @@ public class JobSeekerProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
 
@@ -186,7 +187,7 @@ public class JobSeekerProfileFragment extends Fragment {
                     recyclerView.setAdapter(profileAdapter);
 
                     // toggle the visibility of loader
-                    progressBar.setVisibility(View.GONE);
+                    progressIndicator.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
 
                 } else if (response.getString("type").equals("Error")) {

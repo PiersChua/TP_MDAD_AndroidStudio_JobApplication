@@ -27,6 +27,7 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -86,10 +87,23 @@ public class EditJobSeekerProfileFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).hideBottomNav();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity) requireActivity()).showBottomNav();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         topAppBar = view.findViewById(R.id.topAppBarEditJobSeekerProfile);
         btnEditProfile= view.findViewById(R.id.btnEditJobSeekerProfile);
+
         // Form
         etFullNameProfile = view.findViewById(R.id.etFullNameProfile);
         etEmailProfile = view.findViewById(R.id.etEmailProfile);

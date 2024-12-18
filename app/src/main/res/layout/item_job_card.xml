@@ -19,7 +19,6 @@
             android:paddingTop="16dp"
             android:paddingBottom="0dp">
 
-            <!-- Title, secondary and supporting text -->
             <TextView
                 android:id="@+id/tvJobCardTitle"
                 style="@style/Text.Medium"

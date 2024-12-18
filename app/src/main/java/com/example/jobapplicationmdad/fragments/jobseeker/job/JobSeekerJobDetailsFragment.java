@@ -6,11 +6,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,12 +23,15 @@ import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,13 +40,15 @@ import java.util.Map;
  */
 public class JobSeekerJobDetailsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
 
-    // TODO: Rename and change types of parameters
     private String jobId;
     SharedPreferences sp;
+    MaterialToolbar topAppBar;
+    NestedScrollView nsvJobSeekerJobDetails;
+    LinearProgressIndicator progressIndicator;
+    TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
 
     public JobSeekerJobDetailsFragment() {
@@ -82,6 +89,40 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        getJobDetails();
+        topAppBar = view.findViewById(R.id.topAppBarJobSeekerJobDetails);
+        progressIndicator= view.findViewById(R.id.piJobSeekerJobDetails);
+        nsvJobSeekerJobDetails = view.findViewById(R.id.nsvJobSeekerJobDetails);
+
+        // TextViews
+        tvPosition = view.findViewById(R.id.tvJobSeekerJobDetailsPosition);
+        tvAgencyName = view.findViewById(R.id.tvJobSeekerJobDetailsAgencyName);
+        tvLocation = view.findViewById(R.id.tvJobSeekerJobDetailsLocation);
+        tvSalary = view.findViewById(R.id.tvJobSeekerJobDetailsSalary);
+        tvEmploymentType = view.findViewById(R.id.tvJobSeekerJobDetailsEmploymentType);
+        tvOrganisation = view.findViewById(R.id.tvJobSeekerJobDetailsOrganisation);
+        tvSchedule = view.findViewById(R.id.tvJobSeekerJobDetailsSchedule);
+        tvDescription = view.findViewById(R.id.tvJobSeekerJobDetailsDescription);
+        tvResponsibilities = view.findViewById(R.id.tvJobSeekerJobDetailsResponsibilities);
+
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).hideBottomNav();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity) requireActivity()).showBottomNav();
     }
 
     private void getJobDetails() {
@@ -104,8 +145,8 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                         job.setLocation(jobJson.getString("location"));
                         job.setSchedule(jobJson.getString("schedule"));
                         job.setOrganisation(jobJson.getString("organisation"));
-                        job.setPartTimeSalary(jobJson.optDouble("partTimeSalary",0.0));
-                        job.setFullTimeSalary(jobJson.optDouble("fullTimeSalary",0.0));
+                        job.setPartTimeSalary(jobJson.optDouble("partTimeSalary", 0.0));
+                        job.setFullTimeSalary(jobJson.optDouble("fullTimeSalary", 0.0));
                         job.setUserId(jobJson.getString("userId"));
                         job.setCreatedAt(jobJson.getString("createdAt"));
                         job.setUpdatedAt(jobJson.getString("updatedAt"));
@@ -124,6 +165,38 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     }
 
     private void populateJobItems(Job job) {
+        StringBuilder salary = new StringBuilder();
+        StringBuilder employmentType = new StringBuilder();
+        if (job.getPartTimeSalary() != 0.0) {
+            salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hour");
+            employmentType.append("Part-Time");
+        }
+        if (job.getFullTimeSalary() != 0.0) {
+            if (salary.length() > 0) {
+                salary.append("/");
+                employmentType.append(" / ");
+            }
+            salary.append("$").append(String.format("%.2f",job.getFullTimeSalary())).append(" per month");
+            employmentType.append("Full-Time");
+        }
+        if (salary.length() == 0) {
+            tvSalary.setVisibility(View.GONE);
+        }
+        else{
+            tvSalary.setText(salary);
+        }
 
+        tvPosition.setText(job.getPosition());
+        // TODO: fetch nested query
+        //tvAgencyName.setText(job.);
+        tvLocation.setText(job.getLocation());
+        tvEmploymentType.setText(employmentType);
+        tvOrganisation.setText(job.getOrganisation());
+        tvSchedule.setText(job.getSchedule());
+        tvDescription.setText(job.getDescription());
+        tvResponsibilities.setText(job.getResponsibilities());
+        // Toggle the loader
+        nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);
+        progressIndicator.setVisibility(View.GONE);
     }
 }

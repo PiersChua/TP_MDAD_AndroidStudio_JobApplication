@@ -3,6 +3,7 @@ package com.example.jobapplicationmdad.activities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -110,7 +111,18 @@ public class MainActivity extends AppCompatActivity {
      *  Loads the first fragment in the 'fragments' map
      */
     private void loadDefaultFragment(){
+        // get the first fragment in the map
         Fragment defaultFragment = fragments.values().iterator().next();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMain, defaultFragment).commit();
+    }
+
+    /**
+     * To be used in overridden methods like onResume and onPause in fragments to hide bottom nav
+     */
+    public void showBottomNav(){
+        bottom_navigation.setVisibility(View.VISIBLE);
+    }
+    public void hideBottomNav(){
+        bottom_navigation.setVisibility(View.GONE);
     }
 }

@@ -1,14 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.jobseeker.job.JobSeekerJobDetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarJobSeekerJobDetails"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:background="@color/primary">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
+            app:collapsedTitleTextColor="@color/background"
+            app:contentScrim="@color/primary"
+            app:expandedTitleTextAppearance="@style/ExpandedAppBar"
+            app:expandedTitleTextColor="@color/background"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="Job Details">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|end"
+                android:scaleType="centerCrop"
+                android:src="@drawable/job_hiring_icon"
+                app:layout_collapseMode="parallax" />
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarJobSeekerJobDetails"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/background" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/piJobSeekerJobDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true" />
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvJobSeekerJobDetails"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <!-- Job Details-->
+        <LinearLayout
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</FrameLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsPosition"
+                    style="@style/Text.Large"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsAgencyName"
+                    style="@style/Text.Small"
+                    android:textColor="@color/placeholder_foreground"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsLocation"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_location_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsSalary"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/secondary"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_building_18" />
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsEmploymentType"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_timelapse_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsOrganisation"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_money_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsSchedule"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    android:gravity="top"
+                    app:drawableStartCompat="@drawable/ic_time_18" />
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dividerColor="@color/placeholder_background" />
+
+            <!-- Job Description -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Medium"
+                    android:layout_marginTop="8dp"
+                    android:text="Description"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsDescription"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                   />
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dividerColor="@color/placeholder_background" />
+
+            <!-- Job Responsibilities -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Text.Medium"
+                    android:layout_marginTop="8dp"
+                    android:text="Responsibilities"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvJobSeekerJobDetailsResponsibilities"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/secondary"
+        android:baselineAlignBottom="true"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:layout_anchor="@id/appBarJobSeekerJobDetails"
+        app:layout_anchorGravity="end|bottom"
+        app:srcCompat="@drawable/ic_home" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
