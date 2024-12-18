@@ -1,8 +1,7 @@
-package com.example.jobapplicationmdad.fragments.jobseeker;
+package com.example.jobapplicationmdad.fragments.jobseeker.job;
 
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;

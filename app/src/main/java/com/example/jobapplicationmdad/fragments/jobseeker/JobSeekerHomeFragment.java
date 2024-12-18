@@ -21,7 +21,7 @@ import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.JobCardAdapter;
-import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -121,14 +121,15 @@ public class JobSeekerHomeFragment extends Fragment {
                         JSONArray jobsArray = response.getJSONArray("data");
                         for (int i = 0; i < jobsArray.length(); i++) {
                             JSONObject jobObject = jobsArray.getJSONObject(i);
-                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0));
+                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
                             jobList.add(job);
                         }
                         // Set the adapter
                         jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
                             @Override
                             public void onViewJobDetails(String jobId) {
-                                getParentFragmentManager().beginTransaction().replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+                                //getParentFragmentManager().beginTransaction().replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+                                Toast.makeText(requireContext(), jobId, Toast.LENGTH_LONG).show();
                             }
                         });
                         recyclerView.setAdapter(jobCardAdapter);

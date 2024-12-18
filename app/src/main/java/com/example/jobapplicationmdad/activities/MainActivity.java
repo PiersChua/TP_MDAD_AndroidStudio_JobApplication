@@ -16,7 +16,7 @@ import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerApplicationsFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerFavouriteFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerHomeFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerJobsFragment;
+import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobsFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.profile.JobSeekerProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 

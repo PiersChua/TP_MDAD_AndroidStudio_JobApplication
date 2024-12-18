@@ -13,19 +13,20 @@ public class Job implements Serializable {
     private double partTimeSalary;
     private double fullTimeSalary;
     private String userId;
+    private String createdAt;
+    private String updatedAt;
     public Job(){
 
     }
 
-    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary) {
+    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt) {
         this.jobId = jobId;
         this.position = position;
         this.responsibilities = responsibilities;
         this.location = location;
-        this.schedule = schedule;
-        this.organisation = organisation;
         this.partTimeSalary = partTimeSalary;
         this.fullTimeSalary = fullTimeSalary;
+        this.updatedAt = updatedAt;
     }
 
     public String getJobId() {
@@ -106,5 +107,21 @@ public class Job implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 }
