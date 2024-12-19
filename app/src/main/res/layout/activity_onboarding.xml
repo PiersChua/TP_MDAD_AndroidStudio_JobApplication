@@ -5,6 +5,7 @@
     android:id="@+id/llMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context=".activities.OnboardingActivity">
 
@@ -24,8 +25,8 @@
 
 
     <android.widget.Button
-        style="@style/Button.Primary"
         android:id="@+id/btnOnboardingNext"
+        style="@style/Button.Primary"
         android:layout_width="291dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"

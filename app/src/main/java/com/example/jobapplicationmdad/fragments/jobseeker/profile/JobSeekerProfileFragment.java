@@ -130,6 +130,8 @@ public class JobSeekerProfileFragment extends Fragment {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
+                    // Clear the fragment back stack
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(i);
                     return true;
                 }

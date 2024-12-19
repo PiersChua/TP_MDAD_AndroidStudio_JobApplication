@@ -184,6 +184,7 @@
         android:clickable="true"
         app:fabSize="normal"
         app:tint="@null"
+        android:contentDescription="Whatsapp an agent"
         app:layout_anchor="@id/appBarJobSeekerJobDetails"
         app:layout_anchorGravity="end|bottom"
         app:srcCompat="@drawable/whatsapp_icon" />
@@ -200,7 +201,7 @@
             android:id="@+id/btnApplyJob"
             style="@style/Button.Primary"
             android:layout_width="match_parent"
-            android:text="Apply now"
+            android:text="@string/btn_text_apply_now"
             android:textSize="18sp" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 

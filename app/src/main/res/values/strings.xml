@@ -58,6 +58,7 @@
     <string name="btn_text_update">Update</string>
     <string name="btn_text_apply">Apply</string>
     <string name="btn_text_view">View</string>
+    <string name="btn_text_apply_now">Apply now</string>
 
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>
@@ -71,6 +72,7 @@
 
     <!-- Job Seeker Home Fragment -->
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>
+    <string name="home_job_seeker_fragment_sub_header">Recommended for you</string>
     <!-- Profile Fragment -->
     <string name="profile_fragment_header_card">Profile Information</string>
 

@@ -5,6 +5,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
+        android:background="@color/background"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,7 +86,7 @@
 
                 <TextView
                     style="@style/Text.Large"
-                    android:text="Recommended for you"
+                    android:text="@string/home_job_seeker_fragment_sub_header"
                     android:textStyle="bold" />
 
                 <com.google.android.material.progressindicator.CircularProgressIndicator

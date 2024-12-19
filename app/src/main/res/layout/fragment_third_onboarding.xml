@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:maxHeight="485dp"
     android:orientation="vertical"
     tools:context=".fragments.onboarding.ThirdOnboardingFragment">
 
@@ -22,7 +23,6 @@
 
     <TextView
         android:id="@+id/tvOnboardingHeader3"
-        android:textColor="@color/foreground"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -31,7 +31,8 @@
         android:fontFamily="@font/inter"
         android:text="@string/onboarding_fragment_header_3"
         android:textAlignment="center"
-        android:textSize="32sp"
+        android:textColor="@color/foreground"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

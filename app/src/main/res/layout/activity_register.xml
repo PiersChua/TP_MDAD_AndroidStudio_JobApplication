@@ -155,7 +155,7 @@
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
                 android:text="@string/register_activity_header"
-                android:textSize="26sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
+    android:maxHeight="485dp"
     android:orientation="vertical"
     tools:context=".fragments.onboarding.SecondOnboardingFragment">
 
@@ -32,7 +33,7 @@
         android:text="@string/onboarding_fragment_header_2"
         android:textAlignment="center"
         android:textColor="@color/foreground"
-        android:textSize="32sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
