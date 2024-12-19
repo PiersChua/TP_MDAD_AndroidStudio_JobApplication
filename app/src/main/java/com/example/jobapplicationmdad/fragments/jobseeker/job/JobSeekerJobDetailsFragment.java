@@ -100,7 +100,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.piJobSeekerJobDetails);
         nsvJobSeekerJobDetails = view.findViewById(R.id.nsvJobSeekerJobDetails);
         btnApplyJob = view.findViewById(R.id.btnApplyJob);
-        btnFavouriteJob = view.findViewById(R.id.btnFavouriteJob);
+        btnFavouriteJob = view.findViewById(R.id.btnFavouriteJobJobDetails);
 
         // TextViews
         tvPosition = view.findViewById(R.id.tvJobSeekerJobDetailsPosition);

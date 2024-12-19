@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cvJobCard"
-    android:layout_width="200dp"
+    android:id="@+id/cvFavouriteFavouriteJobCard"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_marginTop="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,16 +19,35 @@
             android:paddingTop="16dp"
             android:paddingBottom="0dp">
 
-            <TextView
-                android:id="@+id/tvJobCardTitle"
-                style="@style/Text.Medium"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="Position"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvFavouriteJobCardTitle"
+                    style="@style/Text.Medium"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="Position"
+                    android:textStyle="bold" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFavouriteJobFavourite"
+                    style="@style/ButtonIcon"
+                    app:icon="@drawable/ic_favourite"
+                    app:iconTint="@color/primary"
+                    app:iconSize="24dp"
+                    app:rippleColor="@color/ripple" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvJobCardDescription"
+                android:id="@+id/tvFavouriteJobCardDescription"
                 style="@style/Text.Small"
                 android:layout_marginTop="8dp"
                 android:ellipsize="end"
@@ -36,7 +55,7 @@
                 android:text="Responsbilities" />
 
             <TextView
-                android:id="@+id/tvJobCardSalary"
+                android:id="@+id/tvFavouriteJobCardSalary"
                 style="@style/Text.Small"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="2dp"
@@ -49,7 +68,7 @@
                 app:drawableStartCompat="@drawable/ic_money_18" />
 
             <TextView
-                android:id="@+id/tvJobCardLocations"
+                android:id="@+id/tvFavouriteJobCardLocations"
                 style="@style/Text.Small"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
@@ -58,6 +77,7 @@
                 app:drawableStartCompat="@drawable/ic_location_18" />
 
         </LinearLayout>
+
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,20 +87,20 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingTop="8dp"
-            android:paddingBottom="16dp"
-            android:orientation="horizontal">
+            android:paddingBottom="16dp">
 
             <TextView
-                android:id="@+id/tvJobCardUpdatedAt"
+                android:id="@+id/tvFavouriteJobCardUpdatedAt"
                 style="@style/Text.ExtraSmall"
+                android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="19/2/2024"
-                app:drawableStartCompat="@drawable/ic_time_16"
-                android:drawablePadding="2dp"/>
+                app:drawableStartCompat="@drawable/ic_time_16" />
         </LinearLayout>
 
     </LinearLayout>

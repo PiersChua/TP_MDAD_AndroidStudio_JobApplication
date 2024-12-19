@@ -107,6 +107,15 @@ public class JobSeekerHomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rvJobSeekerJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         jobList = new ArrayList<>();
+
+        // Set the adapter
+        jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
+            @Override
+            public void onViewJobDetails(String jobId) {
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+            }
+        });
+        recyclerView.setAdapter(jobCardAdapter);
     }
 
 
@@ -126,15 +135,6 @@ public class JobSeekerHomeFragment extends Fragment {
                             Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
                             jobList.add(job);
                         }
-                        // Set the adapter
-                        jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
-                            @Override
-                            public void onViewJobDetails(String jobId) {
-                                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
-                            }
-                        });
-                        recyclerView.setAdapter(jobCardAdapter);
-                        startPostponedEnterTransition();
                         // toggle the visibility of loader
                         progressIndicator.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);

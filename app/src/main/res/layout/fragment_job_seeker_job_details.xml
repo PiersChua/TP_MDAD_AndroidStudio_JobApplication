@@ -214,7 +214,7 @@
                 android:layout_width="8dp"
                 android:layout_height="match_parent" />
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFavouriteJob"
+                android:id="@+id/btnFavouriteJobJobDetails"
                 style="@style/ButtonIcon"
                 app:icon="@drawable/ic_favourite_outline"
                 app:iconSize="24dp"
