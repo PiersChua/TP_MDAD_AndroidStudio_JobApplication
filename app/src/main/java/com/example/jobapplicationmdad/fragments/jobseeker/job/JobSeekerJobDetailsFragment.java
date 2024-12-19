@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONException;
@@ -44,14 +45,17 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     private static final String ARG_PARAM1 = "jobId";
 
     private String jobId;
+    private boolean isFavourite;
     SharedPreferences sp;
     MaterialToolbar topAppBar;
     NestedScrollView nsvJobSeekerJobDetails;
     LinearProgressIndicator progressIndicator;
     Button btnApplyJob;
+    MaterialButton btnFavouriteJob;
     TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
     private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
+    private static final String favourite_job_url = MainActivity.root_url + "/api/job-seeker/favourite-job.php";
 
     public JobSeekerJobDetailsFragment() {
         // Required empty public constructor
@@ -96,6 +100,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         progressIndicator = view.findViewById(R.id.piJobSeekerJobDetails);
         nsvJobSeekerJobDetails = view.findViewById(R.id.nsvJobSeekerJobDetails);
         btnApplyJob = view.findViewById(R.id.btnApplyJob);
+        btnFavouriteJob = view.findViewById(R.id.btnFavouriteJob);
 
         // TextViews
         tvPosition = view.findViewById(R.id.tvJobSeekerJobDetailsPosition);
@@ -119,6 +124,13 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createJobApplication();
+            }
+        });
+
+        btnFavouriteJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favouriteJob();
             }
         });
     }
@@ -160,7 +172,8 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                         job.setUserId(jobJson.getString("userId"));
                         job.setCreatedAt(jobJson.getString("createdAt"));
                         job.setUpdatedAt(jobJson.getString("updatedAt"));
-
+                        isFavourite = jobJson.getBoolean("isFavourite");
+                        toggleFavouriteIcon();
                         populateJobItems(job);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
@@ -232,4 +245,40 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
+
+    private void favouriteJob() {
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("jobId", jobId);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, favourite_job_url, params, headers, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("type").equals("Success")) {
+                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                        isFavourite = !isFavourite;
+                        toggleFavouriteIcon();
+                    } else if (response.getString("type").equals("Error")) {
+                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
+    private void toggleFavouriteIcon() {
+        if (isFavourite) {
+            btnFavouriteJob.setIconResource(R.drawable.ic_favourite);
+            btnFavouriteJob.setIconTintResource(R.color.primary);
+        } else {
+            btnFavouriteJob.setIconResource(R.drawable.ic_favourite_outline);
+            btnFavouriteJob.setIconTintResource(R.color.placeholder_foreground);
+        }
+    }
+
 }

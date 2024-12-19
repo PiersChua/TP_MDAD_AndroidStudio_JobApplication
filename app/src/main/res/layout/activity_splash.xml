@@ -10,11 +10,23 @@
 
     <ImageView
         android:id="@+id/iVSplashScreenIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="182dp"
+        android:layout_height="93dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/app_icon" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/piSplash"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iVSplashScreenIcon"
+        app:layout_constraintVertical_bias="0.053" />
 </androidx.constraintlayout.widget.ConstraintLayout>
