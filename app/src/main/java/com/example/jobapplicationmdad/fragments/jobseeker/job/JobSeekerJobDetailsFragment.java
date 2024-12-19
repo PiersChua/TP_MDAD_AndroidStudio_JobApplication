@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,8 +48,10 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     MaterialToolbar topAppBar;
     NestedScrollView nsvJobSeekerJobDetails;
     LinearProgressIndicator progressIndicator;
+    Button btnApplyJob;
     TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
+    private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
 
     public JobSeekerJobDetailsFragment() {
         // Required empty public constructor
@@ -91,8 +93,9 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         getJobDetails();
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerJobDetails);
-        progressIndicator= view.findViewById(R.id.piJobSeekerJobDetails);
+        progressIndicator = view.findViewById(R.id.piJobSeekerJobDetails);
         nsvJobSeekerJobDetails = view.findViewById(R.id.nsvJobSeekerJobDetails);
+        btnApplyJob = view.findViewById(R.id.btnApplyJob);
 
         // TextViews
         tvPosition = view.findViewById(R.id.tvJobSeekerJobDetailsPosition);
@@ -109,6 +112,13 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
+            }
+        });
+
+        btnApplyJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createJobApplication();
             }
         });
     }
@@ -168,7 +178,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         StringBuilder salary = new StringBuilder();
         StringBuilder employmentType = new StringBuilder();
         if (job.getPartTimeSalary() != 0.0) {
-            salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hour");
+            salary.append("$").append(String.format("%.2f", job.getPartTimeSalary())).append(" per hour");
             employmentType.append("Part-Time");
         }
         if (job.getFullTimeSalary() != 0.0) {
@@ -176,13 +186,12 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                 salary.append("/");
                 employmentType.append(" / ");
             }
-            salary.append("$").append(String.format("%.2f",job.getFullTimeSalary())).append(" per month");
+            salary.append("$").append(String.format("%.2f", job.getFullTimeSalary())).append(" per month");
             employmentType.append("Full-Time");
         }
         if (salary.length() == 0) {
             tvSalary.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             tvSalary.setText(salary);
         }
 
@@ -198,5 +207,29 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         // Toggle the loader
         nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);
         progressIndicator.setVisibility(View.GONE);
+    }
+
+    private void createJobApplication() {
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("jobId", jobId);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, create_job_application_url, params, headers, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("type").equals("Success")) {
+                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                        getParentFragmentManager().popBackStack();
+                    } else if (response.getString("type").equals("Error")) {
+                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

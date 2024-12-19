@@ -178,31 +178,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
-        app:maxImageSize="32dp"
         android:backgroundTint="@color/secondary"
         android:baselineAlignBottom="true"
         android:clickable="true"
-        app:fabSize="normal"
-        app:tint="@null"
         android:contentDescription="Whatsapp an agent"
+        app:fabSize="normal"
         app:layout_anchor="@id/appBarJobSeekerJobDetails"
         app:layout_anchorGravity="end|bottom"
-        app:srcCompat="@drawable/whatsapp_icon" />
+        app:maxImageSize="32dp"
+        app:srcCompat="@drawable/whatsapp_icon"
+        app:tint="@null" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         style="@style/Widget.Material3.BottomAppBar"
         android:layout_width="match_parent"
+        android:backgroundTint="@color/background"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 
-        <android.widget.Button
-            android:layout_marginTop="16dp"
-            android:id="@+id/btnApplyJob"
-            style="@style/Button.Primary"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:text="@string/btn_text_apply_now"
-            android:textSize="18sp" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <android.widget.Button
+                android:id="@+id/btnApplyJob"
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="@string/btn_text_apply_now"
+                android:textSize="18sp" />
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFavouriteJob"
+                style="@style/ButtonIcon"
+                app:icon="@drawable/ic_favourite_outline"
+                app:iconSize="24dp"
+                app:rippleColor="@color/ripple" />
+        </LinearLayout>
+
+
     </com.google.android.material.bottomappbar.BottomAppBar>
 
 
