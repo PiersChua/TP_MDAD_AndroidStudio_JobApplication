@@ -167,7 +167,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                     if (response.getString("type").equals("Success")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                         favouriteJoblist.remove(position);
-                        favouriteJobCardAdapter.notifyItemChanged(position);
+                        favouriteJobCardAdapter.notifyItemRemoved(position);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     }
