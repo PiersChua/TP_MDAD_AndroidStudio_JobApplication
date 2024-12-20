@@ -6,6 +6,7 @@
     <color name="foreground">#313638</color>
     <color name="primary">#CC1E2B</color>
     <color name="primary_variant">#A51822</color>
+    <color name="primary_disabled">#80D32F2F</color>
     <color name="secondary">#1E89CC</color>
     <color name="secondary_variant">#1A75AD
     </color>

@@ -13,12 +13,14 @@ public class Job implements Serializable {
     private double partTimeSalary;
     private double fullTimeSalary;
     private String userId;
+    private User user;
     private String createdAt;
     private String updatedAt;
     public Job(){
 
     }
 
+    // Job Cards at Home Fragment
     public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt) {
         this.jobId = jobId;
         this.position = position;
@@ -27,6 +29,17 @@ public class Job implements Serializable {
         this.partTimeSalary = partTimeSalary;
         this.fullTimeSalary = fullTimeSalary;
         this.updatedAt = updatedAt;
+    }
+    // Job Cards at Favourite, Application Fragments
+    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt,User user) {
+        this.jobId = jobId;
+        this.position = position;
+        this.responsibilities = responsibilities;
+        this.location = location;
+        this.partTimeSalary = partTimeSalary;
+        this.fullTimeSalary = fullTimeSalary;
+        this.updatedAt = updatedAt;
+        this.user = user;
     }
 
     public String getJobId() {
@@ -123,5 +136,13 @@ public class Job implements Serializable {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

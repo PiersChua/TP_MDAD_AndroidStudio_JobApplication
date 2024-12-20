@@ -20,7 +20,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
@@ -49,6 +51,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
 
     private String jobId;
     private boolean isFavourite;
+    private boolean isApplied;
     SharedPreferences sp;
     MaterialToolbar topAppBar;
     NestedScrollView nsvJobSeekerJobDetails;
@@ -154,7 +157,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("jobId", jobId);
-        String url = UrlUtil.constructUrl(get_job_url,params);
+        String url = UrlUtil.constructUrl(get_job_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
@@ -162,22 +165,41 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
                     if (response.getString("type").equals("Success")) {
-                        JSONObject jobJson = response.getJSONObject("data");
+                        JSONObject jobObject = response.getJSONObject("data");
+                        // init job attributes
                         Job job = new Job();
-                        job.setJobId(jobJson.getString("jobId"));
-                        job.setPosition(jobJson.getString("position"));
-                        job.setResponsibilities(jobJson.getString("responsibilities"));
-                        job.setDescription(jobJson.getString("description"));
-                        job.setLocation(jobJson.getString("location"));
-                        job.setSchedule(jobJson.getString("schedule"));
-                        job.setOrganisation(jobJson.getString("organisation"));
-                        job.setPartTimeSalary(jobJson.optDouble("partTimeSalary", 0.0));
-                        job.setFullTimeSalary(jobJson.optDouble("fullTimeSalary", 0.0));
-                        job.setUserId(jobJson.getString("userId"));
-                        job.setCreatedAt(jobJson.getString("createdAt"));
-                        job.setUpdatedAt(jobJson.getString("updatedAt"));
-                        isFavourite = jobJson.getBoolean("isFavourite");
+                        job.setJobId(jobObject.getString("jobId"));
+                        job.setPosition(jobObject.getString("position"));
+                        job.setResponsibilities(jobObject.getString("responsibilities"));
+                        job.setDescription(jobObject.getString("description"));
+                        job.setLocation(jobObject.getString("location"));
+                        job.setSchedule(jobObject.getString("schedule"));
+                        job.setOrganisation(jobObject.getString("organisation"));
+                        job.setPartTimeSalary(jobObject.optDouble("partTimeSalary", 0.0));
+                        job.setFullTimeSalary(jobObject.optDouble("fullTimeSalary", 0.0));
+                        job.setCreatedAt(jobObject.getString("createdAt"));
+                        job.setUpdatedAt(jobObject.getString("updatedAt"));
+
+                        // init agent attributes
+                        User user = new User();
+                        user.setFullName(jobObject.getString("user_fullName"));
+                        user.setEmail(jobObject.getString("user_email"));
+                        user.setPhoneNumber(jobObject.getString("user_phoneNumber"));
+
+                        // init agency attributes
+                        Agency agency = new Agency();
+                        agency.setName(jobObject.getString("agency_name"));
+                        agency.setEmail(jobObject.getString("agency_email"));
+                        agency.setPhoneNumber(jobObject.getString("agency_phoneNumber"));
+                        agency.setAddress(jobObject.getString("agency_address"));
+
+                        // link the entities
+                        user.setAgency(agency);
+                        job.setUser(user);
+                        isFavourite = jobObject.getBoolean("isFavourite");
+                        isApplied = jobObject.getBoolean("isApplied");
                         toggleFavouriteIcon();
+                        toggleApplyButtonState();
                         populateJobItems(job);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
@@ -195,15 +217,15 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         StringBuilder salary = new StringBuilder();
         StringBuilder employmentType = new StringBuilder();
         if (job.getPartTimeSalary() != 0.0) {
-            salary.append("$").append(String.format("%.2f", job.getPartTimeSalary())).append(" per hour");
+            salary.append("$").append(String.format("%.2f", job.getPartTimeSalary())).append(" per hr");
             employmentType.append("Part-Time");
         }
         if (job.getFullTimeSalary() != 0.0) {
             if (salary.length() > 0) {
-                salary.append("/");
+                salary.append(" / ");
                 employmentType.append(" / ");
             }
-            salary.append("$").append(String.format("%.2f", job.getFullTimeSalary())).append(" per month");
+            salary.append("$").append(String.format("%.2f", job.getFullTimeSalary())).append(" per mth");
             employmentType.append("Full-Time");
         }
         if (salary.length() == 0) {
@@ -213,8 +235,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         }
 
         tvPosition.setText(job.getPosition());
-        // TODO: fetch nested query
-        //tvAgencyName.setText(job.);
+        tvAgencyName.setText(job.getUser().getAgency().getName());
         tvLocation.setText(job.getLocation());
         tvEmploymentType.setText(employmentType);
         tvOrganisation.setText(job.getOrganisation());
@@ -282,6 +303,15 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         } else {
             btnFavouriteJob.setIconResource(R.drawable.ic_favourite_outline);
             btnFavouriteJob.setIconTintResource(R.color.placeholder_foreground);
+        }
+    }
+
+    private void toggleApplyButtonState() {
+        btnApplyJob.setEnabled(!isApplied);
+        btnApplyJob.setClickable(!isApplied);
+        if (isApplied) {
+            btnApplyJob.setText("Application received");
+            btnApplyJob.setBackgroundResource(R.drawable.button_disabled);
         }
     }
 

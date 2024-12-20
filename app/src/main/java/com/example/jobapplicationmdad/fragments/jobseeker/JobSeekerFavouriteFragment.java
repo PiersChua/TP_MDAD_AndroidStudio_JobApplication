@@ -24,7 +24,9 @@ import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.FavouriteJobCardAdapter;
 import com.example.jobapplicationmdad.adapters.JobCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
@@ -138,7 +140,11 @@ public class JobSeekerFavouriteFragment extends Fragment {
                         JSONArray jobsArray = response.getJSONArray("data");
                         for (int i = 0; i < jobsArray.length(); i++) {
                             JSONObject jobObject = jobsArray.getJSONObject(i);
-                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
+                            Agency agency = new Agency();
+                            agency.setName(jobObject.getString("agency_name"));
+                            User user = new User();
+                            user.setAgency(agency);
+                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
                             favouriteJoblist.add(job);
                         }
                         // toggle the visibility of loader

@@ -76,7 +76,7 @@
 
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsAgencyName"
-                    style="@style/Text.Small"
+                    style="@style/Text.Medium"
                     android:textColor="@color/placeholder_foreground"
                     android:textStyle="bold" />
 

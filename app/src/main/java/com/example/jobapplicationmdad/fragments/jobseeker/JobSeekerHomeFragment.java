@@ -22,6 +22,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.JobCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -123,6 +124,8 @@ public class JobSeekerHomeFragment extends Fragment {
     private void getJobs() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        // extract only 5 jobs
+        params.put("limit",String.valueOf(5));
         String url = UrlUtil.constructUrl(get_jobs_url,params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));

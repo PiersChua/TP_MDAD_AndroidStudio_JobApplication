@@ -71,22 +71,20 @@ public class JobApplicationCardAdapter extends RecyclerView.Adapter<JobApplicati
         public void bind(JobApplication jobApplication) {
             currentJobApplication = jobApplication;
             tvJobApplicationCardTitle.setText(jobApplication.getJob().getPosition());
-            // todo: change to agency name
-            //tvJobApplicationCardAgencyName.setText(job.getResponsibilities());
+            tvJobApplicationCardAgencyName.setText(jobApplication.getJob().getUser().getAgency().getName());
             StringBuilder salary = new StringBuilder();
             if (jobApplication.getJob().getPartTimeSalary() != 0.0) {
-                salary.append("$").append(String.format("%.2f",jobApplication.getJob().getPartTimeSalary())).append(" per hour");
+                salary.append("$").append(String.format("%.2f", jobApplication.getJob().getPartTimeSalary())).append(" per hr");
             }
             if (jobApplication.getJob().getFullTimeSalary() != 0.0) {
                 if (salary.length() > 0) {
-                    salary.append("/");
+                    salary.append(" / ");
                 }
-                salary.append("$").append(String.format("%.2f",jobApplication.getJob().getFullTimeSalary())).append(" per month");
+                salary.append("$").append(String.format("%.2f", jobApplication.getJob().getFullTimeSalary())).append(" per mth");
             }
             if (salary.length() == 0) {
                 tvJobApplicationCardSalary.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 tvJobApplicationCardSalary.setText(salary);
             }
             tvJobApplicationCardLocations.setText(jobApplication.getJob().getLocation());

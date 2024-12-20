@@ -14,6 +14,7 @@ public class User implements Serializable {
     private String gender;  // Nullable
     private String race;
     private String nationality;
+    private Agency agency;
     //private String resume;  // Nullable
     //private String agencyId;  // Nullable (Foreign Key)
     //private String createdAt;  // Nullable (Timestamp)
@@ -132,5 +133,13 @@ public class User implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
     }
 }
