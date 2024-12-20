@@ -2,9 +2,6 @@ package com.example.jobapplicationmdad.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,19 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -33,11 +23,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
