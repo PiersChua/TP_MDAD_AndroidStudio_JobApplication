@@ -3,7 +3,6 @@ package com.example.jobapplicationmdad.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,7 +95,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_card, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_seeker_home_job_card, viewGroup, false);
         return new ViewHolder(view, listener);
     }
 

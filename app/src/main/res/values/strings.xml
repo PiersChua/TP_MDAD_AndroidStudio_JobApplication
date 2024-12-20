@@ -25,6 +25,7 @@
     <string name="title_menu_profile_edit">Edit Profile</string>
     <string name="title_menu_agency_application">Agency Application</string>
     <string name="title_menu_favourite_jobs">Favourite Jobs</string>
+    <string name="title_menu_job_applications">Job Applications</string>
 
     <!-- Onboarding Fragment-->
     <string name="onboarding_fragment_next">Next</string>

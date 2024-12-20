@@ -42,7 +42,7 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvFavouriteJobCardTitle;
-        private final TextView tvFavouriteJobCardDescription;
+        private final TextView tvFavouriteJobCardAgencyName;
         private final TextView tvFavouriteJobCardSalary;
         private final TextView tvFavouriteJobCardLocations;
         private final TextView tvFavouriteJobCardUpdatedAt;
@@ -53,11 +53,11 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
             super(view);
             // Define click listener for the ViewHolder's View
             tvFavouriteJobCardTitle = view.findViewById(R.id.tvFavouriteJobCardTitle);
-            tvFavouriteJobCardDescription = view.findViewById(R.id.tvFavouriteJobCardDescription);
+            tvFavouriteJobCardAgencyName= view.findViewById(R.id.tvFavouriteJobCardAgencyName);
             tvFavouriteJobCardSalary = view.findViewById(R.id.tvFavouriteJobCardSalary);
             tvFavouriteJobCardLocations = view.findViewById(R.id.tvFavouriteJobCardLocations);
             tvFavouriteJobCardUpdatedAt = view.findViewById(R.id.tvFavouriteJobCardUpdatedAt);
-            btnFavouriteJobFavourite = view.findViewById(R.id.btnFavouriteJobFavourite);
+            btnFavouriteJobFavourite = view.findViewById(R.id.btnFavouriteJob);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,7 +80,8 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
         public void bind(Job job) {
             currentJob = job;
             tvFavouriteJobCardTitle.setText(job.getPosition());
-            tvFavouriteJobCardDescription.setText(job.getResponsibilities());
+            // todo: get agency from user in job
+            //tvFavouriteJobCardAgencyName.setText(job.getUser())
             StringBuilder salary = new StringBuilder();
             if (job.getPartTimeSalary() != 0.0) {
                 salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hour");
@@ -108,7 +109,7 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_favourite_job_card, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_seeker_favourite_card, viewGroup, false);
         return new ViewHolder(view, listener);
     }
 
