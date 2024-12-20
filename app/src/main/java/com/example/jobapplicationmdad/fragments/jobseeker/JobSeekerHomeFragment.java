@@ -26,6 +26,7 @@ import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
@@ -122,9 +123,10 @@ public class JobSeekerHomeFragment extends Fragment {
     private void getJobs() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        String url = UrlUtil.constructUrl(get_jobs_url,params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, get_jobs_url, params, headers, new Response.Listener<JSONObject>() {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

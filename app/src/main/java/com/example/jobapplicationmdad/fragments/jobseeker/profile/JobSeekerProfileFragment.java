@@ -31,6 +31,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.StringUtil;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
@@ -167,9 +168,10 @@ public class JobSeekerProfileFragment extends Fragment {
     private void getUserDetails() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        String url = UrlUtil.constructUrl(get_user_url,params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, get_user_url, params, headers, response -> {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
                 if (response.getString("type").equals("Success")) {
                     // retrieve user details

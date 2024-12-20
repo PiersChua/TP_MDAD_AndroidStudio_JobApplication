@@ -24,6 +24,7 @@ import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -31,6 +32,8 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -151,9 +154,10 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("jobId", jobId);
+        String url = UrlUtil.constructUrl(get_job_url,params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, get_job_url, params, headers, new Response.Listener<JSONObject>() {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
