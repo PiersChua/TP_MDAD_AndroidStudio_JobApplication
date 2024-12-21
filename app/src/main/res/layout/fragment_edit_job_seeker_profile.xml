@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -15,10 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile_edit"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/background"
+            app:theme="@style/ToolbarThemeLight"
+            app:title="@string/title_menu_profile_edit"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -84,10 +85,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <android.widget.Button
-                    android:layout_marginTop="16dp"
                     android:id="@+id/btnEditJobSeekerProfile"
                     style="@style/Button.Primary"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
                     android:text="@string/btn_text_update"
                     android:textSize="18sp" />
             </LinearLayout>

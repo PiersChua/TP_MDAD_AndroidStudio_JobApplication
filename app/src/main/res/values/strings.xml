@@ -6,7 +6,7 @@
 
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_jobs">My Jobs</string>
+    <string name="nav_jobs">Jobs</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_listings">Listings</string>
     <string name="nav_agents">Agents</string>

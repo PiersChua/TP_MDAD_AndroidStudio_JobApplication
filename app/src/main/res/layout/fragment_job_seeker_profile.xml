@@ -1,91 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flJobSeekerProfile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarJobSeekerProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/menu_job_seeker_profile"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile"
-            app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
-        <!-- Circular Profile Avatar -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            app:cardCornerRadius="50dp"
-            app:cardElevation="4dp">
+        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvJobSeekerProfileName"
-                style="@style/Text"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="32sp" />
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardJobSeekerProfile"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="16dp">
+            android:background="@color/primary">
 
-            <LinearLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarJobSeekerProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:minHeight="?attr/actionBarSize"
+                app:menu="@menu/menu_job_seeker_profile"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_profile"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <!-- Circular Profile Avatar -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                app:cardCornerRadius="50dp"
+                app:cardElevation="4dp">
+
+                <TextView
+                    android:id="@+id/tvJobSeekerProfileName"
+                    style="@style/Text"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="32sp" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardJobSeekerProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
                 android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <TextView
-                        style="@style/Text.Large"
-                        android:layout_weight="1"
-                        android:text="@string/profile_fragment_header_card"
-                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnNavigateToEditJobSeekerProfile"
-                        style="@style/ButtonRoundedIconOutline"
-                        app:icon="@drawable/ic_edit" />
+                        <TextView
+                            style="@style/Text.Large"
+                            android:layout_weight="1"
+                            android:text="@string/profile_fragment_header_card"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnNavigateToEditJobSeekerProfile"
+                            style="@style/ButtonRoundedIconOutline"
+                            app:icon="@drawable/ic_edit" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/piJobSeekerProfile"
+                        style="@style/ProgressIndicator" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvJobSeekerProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:visibility="gone" />
                 </LinearLayout>
-
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/piJobSeekerProfile"
-                    style="@style/ProgressIndicator"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvJobSeekerProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

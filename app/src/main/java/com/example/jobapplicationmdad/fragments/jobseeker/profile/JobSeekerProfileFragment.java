@@ -122,7 +122,7 @@ public class JobSeekerProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flMain, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
                     Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();
@@ -158,7 +158,7 @@ public class JobSeekerProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flMain, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
 
