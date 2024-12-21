@@ -13,16 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.adapters.JobCardAdapter;
+import com.example.jobapplicationmdad.adapters.HomeJobCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
-import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -38,7 +35,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,7 +56,7 @@ public class JobSeekerHomeFragment extends Fragment {
     CircularProgressIndicator progressIndicator;
     RecyclerView recyclerView;
     List<Job> jobList;
-    JobCardAdapter jobCardAdapter;
+    HomeJobCardAdapter homeJobCardAdapter;
 
 
     public JobSeekerHomeFragment() {
@@ -106,18 +102,18 @@ public class JobSeekerHomeFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         getJobs();
         progressIndicator = view.findViewById(R.id.piJobSeekerHome);
-        recyclerView = view.findViewById(R.id.rvJobSeekerJobCard);
+        recyclerView = view.findViewById(R.id.rvJobSeekerHomeJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         jobList = new ArrayList<>();
 
         // Set the adapter
-        jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
+        homeJobCardAdapter = new HomeJobCardAdapter(jobList, new HomeJobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
-        recyclerView.setAdapter(jobCardAdapter);
+        recyclerView.setAdapter(homeJobCardAdapter);
     }
 
 

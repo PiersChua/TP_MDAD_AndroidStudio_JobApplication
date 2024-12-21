@@ -13,7 +13,7 @@ import com.example.jobapplicationmdad.util.DateConverter;
 
 import java.util.List;
 
-public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHolder> {
+public class HomeJobCardAdapter extends RecyclerView.Adapter<HomeJobCardAdapter.ViewHolder> {
 
     private List<Job> jobs;
     private final OnJobClickListener listener;
@@ -29,7 +29,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
      * @param dataSet  List<Job> containing the list of jobs
      * @param listener Defines the event to happen after clicking
      */
-    public JobCardAdapter(List<Job> dataSet, OnJobClickListener listener) {
+    public HomeJobCardAdapter(List<Job> dataSet, OnJobClickListener listener) {
         jobs = dataSet;
         this.listener = listener;
     }
@@ -39,21 +39,21 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvJobCardTitle;
-        private final TextView tvJobCardDescription;
-        private final TextView tvJobCardSalary;
-        private final TextView tvJobCardLocations;
-        private final TextView tvJobCardUpdatedAt;
+        private final TextView tvHomeJobCardTitle;
+        private final TextView tvHomeJobCardDescription;
+        private final TextView tvHomeJobCardSalary;
+        private final TextView tvHomeJobCardLocations;
+        private final TextView tvHomeJobCardUpdatedAt;
         private Job currentJob;
 
         public ViewHolder(View view, OnJobClickListener listener) {
             super(view);
             // Define click listener for the ViewHolder's View
-            tvJobCardTitle = view.findViewById(R.id.tvJobCardTitle);
-            tvJobCardDescription = view.findViewById(R.id.tvJobCardDescription);
-            tvJobCardSalary = view.findViewById(R.id.tvJobCardSalary);
-            tvJobCardLocations = view.findViewById(R.id.tvJobCardLocations);
-            tvJobCardUpdatedAt = view.findViewById(R.id.tvJobCardUpdatedAt);
+            tvHomeJobCardTitle = view.findViewById(R.id.tvHomeJobCardTitle);
+            tvHomeJobCardDescription = view.findViewById(R.id.tvHomeJobCardDescription);
+            tvHomeJobCardSalary = view.findViewById(R.id.tvHomeJobCardSalary);
+            tvHomeJobCardLocations = view.findViewById(R.id.tvHomeJobCardLocations);
+            tvHomeJobCardUpdatedAt = view.findViewById(R.id.tvHomeJobCardUpdatedAt);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -66,8 +66,8 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
 
         public void bind(Job job) {
             currentJob = job;
-            tvJobCardTitle.setText(job.getPosition());
-            tvJobCardDescription.setText(job.getResponsibilities());
+            tvHomeJobCardTitle.setText(job.getPosition());
+            tvHomeJobCardDescription.setText(job.getResponsibilities());
             StringBuilder salary = new StringBuilder();
             if (job.getPartTimeSalary() != 0.0) {
                 salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hr");
@@ -79,13 +79,13 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
                 salary.append("$").append(String.format("%.2f",job.getFullTimeSalary())).append(" per mth");
             }
             if (salary.length() == 0) {
-                tvJobCardSalary.setVisibility(View.GONE);
+                tvHomeJobCardSalary.setVisibility(View.GONE);
             }
             else {
-                tvJobCardSalary.setText(salary);
+                tvHomeJobCardSalary.setText(salary);
             }
-            tvJobCardLocations.setText(job.getLocation());
-            tvJobCardUpdatedAt.setText(DateConverter.formatDate(DateConverter.convertDateTimeToDate(job.getUpdatedAt())));
+            tvHomeJobCardLocations.setText(job.getLocation());
+            tvHomeJobCardUpdatedAt.setText(DateConverter.formatDate(DateConverter.convertDateTimeToDate(job.getUpdatedAt())));
         }
 
     }
@@ -95,7 +95,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_seeker_job_card, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_seeker_home_job_card, viewGroup, false);
         return new ViewHolder(view, listener);
     }
 

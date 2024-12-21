@@ -93,7 +93,7 @@
                     android:id="@+id/piJobSeekerHome"
                     style="@style/ProgressIndicator" />
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvJobSeekerJobCard"
+                    android:id="@+id/rvJobSeekerHomeJobCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
