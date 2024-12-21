@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -100,9 +102,7 @@ public class MainActivity extends AppCompatActivity {
             case "Job Seeker":
                 fragments.put(R.id.bottom_nav_job_seeker_item_1, new JobSeekerHomeFragment());
                 fragments.put(R.id.bottom_nav_job_seeker_item_2,new JobSeekerJobsFragment());
-                fragments.put(R.id.bottom_nav_job_seeker_item_3,new JobSeekerApplicationsFragment());
-                fragments.put(R.id.bottom_nav_job_seeker_item_4,new JobSeekerFavouriteFragment());
-                fragments.put(R.id.bottom_nav_job_seeker_item_5,new JobSeekerProfileFragment());
+                fragments.put(R.id.bottom_nav_job_seeker_item_3,new JobSeekerProfileFragment());
                 break;
             case "Agent":
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());

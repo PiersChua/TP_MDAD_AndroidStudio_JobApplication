@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
@@ -137,6 +138,14 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 favouriteJob();
+            }
+        });
+
+        // configure the back button to return to previous fragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                getParentFragmentManager().popBackStack();
             }
         });
     }

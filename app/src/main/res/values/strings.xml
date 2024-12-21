@@ -6,9 +6,7 @@
 
     <!-- Bottom Navigation -->
     <string name="nav_home">Home</string>
-    <string name="nav_jobs">Jobs</string>
-    <string name="nav_applications">Applications</string>
-    <string name="nav_favourites">Favourites</string>
+    <string name="nav_jobs">My Jobs</string>
     <string name="nav_profile">Profile</string>
     <string name="nav_listings">Listings</string>
     <string name="nav_agents">Agents</string>
@@ -26,7 +24,7 @@
     <string name="title_menu_agency_application">Agency Application</string>
     <string name="title_menu_favourite_jobs">Favourite Jobs</string>
     <string name="title_menu_job_applications">Job Applications</string>
-    <string name="title_menu_jobs">Recommended Jobs</string>
+    <string name="title_menu_jobs">My Jobs</string>
 
     <!-- Onboarding Fragment-->
     <string name="onboarding_fragment_next">Next</string>

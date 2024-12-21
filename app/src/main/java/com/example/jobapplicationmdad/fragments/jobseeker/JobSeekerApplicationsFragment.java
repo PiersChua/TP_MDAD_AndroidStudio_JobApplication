@@ -112,7 +112,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
 
             @Override
             public void onViewJobDetails(String jobId) {
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
         recyclerView.setAdapter(jobApplicationCardAdapter);

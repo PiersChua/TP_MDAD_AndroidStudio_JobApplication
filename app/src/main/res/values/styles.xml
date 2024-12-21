@@ -6,12 +6,17 @@
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textColor">@color/background</item>
     </style>
+    <!-- CollapsedToolbar-->
     <style name="ExpandedAppBar" parent="@android:style/TextAppearance.Large">
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CollapsedAppBar" parent="@android:style/TextAppearance.Large">
         <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TabLayout" parent="Widget.Material3.TabLayout">
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabMode">scrollable</item>
     </style>
     <!-- Button Styles-->
     <style name="Button">
