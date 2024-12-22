@@ -1,14 +1,17 @@
 package com.example.jobapplicationmdad.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,9 +24,12 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String register_url = MainActivity.root_url + "/api/auth/signup.php";
     TextView tvRedirectToLogin;
     Button btnRegister;
+    View dialogView;
+    AlertDialog loadingDialog;
     EditText etFullNameRegister, etEmailRegister, etPhoneNumberRegister, etPasswordRegister, etConfirmPasswordRegister;
 
     TextInputLayout etFullNameRegisterLayout, etEmailRegisterLayout, etPhoneNumberRegisterLayout, etRoleRegisterLayout, etPasswordRegisterLayout, etConfirmPasswordRegisterLayout;
@@ -43,6 +51,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         tvRedirectToLogin = findViewById(R.id.tvRedirectToLogin);
         btnRegister = findViewById(R.id.btnRegister);
+
+        dialogView = getLayoutInflater().inflate(R.layout.dialog_loader, findViewById(android.R.id.content), false);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
 
         // Form
         etFullNameRegister = findViewById(R.id.etFullNameRegister);
@@ -71,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user = getUserFromForm();
                 if (validateUser(user)) {
+                    loadingDialog.show();
                     registerUser(user);
                 }
             }
@@ -111,20 +125,23 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("role", user.getRole());
         params.put("password", user.getPassword());
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
-            try {
-                if (response.getString("type").equals("Success")) {
-                    Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                } else if (response.getString("type").equals("Error")) {
-                    Toast.makeText(getApplicationContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            // Get the currently focused view
+            View currentFocus = getCurrentFocus();
+            // Hide the keyboard if a view is focused
+            if (currentFocus != null) {
+                imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
+            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+            startActivity(i);
+            finish();
 
-        }, VolleyErrorHandler.newErrorListener(getApplicationContext()));
+            loadingDialog.dismiss();
+
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(getApplicationContext(), findViewById(android.R.id.content)).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(this).addToRequestQueue(req);
     }
 }

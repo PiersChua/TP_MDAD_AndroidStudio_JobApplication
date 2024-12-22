@@ -19,16 +19,13 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
-import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.activities.RegisterActivity;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -174,10 +171,8 @@ public class EditJobSeekerProfileFragment extends Fragment {
             try {
                 if (response.getString("type").equals("Success")) {
                     InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
                     // Get the currently focused view
                     View currentFocus = requireActivity().getCurrentFocus();
-
                     // Hide the keyboard if a view is focused
                     if (currentFocus != null) {
                         imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
