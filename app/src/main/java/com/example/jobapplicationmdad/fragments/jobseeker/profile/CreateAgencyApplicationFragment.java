@@ -2,6 +2,7 @@ package com.example.jobapplicationmdad.fragments.jobseeker.profile;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -133,6 +134,20 @@ public class CreateAgencyApplicationFragment extends Fragment {
                 }
             }
         });
+
+        // configure the back button to return to previous fragment
+        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+                else{
+                    System.exit(0);
+                }
+
+            }
+        });
     }
 
     private AgencyApplication getAgencyApplicationFromForm() {
@@ -167,7 +182,7 @@ public class CreateAgencyApplicationFragment extends Fragment {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(),requireActivity().findViewById(android.R.id.content)));
+        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

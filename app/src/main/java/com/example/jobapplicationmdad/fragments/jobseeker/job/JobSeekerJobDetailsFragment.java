@@ -173,8 +173,14 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                notifyFavouriteFragmentChange();
-                getParentFragmentManager().popBackStack();
+                if (isAdded()) {
+                    notifyFavouriteFragmentChange();
+                    getParentFragmentManager().popBackStack();
+                }
+                else{
+                    System.exit(0);
+                }
+
             }
         });
     }
