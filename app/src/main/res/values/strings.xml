@@ -26,6 +26,9 @@
     <string name="title_menu_job_applications">Job Applications</string>
     <string name="title_menu_jobs">My Jobs</string>
 
+    <!-- Dialog -->
+    <string name="dialog_loading_desc">Please wait...</string>
+
     <!-- Onboarding Fragment-->
     <string name="onboarding_fragment_next">Next</string>
     <string name="onboarding_fragment_get_started">Get Started</string>

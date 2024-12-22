@@ -1,6 +1,7 @@
 package com.example.jobapplicationmdad.fragments.jobseeker.job;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -30,6 +31,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONException;
@@ -49,8 +51,10 @@ public class JobSeekerJobDetailsFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
+    private static final String ARG_PARAM2 = "isFromFavouriteFragment";
 
     private String jobId;
+    private boolean isFromFavouriteFragment = false;
     private boolean isFavourite;
     private boolean isApplied;
     SharedPreferences sp;
@@ -76,6 +80,15 @@ public class JobSeekerJobDetailsFragment extends Fragment {
      * @return A new instance of fragment JobSeekerJobDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
+    public static JobSeekerJobDetailsFragment newInstance(String jobId, boolean isFromFavouriteFragment) {
+        JobSeekerJobDetailsFragment fragment = new JobSeekerJobDetailsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, jobId);
+        args.putBoolean(ARG_PARAM2, isFromFavouriteFragment);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static JobSeekerJobDetailsFragment newInstance(String jobId) {
         JobSeekerJobDetailsFragment fragment = new JobSeekerJobDetailsFragment();
         Bundle args = new Bundle();
@@ -89,6 +102,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             jobId = getArguments().getString(ARG_PARAM1);
+            isFromFavouriteFragment = getArguments().getBoolean(ARG_PARAM2);
         }
     }
 
@@ -123,6 +137,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                notifyFavouriteFragmentChange();
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -130,7 +145,22 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         btnApplyJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createJobApplication();
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Apply for Job")
+                        .setMessage("This will submit your application for the position.\nDo you wish to proceed?")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                createJobApplication();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
             }
         });
 
@@ -145,6 +175,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                notifyFavouriteFragmentChange();
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -219,7 +250,6 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             }
         }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
-
     }
 
     private void populateJobItems(Job job) {
@@ -321,6 +351,17 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         if (isApplied) {
             btnApplyJob.setText("Application received");
             btnApplyJob.setBackgroundResource(R.drawable.button_disabled);
+        }
+    }
+
+    /**
+     * Set fragment result if the current fragment is accessed from the favourites fragment and the favourite is removed
+     */
+    private void notifyFavouriteFragmentChange(){
+        if (isFromFavouriteFragment && !isFavourite) {
+            Bundle result = new Bundle();
+            result.putBoolean("isFavouriteRemoved", true);
+            getParentFragmentManager().setFragmentResult("favouriteJobResult", result);
         }
     }
 

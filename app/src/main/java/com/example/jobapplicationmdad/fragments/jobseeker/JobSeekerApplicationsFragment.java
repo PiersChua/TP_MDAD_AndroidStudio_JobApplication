@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
@@ -56,8 +58,9 @@ public class JobSeekerApplicationsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     SharedPreferences sp;
-    CircularProgressIndicator progressIndicator;
     RecyclerView recyclerView;
+    View dialogView;
+    AlertDialog loadingDialog;
     List<JobApplication> jobApplicationList;
     JobApplicationCardAdapter jobApplicationCardAdapter;
 
@@ -95,6 +98,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
         return inflater.inflate(R.layout.fragment_job_seeker_applications, container, false);
     }
 
@@ -102,8 +106,11 @@ public class JobSeekerApplicationsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
         getJobApplications();
-        progressIndicator = view.findViewById(R.id.piJobSeekerApplication);
+
         recyclerView = view.findViewById(R.id.rvJobSeekerJobApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         jobApplicationList = new ArrayList<>();
@@ -119,6 +126,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
     }
 
     private void getJobApplications() {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_job_applications_url, params);
@@ -141,7 +149,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
                             jobApplicationList.add(jobApplication);
                         }
                         // toggle the visibility of loader
-                        progressIndicator.setVisibility(View.GONE);
+                       loadingDialog.dismiss();
                         recyclerView.setVisibility(View.VISIBLE);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();

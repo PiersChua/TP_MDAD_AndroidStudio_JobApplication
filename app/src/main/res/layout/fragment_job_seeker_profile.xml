@@ -80,10 +80,6 @@
                             app:icon="@drawable/ic_edit" />
                     </LinearLayout>
 
-                    <com.google.android.material.progressindicator.CircularProgressIndicator
-                        android:id="@+id/piJobSeekerProfile"
-                        style="@style/ProgressIndicator" />
-
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvJobSeekerProfile"
                         android:layout_width="match_parent"

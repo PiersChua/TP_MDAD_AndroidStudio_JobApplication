@@ -7,8 +7,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,6 +35,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONException;
@@ -58,7 +61,9 @@ public class JobSeekerProfileFragment extends Fragment {
     private String mParam2;
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private User user;
-    CircularProgressIndicator progressIndicator;
+
+    View dialogView;
+    AlertDialog loadingDialog;
     MaterialToolbar topAppBar;
     TextView tvName;
     RecyclerView recyclerView;
@@ -102,19 +107,22 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
         return inflater.inflate(R.layout.fragment_job_seeker_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        progressIndicator = view.findViewById(R.id.piJobSeekerProfile); // Find ProgressBar by ID
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        profileItems = new ArrayList<>();
         getUserDetails(); // fetch from db
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
         tvName = view.findViewById(R.id.tvJobSeekerProfileName);
         recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
-        profileItems = new ArrayList<>();
         btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditJobSeekerProfile);
 
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -161,11 +169,17 @@ public class JobSeekerProfileFragment extends Fragment {
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
-
-
+        getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated", false);
+            if (isUpdated) {
+                // Refresh user details only if updated
+                getUserDetails();
+            }
+        });
     }
 
     private void getUserDetails() {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_user_url,params);
@@ -191,7 +205,7 @@ public class JobSeekerProfileFragment extends Fragment {
                     recyclerView.setAdapter(profileAdapter);
 
                     // toggle the visibility of loader
-                    progressIndicator.setVisibility(View.GONE);
+                    loadingDialog.dismiss();
                     recyclerView.setVisibility(View.VISIBLE);
 
                 } else if (response.getString("type").equals("Error")) {

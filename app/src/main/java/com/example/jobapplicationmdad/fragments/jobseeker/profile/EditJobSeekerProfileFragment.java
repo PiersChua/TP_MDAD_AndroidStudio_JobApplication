@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -28,6 +29,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -52,6 +54,7 @@ public class EditJobSeekerProfileFragment extends Fragment {
     Button btnEditProfile;
     EditText etFullNameProfile, etEmailProfile, etPhoneNumberProfile;
     TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout;
+    View rootView;
 
     public EditJobSeekerProfileFragment() {
         // Required empty public constructor
@@ -83,7 +86,8 @@ public class EditJobSeekerProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_job_seeker_profile, container, false);
+        rootView = inflater.inflate(R.layout.fragment_edit_job_seeker_profile, container, false);
+        return rootView;
     }
 
     @Override
@@ -102,7 +106,7 @@ public class EditJobSeekerProfileFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         topAppBar = view.findViewById(R.id.topAppBarEditJobSeekerProfile);
-        btnEditProfile= view.findViewById(R.id.btnEditJobSeekerProfile);
+        btnEditProfile = view.findViewById(R.id.btnEditJobSeekerProfile);
 
         // Form
         etFullNameProfile = view.findViewById(R.id.etFullNameProfile);
@@ -141,22 +145,25 @@ public class EditJobSeekerProfileFragment extends Fragment {
 
 
     }
+
     private User getUserFromForm() {
         String fullName = etFullNameProfile.getText().toString().trim();
         String email = etEmailProfile.getText().toString();
         String phoneNumber = etPhoneNumberProfile.getText().toString();
         return new User(fullName, email, phoneNumber);
     }
+
     private boolean validateUser(User user) {
         boolean isValidName = AuthValidation.validateName(etFullNameProfileLayout, user.getFullName());
         boolean isValidEmail = AuthValidation.validateEmail(etEmailProfileLayout, user.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberProfileLayout, user.getPhoneNumber());
         return isValidName && isValidEmail && isValidPhoneNumber;
     }
-    private void updateUser(User user){
+
+    private void updateUser(User user) {
         SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
-        params.put("userId",sp.getString("userId",""));
+        params.put("userId", sp.getString("userId", ""));
         params.put("fullName", user.getFullName());
         params.put("email", user.getEmail());
         params.put("phoneNumber", user.getPhoneNumber());
@@ -166,7 +173,20 @@ public class EditJobSeekerProfileFragment extends Fragment {
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, update_user_url, params, headers, response -> {
             try {
                 if (response.getString("type").equals("Success")) {
-                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    // Get the currently focused view
+                    View currentFocus = requireActivity().getCurrentFocus();
+
+                    // Hide the keyboard if a view is focused
+                    if (currentFocus != null) {
+                        imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                    }
+                    Snackbar.make(rootView, response.getString("message"), Snackbar.LENGTH_SHORT).show();
+                    // allow profile to refresh when return to previous page
+                    Bundle result = new Bundle();
+                    result.putBoolean("isUpdated", true);
+                    getParentFragmentManager().setFragmentResult("editProfileResult", result);
                     getParentFragmentManager().popBackStack();
                 } else if (response.getString("type").equals("Error")) {
                     Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();

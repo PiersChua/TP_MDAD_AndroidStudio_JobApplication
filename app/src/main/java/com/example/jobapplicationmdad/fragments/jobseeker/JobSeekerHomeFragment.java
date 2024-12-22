@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
@@ -54,14 +56,15 @@ public class JobSeekerHomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     SharedPreferences sp;
-    CircularProgressIndicator progressIndicator;
-    CircularProgressIndicator progressIndicatorJobs;
     RecyclerView recyclerViewJobs;
     RecyclerView recyclerView;
     List<Job> jobList;
     List<Job> recommendedJobList;
+    View dialogView;
+    AlertDialog loadingDialog;
     SmallJobCardAdapter smallJobCardAdapter;
     JobCardAdapter jobCardAdapter;
+
 
 
     public JobSeekerHomeFragment() {
@@ -98,6 +101,7 @@ public class JobSeekerHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader, container,false);
         return inflater.inflate(R.layout.fragment_job_seeker_home, container, false);
     }
 
@@ -105,8 +109,10 @@ public class JobSeekerHomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
         getJobs();
-        progressIndicator = view.findViewById(R.id.piJobSeekerHome);
         recyclerView = view.findViewById(R.id.rvJobSeekerHomeJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         recommendedJobList = new ArrayList<>();
@@ -121,7 +127,6 @@ public class JobSeekerHomeFragment extends Fragment {
         });
         recyclerView.setAdapter(smallJobCardAdapter);
 
-        progressIndicatorJobs = view.findViewById(R.id.piJobSeekerJob);
         recyclerViewJobs = view.findViewById(R.id.rvJobSeekerJobCard);
         recyclerViewJobs.setLayoutManager(new LinearLayoutManager(requireContext()));
         jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
@@ -135,6 +140,7 @@ public class JobSeekerHomeFragment extends Fragment {
 
 
     private void getJobs() {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         // extract only 5 jobs
@@ -159,10 +165,10 @@ public class JobSeekerHomeFragment extends Fragment {
                             }
                         }
                         // toggle the visibility of loader
-                        progressIndicator.setVisibility(View.GONE);
+                        loadingDialog.dismiss();
                         recyclerView.setVisibility(View.VISIBLE);
-                        progressIndicatorJobs.setVisibility(View.GONE);
                         recyclerViewJobs.setVisibility(View.VISIBLE);
+
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     }

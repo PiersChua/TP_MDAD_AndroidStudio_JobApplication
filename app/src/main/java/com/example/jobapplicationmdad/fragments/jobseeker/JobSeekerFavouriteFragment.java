@@ -6,9 +6,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,10 +58,12 @@ public class JobSeekerFavouriteFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     SharedPreferences sp;
-    CircularProgressIndicator progressIndicator;
     RecyclerView recyclerView;
     List<Job> favouriteJoblist;
+    View dialogView;
+    AlertDialog loadingDialog;
     FavouriteJobCardAdapter favouriteJobCardAdapter;
+    SwipeRefreshLayout srlJobSeekerFavourite;
 
     public JobSeekerFavouriteFragment() {
         // Required empty public constructor
@@ -95,6 +99,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_job_seeker_favourite, container, false);
     }
@@ -103,8 +108,11 @@ public class JobSeekerFavouriteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
         getFavouriteJobs();
-        progressIndicator = view.findViewById(R.id.piJobSeekerFavourite);
+        srlJobSeekerFavourite = view.findViewById(R.id.srlJobSeekerFavourite);
         recyclerView = view.findViewById(R.id.rvJobSeekerFavouriteJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         favouriteJoblist = new ArrayList<>();
@@ -112,21 +120,38 @@ public class JobSeekerFavouriteFragment extends Fragment {
         favouriteJobCardAdapter = new FavouriteJobCardAdapter(favouriteJoblist, new FavouriteJobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId,true)).addToBackStack(null).commit();
             }
 
             @Override
-            public void onRemoveFavourite(String jobId,int position) {
-                removeFavouriteJob(jobId,position);
+            public void onRemoveFavourite(String jobId, int position) {
+                removeFavouriteJob(jobId, position);
             }
         });
         recyclerView.setAdapter(favouriteJobCardAdapter);
+
+        srlJobSeekerFavourite.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            // re-fetch the data and turn off the refreshing
+            @Override
+            public void onRefresh() {
+               refreshFavouriteJobs();
+                srlJobSeekerFavourite.setRefreshing(false);
+            }
+        });
+        getParentFragmentManager().setFragmentResultListener("favouriteJobResult", this, (requestKey, result) -> {
+            boolean isFavouriteChanged = result.getBoolean("isFavouriteRemoved");
+            if (isFavouriteChanged) {
+                refreshFavouriteJobs();
+                srlJobSeekerFavourite.setRefreshing(false);
+            }
+        });
     }
 
     private void getFavouriteJobs() {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        String url = UrlUtil.constructUrl(get_favourite_jobs_url,params);
+        String url = UrlUtil.constructUrl(get_favourite_jobs_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
@@ -145,7 +170,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                             favouriteJoblist.add(job);
                         }
                         // toggle the visibility of loader
-                        progressIndicator.setVisibility(View.GONE);
+                        loadingDialog.dismiss();
                         recyclerView.setVisibility(View.VISIBLE);
                     } else if (response.getString("type").equals("Error")) {
                         Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
@@ -159,7 +184,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
-    private void removeFavouriteJob(String jobId,int position){
+    private void removeFavouriteJob(String jobId, int position) {
         Map<String, String> params = new HashMap<>();
         params.put("userId", sp.getString("userId", ""));
         params.put("jobId", jobId);
@@ -182,5 +207,15 @@ public class JobSeekerFavouriteFragment extends Fragment {
             }
         }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+    private void refreshFavouriteJobs(){
+        favouriteJoblist.clear();
+        getFavouriteJobs();
+        if (favouriteJoblist.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+        favouriteJobCardAdapter.notifyDataSetChanged();
     }
 }

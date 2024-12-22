@@ -94,9 +94,6 @@
                     android:text="@string/home_job_seeker_fragment_sub_header"
                     android:textStyle="bold" />
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/piJobSeekerHome"
-                    style="@style/ProgressIndicator" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvJobSeekerHomeJobCard"
                     android:layout_width="match_parent"
@@ -112,9 +109,6 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp">
 
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/piJobSeekerJob"
-                    style="@style/ProgressIndicator" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvJobSeekerJobCard"
