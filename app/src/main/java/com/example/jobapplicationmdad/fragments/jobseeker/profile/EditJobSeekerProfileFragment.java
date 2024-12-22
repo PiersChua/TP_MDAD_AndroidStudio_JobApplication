@@ -51,7 +51,6 @@ public class EditJobSeekerProfileFragment extends Fragment {
     Button btnEditProfile;
     EditText etFullNameProfile, etEmailProfile, etPhoneNumberProfile;
     TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout;
-    View rootView;
 
     public EditJobSeekerProfileFragment() {
         // Required empty public constructor
@@ -83,8 +82,8 @@ public class EditJobSeekerProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_edit_job_seeker_profile, container, false);
-        return rootView;
+        return inflater.inflate(R.layout.fragment_edit_job_seeker_profile, container, false);
+
     }
 
     @Override
@@ -169,23 +168,19 @@ public class EditJobSeekerProfileFragment extends Fragment {
 
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, update_user_url, params, headers, response -> {
             try {
-                if (response.getString("type").equals("Success")) {
-                    InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    // Get the currently focused view
-                    View currentFocus = requireActivity().getCurrentFocus();
-                    // Hide the keyboard if a view is focused
-                    if (currentFocus != null) {
-                        imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-                    }
-                    Snackbar.make(rootView, response.getString("message"), Snackbar.LENGTH_SHORT).show();
-                    // allow profile to refresh when return to previous page
-                    Bundle result = new Bundle();
-                    result.putBoolean("isUpdated", true);
-                    getParentFragmentManager().setFragmentResult("editProfileResult", result);
-                    getParentFragmentManager().popBackStack();
-                } else if (response.getString("type").equals("Error")) {
-                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                // Get the currently focused view
+                View currentFocus = requireActivity().getCurrentFocus();
+                // Hide the keyboard if a view is focused
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
                 }
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                // allow profile to refresh when return to previous page
+                Bundle result = new Bundle();
+                result.putBoolean("isUpdated", true);
+                getParentFragmentManager().setFragmentResult("editProfileResult", result);
+                getParentFragmentManager().popBackStack();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

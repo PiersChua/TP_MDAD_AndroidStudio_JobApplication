@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -98,7 +97,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_job_seeker_applications, container, false);
     }
 
@@ -136,30 +135,30 @@ public class JobSeekerApplicationsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        JSONArray jobsArray = response.getJSONArray("data");
-                        for (int i = 0; i < jobsArray.length(); i++) {
-                            JSONObject jobObject = jobsArray.getJSONObject(i);
-                            Agency agency = new Agency();
-                            agency.setName(jobObject.getString("agency_name"));
-                            User user = new User();
-                            user.setAgency(agency);
-                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
-                            JobApplication jobApplication = new JobApplication(jobObject.getString("status"), jobObject.getString("job_application_created_at"), jobObject.getString("job_application_updated_at"), job);
-                            jobApplicationList.add(jobApplication);
-                        }
-                        // toggle the visibility of loader
-                       loadingDialog.dismiss();
-                        recyclerView.setVisibility(View.VISIBLE);
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    JSONArray jobsArray = response.getJSONArray("data");
+                    for (int i = 0; i < jobsArray.length(); i++) {
+                        JSONObject jobObject = jobsArray.getJSONObject(i);
+                        Agency agency = new Agency();
+                        agency.setName(jobObject.getString("agency_name"));
+                        User user = new User();
+                        user.setAgency(agency);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
+                        JobApplication jobApplication = new JobApplication(jobObject.getString("status"), jobObject.getString("job_application_created_at"), jobObject.getString("job_application_updated_at"), job);
+                        jobApplicationList.add(jobApplication);
+
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                // toggle the visibility of loader
+                loadingDialog.dismiss();
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

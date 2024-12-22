@@ -15,7 +15,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -31,6 +31,7 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -97,10 +98,10 @@ public class JobSeekerFavouriteFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
+
         return inflater.inflate(R.layout.fragment_job_seeker_favourite, container, false);
     }
 
@@ -120,7 +121,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
         favouriteJobCardAdapter = new FavouriteJobCardAdapter(favouriteJoblist, new FavouriteJobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId,true)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId, true)).addToBackStack(null).commit();
             }
 
             @Override
@@ -134,7 +135,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
             // re-fetch the data and turn off the refreshing
             @Override
             public void onRefresh() {
-               refreshFavouriteJobs();
+                refreshFavouriteJobs();
                 srlJobSeekerFavourite.setRefreshing(false);
             }
         });
@@ -158,29 +159,30 @@ public class JobSeekerFavouriteFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        JSONArray jobsArray = response.getJSONArray("data");
-                        for (int i = 0; i < jobsArray.length(); i++) {
-                            JSONObject jobObject = jobsArray.getJSONObject(i);
-                            Agency agency = new Agency();
-                            agency.setName(jobObject.getString("agency_name"));
-                            User user = new User();
-                            user.setAgency(agency);
-                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
-                            favouriteJoblist.add(job);
-                        }
-                        // toggle the visibility of loader
-                        loadingDialog.dismiss();
-                        recyclerView.setVisibility(View.VISIBLE);
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
+                    JSONArray jobsArray = response.getJSONArray("data");
+                    for (int i = 0; i < jobsArray.length(); i++) {
+                        JSONObject jobObject = jobsArray.getJSONObject(i);
+                        Agency agency = new Agency();
+                        agency.setName(jobObject.getString("agency_name"));
+                        User user = new User();
+                        user.setAgency(agency);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
+                        favouriteJoblist.add(job);
+
+
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                // toggle the visibility of loader
+                loadingDialog.dismiss();
+                recyclerView.setVisibility(View.VISIBLE);
             }
 
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -194,21 +196,18 @@ public class JobSeekerFavouriteFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                        favouriteJoblist.remove(position);
-                        favouriteJobCardAdapter.notifyItemRemoved(position);
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    }
+                    Snackbar.make(requireContext(),requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                    favouriteJoblist.remove(position);
+                    favouriteJobCardAdapter.notifyItemRemoved(position);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext(),requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
-    private void refreshFavouriteJobs(){
+
+    private void refreshFavouriteJobs() {
         favouriteJoblist.clear();
         getFavouriteJobs();
         if (favouriteJoblist.isEmpty()) {

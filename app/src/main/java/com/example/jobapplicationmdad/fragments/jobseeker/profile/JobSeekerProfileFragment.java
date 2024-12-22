@@ -19,9 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
@@ -107,7 +105,7 @@ public class JobSeekerProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_job_seeker_profile, container, false);
     }
 
@@ -130,10 +128,9 @@ public class JobSeekerProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId",""), sp.getString("token",""))).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId", ""), sp.getString("token", ""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
-                    Toast.makeText(getContext(), "Settings clicked", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_3) {
                     // clear shared preferences
@@ -166,7 +163,7 @@ public class JobSeekerProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left,R.anim.exit_right_to_left,R.anim.slide_left_to_right,R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
@@ -182,40 +179,37 @@ public class JobSeekerProfileFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        String url = UrlUtil.constructUrl(get_user_url,params);
+        String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
-                if (response.getString("type").equals("Success")) {
-                    // retrieve user details
-                    tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
-                    user = new User();
-                    user.setFullName(response.getString("fullName"));
-                    user.setEmail(response.getString("email"));
-                    user.setDateOfBirth(response.getString("dateOfBirth"));
-                    user.setPhoneNumber(response.getString("phoneNumber"));
-                    user.setRace(response.getString("race"));
-                    user.setNationality(response.getString("nationality"));
-                    user.setGender(response.getString("gender"));
-                    populateProfileItems(user);
+                // retrieve user details
+                tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
+                user = new User();
+                user.setFullName(response.getString("fullName"));
+                user.setEmail(response.getString("email"));
+                user.setDateOfBirth(response.getString("dateOfBirth"));
+                user.setPhoneNumber(response.getString("phoneNumber"));
+                user.setRace(response.getString("race"));
+                user.setNationality(response.getString("nationality"));
+                user.setGender(response.getString("gender"));
+                populateProfileItems(user);
 
-                    // Set the adapter
-                    profileAdapter = new ProfileAdapter(profileItems);
-                    recyclerView.setAdapter(profileAdapter);
+                // Set the adapter
+                profileAdapter = new ProfileAdapter(profileItems);
+                recyclerView.setAdapter(profileAdapter);
 
-                    // toggle the visibility of loader
-                    loadingDialog.dismiss();
-                    recyclerView.setVisibility(View.VISIBLE);
-
-                } else if (response.getString("type").equals("Error")) {
-                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                }
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+            recyclerView.setVisibility(View.VISIBLE);
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
 
     }

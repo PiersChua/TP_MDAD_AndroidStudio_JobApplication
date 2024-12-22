@@ -16,12 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerApplicationsFragment;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.model.User;
@@ -33,6 +33,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,6 +111,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_job_seeker_job_details, container, false);
+
     }
 
     @Override
@@ -145,21 +147,17 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         btnApplyJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MaterialAlertDialogBuilder(requireContext()).setTitle("Apply for Job")
-                        .setMessage("This will submit your application for the position.\nDo you wish to proceed?")
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                createJobApplication();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int i) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Apply for Job").setMessage("This will submit your application for the position.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        createJobApplication();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
 
             }
         });
@@ -204,51 +202,47 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        JSONObject jobObject = response.getJSONObject("data");
-                        // init job attributes
-                        Job job = new Job();
-                        job.setJobId(jobObject.getString("jobId"));
-                        job.setPosition(jobObject.getString("position"));
-                        job.setResponsibilities(jobObject.getString("responsibilities"));
-                        job.setDescription(jobObject.getString("description"));
-                        job.setLocation(jobObject.getString("location"));
-                        job.setSchedule(jobObject.getString("schedule"));
-                        job.setOrganisation(jobObject.getString("organisation"));
-                        job.setPartTimeSalary(jobObject.optDouble("partTimeSalary", 0.0));
-                        job.setFullTimeSalary(jobObject.optDouble("fullTimeSalary", 0.0));
-                        job.setCreatedAt(jobObject.getString("createdAt"));
-                        job.setUpdatedAt(jobObject.getString("updatedAt"));
+                    JSONObject jobObject = response.getJSONObject("data");
+                    // init job attributes
+                    Job job = new Job();
+                    job.setJobId(jobObject.getString("jobId"));
+                    job.setPosition(jobObject.getString("position"));
+                    job.setResponsibilities(jobObject.getString("responsibilities"));
+                    job.setDescription(jobObject.getString("description"));
+                    job.setLocation(jobObject.getString("location"));
+                    job.setSchedule(jobObject.getString("schedule"));
+                    job.setOrganisation(jobObject.getString("organisation"));
+                    job.setPartTimeSalary(jobObject.optDouble("partTimeSalary", 0.0));
+                    job.setFullTimeSalary(jobObject.optDouble("fullTimeSalary", 0.0));
+                    job.setCreatedAt(jobObject.getString("createdAt"));
+                    job.setUpdatedAt(jobObject.getString("updatedAt"));
 
-                        // init agent attributes
-                        User user = new User();
-                        user.setFullName(jobObject.getString("user_fullName"));
-                        user.setEmail(jobObject.getString("user_email"));
-                        user.setPhoneNumber(jobObject.getString("user_phoneNumber"));
+                    // init agent attributes
+                    User user = new User();
+                    user.setFullName(jobObject.getString("user_fullName"));
+                    user.setEmail(jobObject.getString("user_email"));
+                    user.setPhoneNumber(jobObject.getString("user_phoneNumber"));
 
-                        // init agency attributes
-                        Agency agency = new Agency();
-                        agency.setName(jobObject.getString("agency_name"));
-                        agency.setEmail(jobObject.getString("agency_email"));
-                        agency.setPhoneNumber(jobObject.getString("agency_phoneNumber"));
-                        agency.setAddress(jobObject.getString("agency_address"));
+                    // init agency attributes
+                    Agency agency = new Agency();
+                    agency.setName(jobObject.getString("agency_name"));
+                    agency.setEmail(jobObject.getString("agency_email"));
+                    agency.setPhoneNumber(jobObject.getString("agency_phoneNumber"));
+                    agency.setAddress(jobObject.getString("agency_address"));
 
-                        // link the entities
-                        user.setAgency(agency);
-                        job.setUser(user);
-                        isFavourite = jobObject.getBoolean("isFavourite");
-                        isApplied = jobObject.getBoolean("isApplied");
-                        toggleFavouriteIcon();
-                        toggleApplyButtonState();
-                        populateJobItems(job);
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    }
+                    // link the entities
+                    user.setAgency(agency);
+                    job.setUser(user);
+                    isFavourite = jobObject.getBoolean("isFavourite");
+                    isApplied = jobObject.getBoolean("isApplied");
+                    toggleFavouriteIcon();
+                    toggleApplyButtonState();
+                    populateJobItems(job);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -296,17 +290,14 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                        getParentFragmentManager().popBackStack();
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    }
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                    getParentFragmentManager().popBackStack();
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -320,18 +311,14 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                        isFavourite = !isFavourite;
-                        toggleFavouriteIcon();
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    }
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireView().findViewById(R.id.bottomAppBar)).show();
+                    isFavourite = !isFavourite;
+                    toggleFavouriteIcon();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -357,7 +344,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     /**
      * Set fragment result if the current fragment is accessed from the favourites fragment and the favourite is removed
      */
-    private void notifyFavouriteFragmentChange(){
+    private void notifyFavouriteFragmentChange() {
         if (isFromFavouriteFragment && !isFavourite) {
             Bundle result = new Bundle();
             result.putBoolean("isFavouriteRemoved", true);

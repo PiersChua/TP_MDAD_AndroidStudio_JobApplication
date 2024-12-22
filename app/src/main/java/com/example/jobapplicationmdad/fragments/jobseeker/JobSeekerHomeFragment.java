@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -57,14 +56,13 @@ public class JobSeekerHomeFragment extends Fragment {
     private String mParam2;
     SharedPreferences sp;
     RecyclerView recyclerViewJobs;
-    RecyclerView recyclerView;
+    RecyclerView recyclerViewRecommendedJobs;
     List<Job> jobList;
     List<Job> recommendedJobList;
     View dialogView;
     AlertDialog loadingDialog;
     SmallJobCardAdapter smallJobCardAdapter;
     JobCardAdapter jobCardAdapter;
-
 
 
     public JobSeekerHomeFragment() {
@@ -101,7 +99,7 @@ public class JobSeekerHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        dialogView = inflater.inflate(R.layout.dialog_loader, container,false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_job_seeker_home, container, false);
     }
 
@@ -113,8 +111,8 @@ public class JobSeekerHomeFragment extends Fragment {
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
         getJobs();
-        recyclerView = view.findViewById(R.id.rvJobSeekerHomeJobCard);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRecommendedJobs = view.findViewById(R.id.rvJobSeekerSmallJobCard);
+        recyclerViewRecommendedJobs.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         recommendedJobList = new ArrayList<>();
         jobList = new ArrayList<>();
 
@@ -125,7 +123,7 @@ public class JobSeekerHomeFragment extends Fragment {
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerHome, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
-        recyclerView.setAdapter(smallJobCardAdapter);
+        recyclerViewRecommendedJobs.setAdapter(smallJobCardAdapter);
 
         recyclerViewJobs = view.findViewById(R.id.rvJobSeekerJobCard);
         recyclerViewJobs.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -144,40 +142,39 @@ public class JobSeekerHomeFragment extends Fragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         // extract only 5 jobs
-        params.put("limit",String.valueOf(5));
-        String url = UrlUtil.constructUrl(get_jobs_url,params);
+        params.put("limit", String.valueOf(5));
+        String url = UrlUtil.constructUrl(get_jobs_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    if (response.getString("type").equals("Success")) {
-                        JSONArray jobsArray = response.getJSONArray("data");
-                        for (int i = 0; i < jobsArray.length(); i++) {
-                            JSONObject jobObject = jobsArray.getJSONObject(i);
-                            Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
-                            // add the first 5 jobs to the recommended job list
-                            if (i < 5) {
-                                recommendedJobList.add(job);
-                            } else {
-                                jobList.add(job);
-                            }
+                    JSONArray jobsArray = response.getJSONArray("data");
+                    for (int i = 0; i < jobsArray.length(); i++) {
+                        JSONObject jobObject = jobsArray.getJSONObject(i);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
+                        // add the first 5 jobs to the recommended job list
+                        if (i < 5) {
+                            recommendedJobList.add(job);
+                        } else {
+                            jobList.add(job);
                         }
-                        // toggle the visibility of loader
-                        loadingDialog.dismiss();
-                        recyclerView.setVisibility(View.VISIBLE);
-                        recyclerViewJobs.setVisibility(View.VISIBLE);
-
-                    } else if (response.getString("type").equals("Error")) {
-                        Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
                     }
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                // toggle the visibility of loader
+                loadingDialog.dismiss();
+                recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
+                recyclerViewJobs.setVisibility(View.VISIBLE);
             }
 
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
 
     }

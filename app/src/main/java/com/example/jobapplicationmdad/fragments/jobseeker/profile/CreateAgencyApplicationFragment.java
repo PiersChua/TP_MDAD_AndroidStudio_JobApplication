@@ -24,6 +24,7 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -87,6 +88,7 @@ public class CreateAgencyApplicationFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_agency_application, container, false);
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -98,6 +100,7 @@ public class CreateAgencyApplicationFragment extends Fragment {
         super.onPause();
         ((MainActivity) requireActivity()).showBottomNav();
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -153,19 +156,15 @@ public class CreateAgencyApplicationFragment extends Fragment {
         params.put("email", application.getEmail());
         params.put("phoneNumber", application.getPhoneNumber());
         params.put("address", application.getAddress());
-        params.put("userId",userId);
+        params.put("userId", userId);
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + token);
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, create_agency_application_url, params, headers, response -> {
             try {
-                if (response.getString("type").equals("Success")) {
-                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                    getParentFragmentManager().popBackStack();
-                } else if (response.getString("type").equals("Error")) {
-                    Toast.makeText(requireContext(), response.getString("message"), Toast.LENGTH_LONG).show();
-                }
-            } catch(JSONException e) {
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                getParentFragmentManager().popBackStack();
+            } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
         }, VolleyErrorHandler.newErrorListener(requireContext()));
