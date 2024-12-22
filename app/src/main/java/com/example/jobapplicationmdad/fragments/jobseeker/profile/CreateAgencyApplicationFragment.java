@@ -167,7 +167,7 @@ public class CreateAgencyApplicationFragment extends Fragment {
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext()));
+        }, VolleyErrorHandler.newErrorListener(requireContext(),requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

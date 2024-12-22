@@ -2,7 +2,6 @@ package com.example.jobapplicationmdad.network;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
