@@ -170,15 +170,13 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         });
 
         // configure the back button to return to previous fragment
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+        // use getViewLifecycleOwner to remove callback when fragment's view is destroyed
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 if (isAdded()) {
                     notifyFavouriteFragmentChange();
                     getParentFragmentManager().popBackStack();
-                }
-                else{
-                    System.exit(0);
                 }
 
             }

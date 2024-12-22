@@ -140,19 +140,6 @@ public class EditJobSeekerProfileFragment extends Fragment {
             }
         });
 
-        // configure the back button to return to previous fragment
-        requireActivity().getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (isAdded()) {
-                    getParentFragmentManager().popBackStack();
-                }
-                else{
-                    System.exit(0);
-                }
-
-            }
-        });
     }
 
     private User getUserFromForm() {
