@@ -47,6 +47,8 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
         private final TextView tvFavouriteJobCardLocations;
         private final TextView tvFavouriteJobCardUpdatedAt;
         private final Button btnFavouriteJobFavourite;
+        private long mLastClickTime = System.currentTimeMillis();
+        private static final int CLICK_TIME_INTERVAL = 800;
         private Job currentJob;
 
         public ViewHolder(View view, OnJobClickListener listener) {
@@ -61,6 +63,11 @@ public class FavouriteJobCardAdapter extends RecyclerView.Adapter<FavouriteJobCa
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    long now = System.currentTimeMillis();
+                    if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+                        return;
+                    }
+                    mLastClickTime = now;
                     if (listener != null && currentJob != null) {
                         listener.onViewJobDetails(currentJob.getJobId());
                     }

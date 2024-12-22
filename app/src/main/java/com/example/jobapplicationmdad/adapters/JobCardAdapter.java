@@ -18,6 +18,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
     private List<Job> jobs;
     private final OnJobClickListener listener;
 
+
     // Interface for handling on click events
     public interface OnJobClickListener {
         void onViewJobDetails(String jobId);
@@ -45,6 +46,8 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
         private final TextView tvJobCardLocations;
         private final TextView tvJobCardUpdatedAt;
         private Job currentJob;
+        private long mLastClickTime = System.currentTimeMillis();
+        private static final int CLICK_TIME_INTERVAL = 800;
 
         public ViewHolder(View view, OnJobClickListener listener) {
             super(view);
@@ -57,6 +60,11 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    long now = System.currentTimeMillis();
+                    if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+                        return;
+                    }
+                    mLastClickTime = now;
                     if (listener != null && currentJob != null) {
                         listener.onViewJobDetails(currentJob.getJobId());
                     }

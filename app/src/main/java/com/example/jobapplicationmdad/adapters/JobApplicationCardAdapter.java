@@ -47,6 +47,8 @@ public class JobApplicationCardAdapter extends RecyclerView.Adapter<JobApplicati
         private final TextView tvJobApplicationCardStatus;
         private final TextView tvJobApplicationCardCreatedAt;
         private JobApplication currentJobApplication;
+        private long mLastClickTime = System.currentTimeMillis();
+        private static final int CLICK_TIME_INTERVAL = 800;
 
         public ViewHolder(View view, OnJobClickListener listener) {
             super(view);
@@ -60,6 +62,11 @@ public class JobApplicationCardAdapter extends RecyclerView.Adapter<JobApplicati
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    long now = System.currentTimeMillis();
+                    if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
+                        return;
+                    }
+                    mLastClickTime = now;
                     if (listener != null && currentJobApplication != null) {
                         listener.onViewJobDetails(currentJobApplication.getJob().getJobId());
                     }
