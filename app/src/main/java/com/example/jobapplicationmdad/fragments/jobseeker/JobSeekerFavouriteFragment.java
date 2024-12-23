@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -121,6 +122,12 @@ public class JobSeekerFavouriteFragment extends Fragment {
         favouriteJobCardAdapter = new FavouriteJobCardAdapter(favouriteJoblist, new FavouriteJobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
+                // check for double click
+                FragmentManager fragmentManager = getParentFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId, true)).addToBackStack(null).commit();
             }
 
@@ -176,6 +183,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                 }
                 // toggle the visibility of loader
                 loadingDialog.dismiss();
+                recyclerView.setVisibility(favouriteJoblist.isEmpty() ? View.GONE : View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
 
@@ -212,9 +220,8 @@ public class JobSeekerFavouriteFragment extends Fragment {
         getFavouriteJobs();
         if (favouriteJoblist.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
         }
         favouriteJobCardAdapter.notifyDataSetChanged();
+
     }
 }

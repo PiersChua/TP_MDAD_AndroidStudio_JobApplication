@@ -69,6 +69,7 @@ public class JobSeekerProfileFragment extends Fragment {
     ArrayList<HashMap<String, String>> profileItems;
     Button btnNavigateToEditProfile;
     SharedPreferences sp;
+    private long mLastClickTime;
 
 
     public JobSeekerProfileFragment() {
@@ -162,6 +163,10 @@ public class JobSeekerProfileFragment extends Fragment {
         btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (System.currentTimeMillis()- mLastClickTime < 1000){
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }

@@ -56,8 +56,6 @@ public class JobSeekerJobsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    SharedPreferences sp;
-    List<Job> jobList;
     ViewPager2 viewPager;
     private FragmentStateAdapter jobsPagerAdapter;
 
@@ -109,8 +107,6 @@ public class JobSeekerJobsFragment extends Fragment {
         TabLayout tabLayout =  view.findViewById(R.id.tlJobSeekerJob);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) ->
                 tab.setText(JobsPagerAdapter.pagerTitles[position])).attach();
-
-        jobList = new ArrayList<>();
     }
 
 

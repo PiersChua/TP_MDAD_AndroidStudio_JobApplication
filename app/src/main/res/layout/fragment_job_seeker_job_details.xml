@@ -95,7 +95,7 @@
                     android:drawablePadding="4dp"
                     android:textColor="@color/secondary"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic_building_18" />
+                    app:drawableStartCompat="@drawable/ic_money_18" />
 
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsEmploymentType"
@@ -109,7 +109,7 @@
                     style="@style/Text.Small"
                     android:layout_marginTop="8dp"
                     android:drawablePadding="4dp"
-                    app:drawableStartCompat="@drawable/ic_money_18" />
+                    app:drawableStartCompat="@drawable/ic_building_18" />
 
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsSchedule"

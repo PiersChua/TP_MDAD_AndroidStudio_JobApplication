@@ -1,134 +1,142 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flJobSeekerHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:background="@color/background"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/app_icon" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNavigateToNotifications"
-                style="@style/ButtonIcon"
-                app:icon="@drawable/ic_notification"
-                app:iconSize="24dp"
-                app:rippleColor="@color/ripple" />
-        </LinearLayout>
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/search_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_search_market" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-    <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp">
 
-                <TextView
-                    style="@style/Text.Large"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:text="@string/home_job_seeker_fragment_header"
-                    android:textStyle="bold" />
-
                 <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/app_icon" />
+
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/job_search_icon" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNavigateToNotifications"
+                    style="@style/ButtonIcon"
+                    app:icon="@drawable/ic_notification"
+                    app:iconSize="24dp"
+                    app:rippleColor="@color/ripple" />
             </LinearLayout>
 
-            <com.google.android.material.divider.MaterialDivider
+            <com.google.android.material.search.SearchBar
+                android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:dividerColor="@color/placeholder_background" />
+                android:hint="@string/hint_search_market" />
 
-            <LinearLayout
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlJobSeekerHome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:layout_height="match_parent">
 
-                <TextView
-                    style="@style/Text.Large"
-                    android:text="@string/home_job_seeker_fragment_sub_header"
-                    android:textStyle="bold" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvJobSeekerSmallJobCard"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:visibility="gone" />
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="16dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                        <TextView
+                            style="@style/Text.Large"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:text="@string/home_job_seeker_fragment_header"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="80dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/job_search_icon" />
+                    </LinearLayout>
+
+                    <com.google.android.material.divider.MaterialDivider
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:dividerColor="@color/placeholder_background" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp">
+
+                        <TextView
+                            style="@style/Text.Large"
+                            android:text="@string/home_job_seeker_fragment_sub_header"
+                            android:textStyle="bold" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvJobSeekerSmallJobCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp">
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvJobSeekerJobCard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    android:visibility="gone" />
-            </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvJobSeekerJobCard"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:visibility="gone" />
+                    </LinearLayout>
 
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <com.google.android.material.search.SearchView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/hint_search_jobs"
-        app:layout_anchor="@id/search_bar">
+        <com.google.android.material.search.SearchView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/hint_search_jobs"
+            app:layout_anchor="@id/search_bar">
 
-        <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
 
-    </com.google.android.material.search.SearchView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </com.google.android.material.search.SearchView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </FrameLayout>

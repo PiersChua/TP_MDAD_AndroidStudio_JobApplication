@@ -44,8 +44,6 @@ public class SmallJobCardAdapter extends RecyclerView.Adapter<SmallJobCardAdapte
         private final TextView tvSmallJobCardSalary;
         private final TextView tvSmallJobCardLocations;
         private final TextView tvSmallJobCardUpdatedAt;
-        private long mLastClickTime = System.currentTimeMillis();
-        private static final int CLICK_TIME_INTERVAL = 800;
         private Job currentJob;
 
         public ViewHolder(View view, OnJobClickListener listener) {
@@ -60,10 +58,6 @@ public class SmallJobCardAdapter extends RecyclerView.Adapter<SmallJobCardAdapte
                 @Override
                 public void onClick(View view) {
                     long now = System.currentTimeMillis();
-                    if (now - mLastClickTime < CLICK_TIME_INTERVAL) {
-                        return;
-                    }
-                    mLastClickTime = now;
                     if (listener != null && currentJob != null) {
                         listener.onViewJobDetails(currentJob.getJobId());
                     }

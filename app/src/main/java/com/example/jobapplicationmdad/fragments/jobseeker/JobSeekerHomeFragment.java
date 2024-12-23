@@ -8,8 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +65,7 @@ public class JobSeekerHomeFragment extends Fragment {
     AlertDialog loadingDialog;
     SmallJobCardAdapter smallJobCardAdapter;
     JobCardAdapter jobCardAdapter;
+    SwipeRefreshLayout srlJobSeekerHome;
 
 
     public JobSeekerHomeFragment() {
@@ -111,6 +114,7 @@ public class JobSeekerHomeFragment extends Fragment {
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
         getJobs();
+        srlJobSeekerHome = view.findViewById(R.id.srlJobSeekerHome);
         recyclerViewRecommendedJobs = view.findViewById(R.id.rvJobSeekerSmallJobCard);
         recyclerViewRecommendedJobs.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
         recommendedJobList = new ArrayList<>();
@@ -120,6 +124,12 @@ public class JobSeekerHomeFragment extends Fragment {
         smallJobCardAdapter = new SmallJobCardAdapter(recommendedJobList, new SmallJobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
+                // check for double click
+                FragmentManager fragmentManager = getParentFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerHome, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
@@ -130,10 +140,24 @@ public class JobSeekerHomeFragment extends Fragment {
         jobCardAdapter = new JobCardAdapter(jobList, new JobCardAdapter.OnJobClickListener() {
             @Override
             public void onViewJobDetails(String jobId) {
+                // check for double click
+                FragmentManager fragmentManager = getParentFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
                 getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
         recyclerViewJobs.setAdapter(jobCardAdapter);
+
+        srlJobSeekerHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshJobs();
+                srlJobSeekerHome.setRefreshing(false);
+            }
+        });
     }
 
 
@@ -141,8 +165,6 @@ public class JobSeekerHomeFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        // extract only 5 jobs
-        params.put("limit", String.valueOf(5));
         String url = UrlUtil.constructUrl(get_jobs_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
@@ -167,8 +189,8 @@ public class JobSeekerHomeFragment extends Fragment {
                 }
                 // toggle the visibility of loader
                 loadingDialog.dismiss();
-                recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
-                recyclerViewJobs.setVisibility(View.VISIBLE);
+                recyclerViewRecommendedJobs.setVisibility(recommendedJobList.isEmpty() ? View.GONE : View.VISIBLE);
+                recyclerViewJobs.setVisibility(jobList.isEmpty() ? View.GONE : View.VISIBLE);
             }
 
         }, error -> {
@@ -177,6 +199,23 @@ public class JobSeekerHomeFragment extends Fragment {
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
 
+    }
+
+    private void refreshJobs(){
+        recommendedJobList.clear();
+        jobList.clear();
+        getJobs();
+        if (recommendedJobList.isEmpty()) {
+            recyclerViewRecommendedJobs.setVisibility(View.GONE);
+            return;
+        }
+        recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
+        if(jobList.isEmpty()){
+            recyclerViewJobs.setVisibility(View.GONE);
+            return;
+        }
+        recyclerViewJobs.setVisibility(View.VISIBLE);
+        jobCardAdapter.notifyDataSetChanged();
     }
 
 }
