@@ -24,14 +24,19 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
+import com.example.jobapplicationmdad.util.DateConverter;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String register_url = MainActivity.root_url + "/api/auth/signup.php";
@@ -39,9 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnRegister;
     View dialogView;
     AlertDialog loadingDialog;
-    EditText etFullNameRegister, etEmailRegister, etPhoneNumberRegister, etPasswordRegister, etConfirmPasswordRegister;
+    EditText etFullNameRegister, etEmailRegister, etPhoneNumberRegister, etPasswordRegister, etConfirmPasswordRegister, etDateOfBirthRegister;
 
-    TextInputLayout etFullNameRegisterLayout, etEmailRegisterLayout, etPhoneNumberRegisterLayout, etRoleRegisterLayout, etPasswordRegisterLayout, etConfirmPasswordRegisterLayout;
+    TextInputLayout etFullNameRegisterLayout, etEmailRegisterLayout, etPhoneNumberRegisterLayout, etRoleRegisterLayout, etPasswordRegisterLayout, etConfirmPasswordRegisterLayout, etDateOfBirthRegisterLayout, etGenderRegisterLayout, etNationalityRegisterLayout, etRaceRegisterLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPhoneNumberRegister = findViewById(R.id.etPhoneNumberRegister);
         etPasswordRegister = findViewById(R.id.etPasswordRegister);
         etConfirmPasswordRegister = findViewById(R.id.etConfirmPasswordRegister);
+        etDateOfBirthRegister = findViewById(R.id.etDateOfBirthRegister);
+
 
         // Form Layouts
         etFullNameRegisterLayout = findViewById(R.id.etFullNameRegisterLayout);
@@ -70,6 +77,38 @@ public class RegisterActivity extends AppCompatActivity {
         etRoleRegisterLayout = findViewById(R.id.etRoleRegisterLayout);
         etPasswordRegisterLayout = findViewById(R.id.etPasswordRegisterLayout);
         etConfirmPasswordRegisterLayout = findViewById(R.id.etConfirmPasswordRegisterLayout);
+        etDateOfBirthRegisterLayout = findViewById(R.id.etDateOfBirthRegisterLayout);
+        etGenderRegisterLayout = findViewById(R.id.etGenderRegisterLayout);
+        etRaceRegisterLayout = findViewById(R.id.etRaceRegisterLayout);
+        etNationalityRegisterLayout = findViewById(R.id.etNationalityRegisterLayout);
+
+        etDateOfBirthRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                long today = calendar.getTimeInMillis();
+
+                // Minimum date is 16 years from today
+                calendar.add(Calendar.YEAR, -16);
+                long sixteenYearsAgo = calendar.getTimeInMillis();
+
+                // Maximum date is 100 years from today
+                calendar.setTimeInMillis(today);
+                calendar.add(Calendar.YEAR, -100);
+                long hundredYearsAgo = calendar.getTimeInMillis();
+
+                // Set up the date picker with constraints
+                CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+                constraintsBuilder.setStart(hundredYearsAgo);
+                constraintsBuilder.setEnd(sixteenYearsAgo);
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date of Birth").setCalendarConstraints(constraintsBuilder.build()).build();
+                datePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+
+                datePicker.addOnPositiveButtonClickListener(selection -> {
+                    etDateOfBirthRegister.setText(DateConverter.formatDateFromMilliseconds(selection));
+                });
+            }
+        });
         tvRedirectToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,18 +141,28 @@ public class RegisterActivity extends AppCompatActivity {
         String role = Objects.requireNonNull(etRoleRegisterLayout.getEditText()).getText().toString();
         String password = etPasswordRegister.getText().toString();
         String confirmPassword = etConfirmPasswordRegister.getText().toString();
-        return new User(fullName, email, phoneNumber, role, password, confirmPassword);
+        String dateOfBirth = etDateOfBirthRegister.getText().toString();
+        String gender = Objects.requireNonNull(etGenderRegisterLayout.getEditText()).getText().toString();
+        String race = Objects.requireNonNull(etRaceRegisterLayout.getEditText()).getText().toString();
+        String nationality = Objects.requireNonNull(etNationalityRegisterLayout.getEditText()).getText().toString();
+        return new User(fullName, email, phoneNumber, role, password, confirmPassword, dateOfBirth, gender, race, nationality);
     }
 
     private boolean validateUser(User user) {
         boolean isValidName = AuthValidation.validateName(etFullNameRegisterLayout, user.getFullName());
         boolean isValidEmail = AuthValidation.validateEmail(etEmailRegisterLayout, user.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberRegisterLayout, user.getPhoneNumber());
-        boolean isValidRole = AuthValidation.validateRole(etRoleRegisterLayout, user.getRole());
+        boolean isValidRole = AuthValidation.validateEnum(etRoleRegisterLayout, "Role", user.getRole(), getResources().getStringArray(R.array.role_items));
         boolean isValidPassword = AuthValidation.validatePassword(etPasswordRegisterLayout, user.getPassword(), false);
         boolean isValidConfirmPassword = AuthValidation.validateConfirmPassword(etConfirmPasswordRegisterLayout, user.getPassword(), user.getConfirmPassword());
+        boolean isValidDateOfBirth = AuthValidation.validateNull(etDateOfBirthRegisterLayout, "Date of Birth", user.getDateOfBirth());
+        boolean isValidGender = AuthValidation.validateEnum(etGenderRegisterLayout, "Gender", user.getGender(), getResources().getStringArray(R.array.gender_items));
+        boolean isValidRace = AuthValidation.validateEnum(etRaceRegisterLayout, "Race", user.getRace(), getResources().getStringArray(R.array.race_items));
+        boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));
+        ;
 
-        return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword;
+
+        return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
 
     private void registerUser(User user) {

@@ -4,4 +4,19 @@
         <item>Job Seeker</item>
         <item>Admin</item>
     </string-array>
+    <string-array name="gender_items">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="race_items">
+        <item>Chinese</item>
+        <item>Malay</item>
+        <item>Indian</item>
+        <item>Others</item>
+    </string-array>
+    <string-array name="nationality_items">
+        <item>Singaporean</item>
+        <item>PR</item>
+        <item>Others</item>
+    </string-array>
 </resources>

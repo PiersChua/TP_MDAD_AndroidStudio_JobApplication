@@ -10,8 +10,8 @@ public class User implements Serializable {
     private String role;
     private String password;
     private String confirmPassword;
-    private String dateOfBirth; // Nullable
-    private String gender;  // Nullable
+    private String dateOfBirth;
+    private String gender;
     private String race;
     private String nationality;
     private Agency agency;
@@ -21,13 +21,17 @@ public class User implements Serializable {
     //private String updatedAt;  // Nullable (Timestamp)
 
     // Register
-    public User(String fullName, String email, String phoneNumber, String role, String password, String confirmPassword) {
+    public User(String fullName, String email, String phoneNumber, String role, String password, String confirmPassword, String dateOfBirth, String gender, String race, String nationality) {
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = role;
         this.password = password;
         this.confirmPassword = confirmPassword;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.race = race;
+        this.nationality = nationality;
     }
 
     // Login

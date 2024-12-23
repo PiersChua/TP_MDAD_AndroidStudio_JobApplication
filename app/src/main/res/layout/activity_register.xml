@@ -86,6 +86,21 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etDateOfBirthRegisterLayout"
+                style="@style/EditTextLayout"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_date_of_birth"
+                app:startIconDrawable="@drawable/ic_calendar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDateOfBirthRegister"
+                    style="@style/EditText"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etRoleRegisterLayout"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -104,6 +119,66 @@
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     app:simpleItems="@array/role_items" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etGenderRegisterLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_gender"
+                android:textColorHint="@color/placeholder_foreground"
+                app:boxBackgroundColor="@color/placeholder_background"
+                app:boxStrokeColor="@color/foreground"
+                app:cursorColor="@color/foreground"
+                app:startIconDrawable="@drawable/ic_people">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/gender_items" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etRaceRegisterLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_race"
+                android:textColorHint="@color/placeholder_foreground"
+                app:boxBackgroundColor="@color/placeholder_background"
+                app:boxStrokeColor="@color/foreground"
+                app:cursorColor="@color/foreground"
+                app:startIconDrawable="@drawable/ic_race">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/race_items" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etNationalityRegisterLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_nationality"
+                android:textColorHint="@color/placeholder_foreground"
+                app:boxBackgroundColor="@color/placeholder_background"
+                app:boxStrokeColor="@color/foreground"
+                app:cursorColor="@color/foreground"
+                app:startIconDrawable="@drawable/ic_nationality">
+
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/nationality_items" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -150,10 +225,10 @@
 
 
             <android.widget.Button
-                android:layout_marginTop="16dp"
                 android:id="@+id/btnRegister"
                 style="@style/Button.Primary"
                 android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
                 android:text="@string/register_activity_header"
                 android:textSize="18sp" />
 

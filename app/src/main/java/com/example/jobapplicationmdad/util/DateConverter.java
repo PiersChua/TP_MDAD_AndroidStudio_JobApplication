@@ -32,4 +32,10 @@ public class DateConverter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return dateFormat.format(date);
     }
+
+    public static String formatDateFromMilliseconds(Long milliseconds){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date date = new Date(milliseconds);
+        return dateFormat.format(date);
+    }
 }

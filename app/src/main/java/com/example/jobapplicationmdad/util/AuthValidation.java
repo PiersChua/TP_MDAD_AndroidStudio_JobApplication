@@ -20,6 +20,15 @@ public class AuthValidation extends Validation {
         super();
     }
 
+    public static boolean validateNull(TextInputLayout layout, String field, String value) {
+        if (!isNotEmpty(value)) {
+            layout.setError(String.format("%s is required", field));
+            return false;
+        }
+        layout.setError(null);
+        return true;
+    }
+
     public static boolean validateName(TextInputLayout layout, String name) {
         if (!isNotEmpty(name)) {
             layout.setError("Name is required");
@@ -64,19 +73,21 @@ public class AuthValidation extends Validation {
         return true;
     }
 
-    public static boolean validateRole(TextInputLayout layout, String role) {
-        if (!isNotEmpty(role)) {
-            layout.setError("Role is required");
+    public static boolean validateEnum(TextInputLayout layout, String field, String enumValue, String[] array) {
+        if (!isNotEmpty(enumValue)) {
+            layout.setError(String.format("%s is required", field));
             return false;
         }
-        if (!role.equals("Job Seeker") && !role.equals("Admin")) {
-            layout.setError("Role is invalid");
-            return false;
+        for (String acceptableEnumValue : array) {
+            if (enumValue.equals(acceptableEnumValue)) {
+                layout.setError(null);
+                return true;
+            }
         }
-        layout.setError(null);
-        return true;
-
+        layout.setError(String.format("%s is invalid", field));
+        return false;
     }
+
 
     public static boolean validatePassword(TextInputLayout layout, String password, boolean isLogin) {
         if (!isNotEmpty(password)) {
