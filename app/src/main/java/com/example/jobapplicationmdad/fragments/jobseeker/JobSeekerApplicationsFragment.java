@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
     AlertDialog loadingDialog;
     List<JobApplication> jobApplicationList;
     JobApplicationCardAdapter jobApplicationCardAdapter;
+    SwipeRefreshLayout srlJobSeekerApplication;
 
     public JobSeekerApplicationsFragment() {
         // Required empty public constructor
@@ -110,6 +112,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
         getJobApplications();
+        srlJobSeekerApplication = view.findViewById(R.id.srlJobSeekerApplication);
 
         recyclerView = view.findViewById(R.id.rvJobSeekerJobApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -129,6 +132,14 @@ public class JobSeekerApplicationsFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(jobApplicationCardAdapter);
+
+        srlJobSeekerApplication.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshJobApplications();
+                srlJobSeekerApplication.setRefreshing(false);
+            }
+        });
     }
 
     private void getJobApplications() {
@@ -167,5 +178,12 @@ public class JobSeekerApplicationsFragment extends Fragment {
             VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
+    private void refreshJobApplications() {
+        jobApplicationList.clear();
+        getJobApplications();
+        recyclerView.setVisibility(View.GONE);
+        jobApplicationCardAdapter.notifyDataSetChanged();
     }
 }

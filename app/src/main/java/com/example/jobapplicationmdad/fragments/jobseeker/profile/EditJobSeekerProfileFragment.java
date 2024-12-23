@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,16 +27,25 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
+import com.example.jobapplicationmdad.util.DateConverter;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +60,10 @@ public class EditJobSeekerProfileFragment extends Fragment {
     private User user;
     MaterialToolbar topAppBar;
     Button btnEditProfile;
-    EditText etFullNameProfile, etEmailProfile, etPhoneNumberProfile;
-    TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout;
+    EditText etFullNameProfile, etEmailProfile, etPhoneNumberProfile, etDateOfBirthProfile;
+
+    TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout, etDateOfBirthProfileLayout, etGenderProfileLayout, etNationalityProfileLayout, etRaceProfileLayout;
+    AutoCompleteTextView actvGenderProfile, actvRaceProfile, actvNationalityprofile;
 
     public EditJobSeekerProfileFragment() {
         // Required empty public constructor
@@ -109,16 +121,30 @@ public class EditJobSeekerProfileFragment extends Fragment {
         etFullNameProfile = view.findViewById(R.id.etFullNameProfile);
         etEmailProfile = view.findViewById(R.id.etEmailProfile);
         etPhoneNumberProfile = view.findViewById(R.id.etPhoneNumberProfile);
+        etDateOfBirthProfile = view.findViewById(R.id.etDateOfBirthProfile);
 
         // Form Layouts
         etFullNameProfileLayout = view.findViewById(R.id.etFullNameProfileLayout);
         etEmailProfileLayout = view.findViewById(R.id.etEmailProfileLayout);
         etPhoneNumberProfileLayout = view.findViewById(R.id.etPhoneNumberProfileLayout);
+        etDateOfBirthProfileLayout = view.findViewById(R.id.etDateOfBirthProfileLayout);
+        etGenderProfileLayout = view.findViewById(R.id.etGenderProfileLayout);
+        etRaceProfileLayout = view.findViewById(R.id.etRaceProfileLayout);
+        etNationalityProfileLayout = view.findViewById(R.id.etNationalityProfileLayout);
+
+        // Autocomplete TextViews
+        actvGenderProfile = view.findViewById(R.id.actvGenderProfile);
+        actvRaceProfile = view.findViewById(R.id.actvRaceProfile);
+        actvNationalityprofile = view.findViewById(R.id.actvNationalityProfile);
 
         // Populate fields
         etFullNameProfile.setText(user.getFullName());
         etEmailProfile.setText(user.getEmail());
         etPhoneNumberProfile.setText(user.getPhoneNumber());
+        etDateOfBirthProfile.setText(user.getDateOfBirth());
+        actvGenderProfile.setText(user.getGender(), false);
+        actvRaceProfile.setText(user.getRace(), false);
+        actvNationalityprofile.setText(user.getNationality(), false);
 
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -139,6 +165,37 @@ public class EditJobSeekerProfileFragment extends Fragment {
                 }
             }
         });
+        etDateOfBirthProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+                long today = calendar.getTimeInMillis();
+
+                // Minimum date is 16 years from today
+                calendar.add(Calendar.YEAR, -16);
+                long sixteenYearsAgo = calendar.getTimeInMillis();
+
+                // Maximum date is 100 years from today
+                calendar.setTimeInMillis(today);
+                calendar.add(Calendar.YEAR, -100);
+                long hundredYearsAgo = calendar.getTimeInMillis();
+
+                // Set up the date picker with constraints
+                CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
+                constraintsBuilder.setStart(hundredYearsAgo);
+                constraintsBuilder.setEnd(sixteenYearsAgo);
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
+                        .setSelection(DateConverter.formatDateToMilliseconds(user.getDateOfBirth()))
+                        .setTitleText("Select Date of Birth")
+                        .setCalendarConstraints(constraintsBuilder.build())
+                        .build();
+                datePicker.show(getParentFragmentManager(), "DATE_PICKER");
+
+                datePicker.addOnPositiveButtonClickListener(selection -> {
+                    etDateOfBirthProfile.setText(DateConverter.formatDateFromMilliseconds(selection));
+                });
+            }
+        });
 
     }
 
@@ -146,14 +203,24 @@ public class EditJobSeekerProfileFragment extends Fragment {
         String fullName = etFullNameProfile.getText().toString().trim();
         String email = etEmailProfile.getText().toString();
         String phoneNumber = etPhoneNumberProfile.getText().toString();
-        return new User(fullName, email, phoneNumber);
+        String dateOfBirth = etDateOfBirthProfile.getText().toString();
+        String gender = Objects.requireNonNull(etGenderProfileLayout.getEditText()).getText().toString();
+        String race = Objects.requireNonNull(etRaceProfileLayout.getEditText()).getText().toString();
+        String nationality = Objects.requireNonNull(etNationalityProfileLayout.getEditText()).getText().toString();
+        return new User(fullName, email, phoneNumber, dateOfBirth, gender, race, nationality);
     }
 
     private boolean validateUser(User user) {
         boolean isValidName = AuthValidation.validateName(etFullNameProfileLayout, user.getFullName());
         boolean isValidEmail = AuthValidation.validateEmail(etEmailProfileLayout, user.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberProfileLayout, user.getPhoneNumber());
-        return isValidName && isValidEmail && isValidPhoneNumber;
+        boolean isValidDateOfBirth = AuthValidation.validateNull(etDateOfBirthProfileLayout, "Date of Birth", user.getDateOfBirth());
+        boolean isValidGender = AuthValidation.validateEnum(etGenderProfileLayout, "Gender", user.getGender(), getResources().getStringArray(R.array.gender_items));
+        boolean isValidRace = AuthValidation.validateEnum(etRaceProfileLayout, "Race", user.getRace(), getResources().getStringArray(R.array.race_items));
+        boolean isValidNationality = AuthValidation.validateEnum(etNationalityProfileLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));
+        ;
+
+        return isValidName && isValidEmail && isValidPhoneNumber && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
 
     private void updateUser(User user) {
@@ -163,6 +230,10 @@ public class EditJobSeekerProfileFragment extends Fragment {
         params.put("fullName", user.getFullName());
         params.put("email", user.getEmail());
         params.put("phoneNumber", user.getPhoneNumber());
+        params.put("dateOfBirth", DateConverter.formatDateForSql(user.getDateOfBirth()));
+        params.put("gender", user.getGender());
+        params.put("race", user.getRace());
+        params.put("nationality", user.getNationality());
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
 

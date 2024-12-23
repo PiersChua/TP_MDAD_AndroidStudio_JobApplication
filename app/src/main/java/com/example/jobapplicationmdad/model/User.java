@@ -41,10 +41,15 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public User(String fullName, String email, String phoneNumber) {
+    // Update details
+    public User(String fullName, String email, String phoneNumber, String dateOfBirth, String gender, String race, String nationality) {
         this.fullName = fullName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.race = race;
+        this.nationality = nationality;
     }
 
     public User() {

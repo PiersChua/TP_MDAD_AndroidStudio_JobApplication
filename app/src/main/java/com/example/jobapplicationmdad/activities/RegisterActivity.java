@@ -175,10 +175,10 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("phoneNumber", user.getPhoneNumber());
         params.put("role", user.getRole());
         params.put("password", user.getPassword());
-        params.put("dateOfBirth", formatDateForSql(user.getDateOfBirth()));
-        params.put("gender",user.getGender().toString());
-        params.put("race",user.getRace().toString());
-        params.put("nationality",user.getNationality().toString());
+        params.put("dateOfBirth", DateConverter.formatDateForSql(user.getDateOfBirth()));
+        params.put("gender",user.getGender());
+        params.put("race",user.getRace());
+        params.put("nationality",user.getNationality());
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             // Get the currently focused view
@@ -199,15 +199,5 @@ public class RegisterActivity extends AppCompatActivity {
         });
         VolleySingleton.getInstance(this).addToRequestQueue(req);
     }
-    private String formatDateForSql(String date){
-        SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
 
-       try {
-           Date inputDate = inputDateFormat.parse(date);
-           return outputDateFormat.format(inputDate);
-       } catch (ParseException e) {
-           throw new RuntimeException(e);
-       }
-    }
 }

@@ -29,6 +29,7 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.DateConverter;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -187,7 +188,7 @@ public class AgentProfileFragment extends Fragment {
                 user = new User();
                 user.setFullName(response.getString("fullName"));
                 user.setEmail(response.getString("email"));
-                user.setDateOfBirth(response.getString("dateOfBirth"));
+                user.setDateOfBirth(DateConverter.formatDateFromSql(response.getString("dateOfBirth")));
                 user.setPhoneNumber(response.getString("phoneNumber"));
                 user.setRace(response.getString("race"));
                 user.setNationality(response.getString("nationality"));

@@ -138,6 +138,7 @@
                     style="@style/Button.Primary"
                     android:layout_width="match_parent"
                     android:text="@string/btn_text_apply"
+                    android:layout_marginBottom="16dp"
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
