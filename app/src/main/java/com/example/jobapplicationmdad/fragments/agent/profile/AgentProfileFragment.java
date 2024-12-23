@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.jobseeker.profile;
+package com.example.jobapplicationmdad.fragments.agent.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +24,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.fragments.agent.profile.EditAgentProfileFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -41,13 +42,11 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link JobSeekerProfileFragment#newInstance} factory method to
+ * Use the {@link AgentProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class JobSeekerProfileFragment extends Fragment {
+public class AgentProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -68,8 +67,7 @@ public class JobSeekerProfileFragment extends Fragment {
     SharedPreferences sp;
     private long mLastClickTime;
 
-
-    public JobSeekerProfileFragment() {
+    public AgentProfileFragment() {
         // Required empty public constructor
     }
 
@@ -79,11 +77,11 @@ public class JobSeekerProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment JobSeekerProfileFragment.
+     * @return A new instance of fragment AgentProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static JobSeekerProfileFragment newInstance(String param1, String param2) {
-        JobSeekerProfileFragment fragment = new JobSeekerProfileFragment();
+    public static AgentProfileFragment newInstance(String param1, String param2) {
+        AgentProfileFragment fragment = new AgentProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -101,10 +99,11 @@ public class JobSeekerProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
-        return inflater.inflate(R.layout.fragment_job_seeker_profile, container, false);
+        return inflater.inflate(R.layout.fragment_agent_profile, container, false);
     }
 
     @Override
@@ -116,21 +115,18 @@ public class JobSeekerProfileFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         profileItems = new ArrayList<>();
         getUserDetails(); // fetch from db
-        topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
-        tvName = view.findViewById(R.id.tvJobSeekerProfileName);
-        recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
-        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditJobSeekerProfile);
+        topAppBar = view.findViewById(R.id.topAppBarAgentProfile);
+        tvName = view.findViewById(R.id.tvAgentProfileName);
+        recyclerView = view.findViewById(R.id.rvAgentProfile);
+        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditAgentProfile);
 
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId", ""), sp.getString("token", ""))).addToBackStack(null).commit();
+                if (id == R.id.agent_profile_item_1) {
                     return true;
-                } else if (id == R.id.job_seeker_profile_item_2) {
-                    return true;
-                } else if (id == R.id.job_seeker_profile_item_3) {
+                } else if (id == R.id.agent_profile_item_2) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
@@ -160,12 +156,12 @@ public class JobSeekerProfileFragment extends Fragment {
         btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (System.currentTimeMillis()- mLastClickTime < 1000){
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditJobSeekerProfileFragment.newInstance(user)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentProfile, EditAgentProfileFragment.newInstance(user)).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
@@ -233,6 +229,4 @@ public class JobSeekerProfileFragment extends Fragment {
         addProfileItem("Nationality", user.getNationality());
         addProfileItem("Gender", user.getGender());
     }
-
-
 }

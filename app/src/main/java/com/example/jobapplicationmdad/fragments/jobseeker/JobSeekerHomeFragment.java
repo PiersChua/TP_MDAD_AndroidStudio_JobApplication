@@ -189,8 +189,8 @@ public class JobSeekerHomeFragment extends Fragment {
                 }
                 // toggle the visibility of loader
                 loadingDialog.dismiss();
-                recyclerViewRecommendedJobs.setVisibility(recommendedJobList.isEmpty() ? View.GONE : View.VISIBLE);
-                recyclerViewJobs.setVisibility(jobList.isEmpty() ? View.GONE : View.VISIBLE);
+                recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
+                recyclerViewJobs.setVisibility( View.VISIBLE);
             }
 
         }, error -> {
@@ -204,18 +204,13 @@ public class JobSeekerHomeFragment extends Fragment {
     private void refreshJobs(){
         recommendedJobList.clear();
         jobList.clear();
-        getJobs();
-        if (recommendedJobList.isEmpty()) {
-            recyclerViewRecommendedJobs.setVisibility(View.GONE);
-            return;
-        }
-        recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
-        if(jobList.isEmpty()){
-            recyclerViewJobs.setVisibility(View.GONE);
-            return;
-        }
-        recyclerViewJobs.setVisibility(View.VISIBLE);
+        recyclerViewRecommendedJobs.setVisibility(View.GONE);
+        recyclerViewJobs.setVisibility(View.GONE);
+        smallJobCardAdapter.notifyDataSetChanged();
         jobCardAdapter.notifyDataSetChanged();
+
+        getJobs();
+
     }
 
 }
