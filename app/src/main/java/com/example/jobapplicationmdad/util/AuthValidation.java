@@ -108,7 +108,11 @@ public class AuthValidation extends Validation {
     }
 
     public static boolean validateConfirmPassword(TextInputLayout layout, String password, String confirmPassword) {
-        if (!confirmPassword.isEmpty() && !password.isEmpty() && !confirmPassword.equals(password)) {
+        if (!isNotEmpty(confirmPassword)) {
+            layout.setError("Confirm password is required");
+            return false;
+        }
+        if (!confirmPassword.equals(password)) {
             layout.setError("Passwords do not match");
             return false;
         }

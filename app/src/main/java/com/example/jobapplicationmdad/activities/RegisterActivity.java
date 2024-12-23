@@ -3,6 +3,7 @@ package com.example.jobapplicationmdad.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -32,8 +33,12 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -141,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
         String role = Objects.requireNonNull(etRoleRegisterLayout.getEditText()).getText().toString();
         String password = etPasswordRegister.getText().toString();
         String confirmPassword = etConfirmPasswordRegister.getText().toString();
-        String dateOfBirth = etDateOfBirthRegister.getText().toString();
+        String dateOfBirth =etDateOfBirthRegister.getText().toString();
         String gender = Objects.requireNonNull(etGenderRegisterLayout.getEditText()).getText().toString();
         String race = Objects.requireNonNull(etRaceRegisterLayout.getEditText()).getText().toString();
         String nationality = Objects.requireNonNull(etNationalityRegisterLayout.getEditText()).getText().toString();
@@ -158,9 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isValidDateOfBirth = AuthValidation.validateNull(etDateOfBirthRegisterLayout, "Date of Birth", user.getDateOfBirth());
         boolean isValidGender = AuthValidation.validateEnum(etGenderRegisterLayout, "Gender", user.getGender(), getResources().getStringArray(R.array.gender_items));
         boolean isValidRace = AuthValidation.validateEnum(etRaceRegisterLayout, "Race", user.getRace(), getResources().getStringArray(R.array.race_items));
-        boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));
-        ;
-
+        boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));;
 
         return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
@@ -172,6 +175,10 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("phoneNumber", user.getPhoneNumber());
         params.put("role", user.getRole());
         params.put("password", user.getPassword());
+        params.put("dateOfBirth", formatDateForSql(user.getDateOfBirth()));
+        params.put("gender",user.getGender().toString());
+        params.put("race",user.getRace().toString());
+        params.put("nationality",user.getNationality().toString());
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             // Get the currently focused view
@@ -191,5 +198,16 @@ public class RegisterActivity extends AppCompatActivity {
             VolleyErrorHandler.newErrorListener(getApplicationContext(), findViewById(android.R.id.content)).onErrorResponse(error);
         });
         VolleySingleton.getInstance(this).addToRequestQueue(req);
+    }
+    private String formatDateForSql(String date){
+        SimpleDateFormat inputDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault());
+
+       try {
+           Date inputDate = inputDateFormat.parse(date);
+           return outputDateFormat.format(inputDate);
+       } catch (ParseException e) {
+           throw new RuntimeException(e);
+       }
     }
 }

@@ -1,8 +1,8 @@
 package com.example.jobapplicationmdad.model;
 
 public class JobApplication {
-    public JobApplication(String status, String createdAt, String updatedAt, Job job) {
-        this.status = Status.valueOf(status);
+    public JobApplication(Status status, String createdAt, String updatedAt, Job job) {
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.job = job;

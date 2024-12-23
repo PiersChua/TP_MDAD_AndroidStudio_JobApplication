@@ -33,6 +33,11 @@ public class DateConverter {
         return dateFormat.format(date);
     }
 
+    /**
+     *
+     * @param milliseconds The in milliseconds
+     * @return A formatted date in dd/MM/yyyy
+     */
     public static String formatDateFromMilliseconds(Long milliseconds){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         Date date = new Date(milliseconds);

@@ -229,9 +229,9 @@ public class JobSeekerProfileFragment extends Fragment {
         addProfileItem("Email Address", user.getEmail());
         addProfileItem("Date of Birth", user.getDateOfBirth());
         addProfileItem("Phone Number", user.getPhoneNumber());
-        addProfileItem("Race", user.getRace());
-        addProfileItem("Nationality", user.getNationality());
-        addProfileItem("Gender", user.getGender());
+        addProfileItem("Race", user.getRace().toString());
+        addProfileItem("Nationality", user.getNationality().toString());
+        addProfileItem("Gender", user.getGender().toString());
     }
 
 

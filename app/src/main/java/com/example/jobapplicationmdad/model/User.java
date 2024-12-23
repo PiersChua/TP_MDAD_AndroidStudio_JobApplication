@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String race;
     private String nationality;
     private Agency agency;
+
     //private String resume;  // Nullable
     //private String agencyId;  // Nullable (Foreign Key)
     //private String createdAt;  // Nullable (Timestamp)
