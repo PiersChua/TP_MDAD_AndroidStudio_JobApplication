@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.window.OnBackInvokedDispatcher;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,16 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;
-import com.example.jobapplicationmdad.fragments.agent.AgentJobsFragment;
+import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
 import com.example.jobapplicationmdad.fragments.agent.profile.AgentProfileFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerApplicationsFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerFavouriteFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerHomeFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobsFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.profile.JobSeekerProfileFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

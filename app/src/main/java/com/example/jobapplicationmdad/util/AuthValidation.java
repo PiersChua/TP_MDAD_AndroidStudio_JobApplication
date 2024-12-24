@@ -14,7 +14,7 @@ public class AuthValidation extends Validation {
      * At least 1 lowercase
      * At least 8 characters
      * */
-    private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+    public static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
 
     public AuthValidation() {
         super();
@@ -118,7 +118,7 @@ public class AuthValidation extends Validation {
         }
         layout.setError(null);
         return true;
-
     }
+
 
 }

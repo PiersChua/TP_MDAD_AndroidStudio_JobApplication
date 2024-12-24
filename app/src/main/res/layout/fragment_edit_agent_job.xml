@@ -1,14 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.agent.job.EditAgentJobFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarAgentEditJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/background"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_edit_listing"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/llEditAgentJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llJobForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etPositionJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_position"
+                        app:startIconDrawable="@drawable/ic_position">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPositionJob"
+                            style="@style/EditText" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etOrganisationJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_organisation"
+                        app:startIconDrawable="@drawable/ic_building">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etOrganisationJob"
+                            style="@style/EditText" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etLocationJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_location"
+                        app:startIconDrawable="@drawable/ic_location">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLocationJob"
+                            style="@style/EditText" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etScheduleJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_schedule"
+                        app:startIconDrawable="@drawable/ic_time">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etScheduleJob"
+                            style="@style/EditText"
+                            android:maxLines="3"
+                            android:singleLine="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:text="@string/hint_employment_type" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <CheckBox
+                            android:id="@+id/checkboxPartTimeJob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="true"
+                            android:focusable="true"
+                            android:text="@string/hint_part_time" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/etPartTimeSalaryJobLayout"
+                            style="@style/EditTextLayout"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:hint="@string/hint_salary_part_time"
+                            android:visibility="gone"
+                            app:startIconDrawable="@drawable/ic_dollar">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPartTimeSalaryJob"
+                                style="@style/EditText"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <CheckBox
+                            android:id="@+id/checkboxFullTimeJob"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:text="@string/hint_full_time" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/etFullTimeSalaryJobLayout"
+                            style="@style/EditTextLayout"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:hint="@string/hint_salary_full_time"
+                            android:visibility="gone"
+                            app:startIconDrawable="@drawable/ic_dollar">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etFullTimeSalaryJob"
+                                style="@style/EditText"
+                                android:inputType="number|numberDecimal" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etResponsibilitiesJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_responsibilities"
+                        app:startIconDrawable="@drawable/ic_checklist">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etResponsibilitiesJob"
+                            style="@style/EditText"
+                            android:maxLines="4"
+                            android:singleLine="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etDescriptionJobLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_description"
+                        app:startIconDrawable="@drawable/ic_description">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDescriptionJob"
+                            style="@style/EditText"
+                            android:maxLines="4"
+                            android:singleLine="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <android.widget.Button
+                        android:id="@+id/btnEditAgentJob"
+                        style="@style/Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/btn_text_update"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 
 </FrameLayout>

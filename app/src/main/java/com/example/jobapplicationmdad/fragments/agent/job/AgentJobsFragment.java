@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agent;
+package com.example.jobapplicationmdad.fragments.agent.job;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -23,6 +22,7 @@ import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
+import com.example.jobapplicationmdad.fragments.jobseeker.profile.CreateAgencyApplicationFragment;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -123,12 +123,12 @@ public class AgentJobsFragment extends Fragment {
 
             @Override
             public void onViewJobApplications(String jobId) {
-
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, AgentManageJobApplicationsFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
 
             @Override
             public void onEditJob(String jobId) {
-
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, EditAgentJobFragment.newInstance(jobId)).addToBackStack(null).commit();
             }
         });
         recyclerView.setAdapter(agentJobCardAdapter);

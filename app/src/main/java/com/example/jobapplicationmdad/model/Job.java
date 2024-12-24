@@ -18,8 +18,21 @@ public class Job implements Serializable {
     private String updatedAt;
     private int favouriteCount;
     private int applicationCount;
-    public Job(){
 
+    public Job() {
+
+    }
+
+    // All fields
+    public Job(String position, String organisation, String location, String schedule, double partTimeSalary, double fullTimeSalary, String responsibilities, String description) {
+        this.position = position;
+        this.organisation = organisation;
+        this.location = location;
+        this.schedule = schedule;
+        this.partTimeSalary = partTimeSalary;
+        this.fullTimeSalary = fullTimeSalary;
+        this.responsibilities = responsibilities;
+        this.description = description;
     }
 
     // Job Cards at Home Fragment
@@ -32,8 +45,9 @@ public class Job implements Serializable {
         this.fullTimeSalary = fullTimeSalary;
         this.updatedAt = updatedAt;
     }
+
     // Job Cards at Favourite, Application Fragments
-    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt,User user) {
+    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt, User user) {
         this.jobId = jobId;
         this.position = position;
         this.responsibilities = responsibilities;
@@ -55,6 +69,7 @@ public class Job implements Serializable {
         this.favouriteCount = favouriteCount;
         this.applicationCount = applicationCount;
     }
+
 
     public String getJobId() {
         return jobId;

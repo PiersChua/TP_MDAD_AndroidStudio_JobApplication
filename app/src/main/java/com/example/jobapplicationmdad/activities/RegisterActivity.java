@@ -141,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private User getUserFromForm() {
         String fullName = etFullNameRegister.getText().toString().trim();
-        String email = etEmailRegister.getText().toString();
+        String email = etEmailRegister.getText().toString().trim();
         String phoneNumber = etPhoneNumberRegister.getText().toString();
         String role = Objects.requireNonNull(etRoleRegisterLayout.getEditText()).getText().toString();
         String password = etPasswordRegister.getText().toString();

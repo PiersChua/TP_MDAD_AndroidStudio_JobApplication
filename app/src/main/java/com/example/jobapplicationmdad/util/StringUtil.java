@@ -1,5 +1,11 @@
 package com.example.jobapplicationmdad.util;
 
+import android.text.InputFilter;
+import android.text.Spanned;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringUtil {
     /**
      * @param name The input name
@@ -16,5 +22,33 @@ public class StringUtil {
 
         }
         return initials.toString().toUpperCase();
+    }
+
+    /**
+     *  Limit the number of digits on the left and right of the decimal
+     */
+
+    public static class DecimalDigitsInputFilter implements InputFilter {
+
+        private final Pattern mPattern;
+
+        public DecimalDigitsInputFilter(int places, int precision) {
+            mPattern = Pattern.compile(
+                    "^\\d{0," + places + "}(\\.\\d{0," + precision + "})?$"
+            );
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            String resultingText = dest.subSequence(0, dstart)
+                    + source.toString()
+                    + dest.subSequence(dend, dest.length());
+
+            Matcher matcher = mPattern.matcher(resultingText);
+            if (!matcher.matches()) {
+                return "";
+            }
+            return null;
+        }
     }
 }

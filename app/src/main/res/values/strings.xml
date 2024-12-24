@@ -26,6 +26,8 @@
     <string name="title_menu_job_applications">Job Applications</string>
     <string name="title_menu_jobs">My Jobs</string>
     <string name="title_menu_listings">Listings</string>
+    <string name="title_menu_manage_applications">Manage Applications</string>
+    <string name="title_menu_edit_listing">Edit Listing</string>
 
     <!-- Dialog -->
     <string name="dialog_loading_desc">Please wait...</string>
@@ -57,6 +59,17 @@
     <string name="hint_gender">Gender*</string>
     <string name="hint_race">Race*</string>
     <string name="hint_nationality">Nationality*</string>
+    <string name="hint_position">Position</string>
+    <string name="hint_organisation">Organisation</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_schedule">Schedule</string>
+    <string name="hint_employment_type">Employment Type</string>
+    <string name="hint_part_time">Part Time</string>
+    <string name="hint_salary_part_time">Salary per hour</string>
+    <string name="hint_full_time">Full Time</string>
+    <string name="hint_salary_full_time">Salary per month</string>
+    <string name="hint_responsibilities">Responsibilities</string>
+    <string name="hint_description">Description</string>
 
     <string name="hint_address">Address</string>
 
