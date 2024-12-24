@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;
+import com.example.jobapplicationmdad.fragments.agent.AgentJobsFragment;
 import com.example.jobapplicationmdad.fragments.agent.profile.AgentProfileFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerApplicationsFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerFavouriteFragment;
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case "Agent":
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());
-                //fragments.put(R.id.bottom_nav_agent_item_2, new AgentHomeFragment());
+                fragments.put(R.id.bottom_nav_agent_item_2, new AgentJobsFragment());
                 fragments.put(R.id.bottom_nav_agent_item_3, new AgentProfileFragment());
         }
     }

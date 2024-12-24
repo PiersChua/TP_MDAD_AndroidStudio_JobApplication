@@ -25,6 +25,7 @@
     <string name="title_menu_favourite_jobs">Favourite Jobs</string>
     <string name="title_menu_job_applications">Job Applications</string>
     <string name="title_menu_jobs">My Jobs</string>
+    <string name="title_menu_listings">Listings</string>
 
     <!-- Dialog -->
     <string name="dialog_loading_desc">Please wait...</string>
@@ -68,6 +69,7 @@
     <string name="btn_text_apply">Apply</string>
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>
+    <string name="btn_text_manage">Manage</string>
 
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>

@@ -16,6 +16,8 @@ public class Job implements Serializable {
     private User user;
     private String createdAt;
     private String updatedAt;
+    private int favouriteCount;
+    private int applicationCount;
     public Job(){
 
     }
@@ -40,6 +42,18 @@ public class Job implements Serializable {
         this.fullTimeSalary = fullTimeSalary;
         this.updatedAt = updatedAt;
         this.user = user;
+    }
+
+    // Job Cards for Agent Fragment
+    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, int favouriteCount, int applicationCount) {
+        this.jobId = jobId;
+        this.position = position;
+        this.responsibilities = responsibilities;
+        this.location = location;
+        this.partTimeSalary = partTimeSalary;
+        this.fullTimeSalary = fullTimeSalary;
+        this.favouriteCount = favouriteCount;
+        this.applicationCount = applicationCount;
     }
 
     public String getJobId() {
@@ -144,5 +158,21 @@ public class Job implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getFavouriteCount() {
+        return favouriteCount;
+    }
+
+    public void setFavouriteCount(int favouriteCount) {
+        this.favouriteCount = favouriteCount;
+    }
+
+    public int getApplicationCount() {
+        return applicationCount;
+    }
+
+    public void setApplicationCount(int applicationCount) {
+        this.applicationCount = applicationCount;
     }
 }

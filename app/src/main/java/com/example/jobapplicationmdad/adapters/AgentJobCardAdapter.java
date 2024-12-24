@@ -3,6 +3,7 @@ package com.example.jobapplicationmdad.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +14,7 @@ import com.example.jobapplicationmdad.util.DateConverter;
 
 import java.util.List;
 
-public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHolder> {
+public class AgentJobCardAdapter extends RecyclerView.Adapter<AgentJobCardAdapter.ViewHolder> {
 
     private List<Job> jobs;
     private final OnJobClickListener listener;
@@ -21,7 +22,8 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
 
     // Interface for handling on click events
     public interface OnJobClickListener {
-        void onViewJobDetails(String jobId);
+        void onViewJobApplications(String jobId);
+        void onEditJob(String jobId);
     }
 
     /**
@@ -30,7 +32,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
      * @param dataSet  List<Job> containing the list of jobs
      * @param listener Defines the event to happen after clicking
      */
-    public JobCardAdapter(List<Job> dataSet, OnJobClickListener listener) {
+    public AgentJobCardAdapter(List<Job> dataSet, OnJobClickListener listener) {
         jobs = dataSet;
         this.listener = listener;
     }
@@ -44,7 +46,10 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
         private final TextView tvJobCardDescription;
         private final TextView tvJobCardSalary;
         private final TextView tvJobCardLocations;
-        private final TextView tvJobCardUpdatedAt;
+        private final TextView tvJobCardFavouriteCount;
+        private final TextView tvJobCardApplicationCount;
+        private final Button btnNavigateToEditJob;
+        private final Button btnManageJobApplications;
         private Job currentJob;
 
         public ViewHolder(View view, OnJobClickListener listener) {
@@ -54,12 +59,23 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
             tvJobCardDescription = view.findViewById(R.id.tvJobCardDescription);
             tvJobCardSalary = view.findViewById(R.id.tvJobCardSalary);
             tvJobCardLocations = view.findViewById(R.id.tvJobCardLocations);
-            tvJobCardUpdatedAt = view.findViewById(R.id.tvJobCardUpdatedAt);
-            view.setOnClickListener(new View.OnClickListener() {
+            tvJobCardFavouriteCount = view.findViewById(R.id.tvJobCardFavouriteCount);
+            tvJobCardApplicationCount = view.findViewById(R.id.tvJobCardApplicationCount);
+            btnNavigateToEditJob = view.findViewById(R.id.btnNavigateToEditJob);
+            btnManageJobApplications = view.findViewById(R.id.btnManageJobApplications);
+            btnNavigateToEditJob.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentJob != null) {
-                        listener.onViewJobDetails(currentJob.getJobId());
+                        listener.onEditJob(currentJob.getJobId());
+                    }
+                }
+            });
+            btnManageJobApplications.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    if (listener != null && currentJob != null) {
+                        listener.onViewJobApplications(currentJob.getJobId());
                     }
                 }
             });
@@ -86,7 +102,8 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
                 tvJobCardSalary.setText(salary);
             }
             tvJobCardLocations.setText(job.getLocation());
-            tvJobCardUpdatedAt.setText(DateConverter.formatDate(DateConverter.convertDateTimeToDate(job.getUpdatedAt())));
+            tvJobCardFavouriteCount.setText(String.valueOf(job.getFavouriteCount()));
+            tvJobCardApplicationCount.setText(String.valueOf(job.getApplicationCount()));
         }
 
     }
@@ -96,7 +113,7 @@ public class JobCardAdapter extends RecyclerView.Adapter<JobCardAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_job_seeker_job_card, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_agent_job_card, viewGroup, false);
         return new ViewHolder(view, listener);
     }
 

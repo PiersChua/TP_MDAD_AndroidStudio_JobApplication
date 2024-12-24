@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.jobseeker;
+package com.example.jobapplicationmdad.fragments.agent;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,20 +15,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.adapters.JobSeekerSmallJobCardAdapter;
-import com.example.jobapplicationmdad.adapters.JobSeekerJobCardAdapter;
-import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
 import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
@@ -41,33 +42,30 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link JobSeekerHomeFragment#newInstance} factory method to
+ * Use the {@link AgentJobsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class JobSeekerHomeFragment extends Fragment {
+public class AgentJobsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String get_jobs_url = MainActivity.root_url + "/api/job-seeker/get-jobs.php";
 
     // TODO: Rename and change types of parameters
+    private static final String get_jobs_url = MainActivity.root_url + "/api/agent/get-jobs.php";
     private String mParam1;
     private String mParam2;
-    SharedPreferences sp;
-    RecyclerView recyclerViewJobs;
-    RecyclerView recyclerViewRecommendedJobs;
+    RecyclerView recyclerView;
     List<Job> jobList;
-    List<Job> recommendedJobList;
     View dialogView;
     AlertDialog loadingDialog;
-    JobSeekerSmallJobCardAdapter smallJobCardAdapter;
-    JobSeekerJobCardAdapter jobCardAdapter;
-    SwipeRefreshLayout srlJobSeekerHome;
+    AgentJobCardAdapter agentJobCardAdapter;
+    SwipeRefreshLayout srlAgentJob;
+    MaterialToolbar topAppBar;
+    SharedPreferences sp;
 
-
-    public JobSeekerHomeFragment() {
+    public AgentJobsFragment() {
         // Required empty public constructor
     }
 
@@ -77,11 +75,11 @@ public class JobSeekerHomeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment JobSeekerHomeFragment.
+     * @return A new instance of fragment AgentJobsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static JobSeekerHomeFragment newInstance(String param1, String param2) {
-        JobSeekerHomeFragment fragment = new JobSeekerHomeFragment();
+    public static AgentJobsFragment newInstance(String param1, String param2) {
+        AgentJobsFragment fragment = new AgentJobsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -99,66 +97,61 @@ public class JobSeekerHomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
-        return inflater.inflate(R.layout.fragment_job_seeker_home, container, false);
+        return inflater.inflate(R.layout.fragment_agent_jobs, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        topAppBar = view.findViewById(R.id.topAppBarAgentJob);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
         getJobs();
-        srlJobSeekerHome = view.findViewById(R.id.srlJobSeekerHome);
-        recyclerViewRecommendedJobs = view.findViewById(R.id.rvJobSeekerSmallJobCard);
-        recyclerViewRecommendedJobs.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        recommendedJobList = new ArrayList<>();
+        srlAgentJob = view.findViewById(R.id.srlAgentJob);
+        recyclerView = view.findViewById(R.id.rvAgentJobCard);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         jobList = new ArrayList<>();
 
         // Set the adapter
-        smallJobCardAdapter = new JobSeekerSmallJobCardAdapter(recommendedJobList, new JobSeekerSmallJobCardAdapter.OnJobClickListener() {
+        agentJobCardAdapter = new AgentJobCardAdapter(jobList, new AgentJobCardAdapter.OnJobClickListener() {
+
             @Override
-            public void onViewJobDetails(String jobId) {
-                // check for double click
-                FragmentManager fragmentManager = getParentFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
-                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerHome, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
+            public void onViewJobApplications(String jobId) {
+
+            }
+
+            @Override
+            public void onEditJob(String jobId) {
+
             }
         });
-        recyclerViewRecommendedJobs.setAdapter(smallJobCardAdapter);
+        recyclerView.setAdapter(agentJobCardAdapter);
 
-        recyclerViewJobs = view.findViewById(R.id.rvJobSeekerJobCard);
-        recyclerViewJobs.setLayoutManager(new LinearLayoutManager(requireContext()));
-        jobCardAdapter = new JobSeekerJobCardAdapter(jobList, new JobSeekerJobCardAdapter.OnJobClickListener() {
-            @Override
-            public void onViewJobDetails(String jobId) {
-                // check for double click
-                FragmentManager fragmentManager = getParentFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
-                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flMain, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
-            }
-        });
-        recyclerViewJobs.setAdapter(jobCardAdapter);
 
-        srlJobSeekerHome.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        srlAgentJob.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshJobs();
-                srlJobSeekerHome.setRefreshing(false);
+                srlAgentJob.setRefreshing(false);
+            }
+        });
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                //if (id == R.id.job_seeker_profile_item_1) {
+                //    return true;
+                //}
+                return false;
             }
         });
     }
-
 
     private void getJobs() {
         loadingDialog.show();
@@ -174,13 +167,17 @@ public class JobSeekerHomeFragment extends Fragment {
                     JSONArray jobsArray = response.getJSONArray("data");
                     for (int i = 0; i < jobsArray.length(); i++) {
                         JSONObject jobObject = jobsArray.getJSONObject(i);
-                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
-                        // add the first 5 jobs to the recommended job list
-                        if (i < 5) {
-                            recommendedJobList.add(job);
-                        } else {
-                            jobList.add(job);
-                        }
+                        Job job = new Job(
+                                jobObject.getString("jobId"),
+                                jobObject.getString("position"),
+                                jobObject.getString("responsibilities"),
+                                jobObject.getString("location"),
+                                jobObject.optDouble("partTimeSalary", 0.0),
+                                jobObject.optDouble("fullTimeSalary", 0.0),
+                                jobObject.getInt("favourite_job_count"),
+                                jobObject.getInt("job_application_count")
+                        );
+                        jobList.add(job);
                     }
 
                 } catch (JSONException e) {
@@ -188,28 +185,19 @@ public class JobSeekerHomeFragment extends Fragment {
                 }
                 // toggle the visibility of loader
                 loadingDialog.dismiss();
-                recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
-                recyclerViewJobs.setVisibility( View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
             }
-
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
-
     }
 
-    private void refreshJobs(){
-        recommendedJobList.clear();
+    private void refreshJobs() {
         jobList.clear();
-        recyclerViewRecommendedJobs.setVisibility(View.GONE);
-        recyclerViewJobs.setVisibility(View.GONE);
-        smallJobCardAdapter.notifyDataSetChanged();
-        jobCardAdapter.notifyDataSetChanged();
-
+        recyclerView.setVisibility(View.GONE);
+        agentJobCardAdapter.notifyDataSetChanged();
         getJobs();
-
     }
-
 }

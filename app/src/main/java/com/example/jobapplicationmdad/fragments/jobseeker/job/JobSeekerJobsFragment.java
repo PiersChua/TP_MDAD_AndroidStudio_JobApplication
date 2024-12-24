@@ -1,43 +1,22 @@
 package com.example.jobapplicationmdad.fragments.jobseeker.job;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.adapters.JobCardAdapter;
 import com.example.jobapplicationmdad.adapters.JobsPagerAdapter;
-import com.example.jobapplicationmdad.model.Job;
-import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
-import com.example.jobapplicationmdad.network.VolleyErrorHandler;
-import com.example.jobapplicationmdad.network.VolleySingleton;
-import com.example.jobapplicationmdad.util.UrlUtil;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
