@@ -1,18 +1,44 @@
 package com.example.jobapplicationmdad.fragments.agent.job;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.adapters.AgentJobApplicationCardAdapter;
+import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
+import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.JobApplication;
+import com.example.jobapplicationmdad.model.User;
+import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
+import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +53,15 @@ public class AgentManageJobApplicationsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private String jobId;
+    RecyclerView recyclerView;
+    List<JobApplication> jobApplicationList;
+    View dialogView;
+    AlertDialog loadingDialog;
+    AgentJobApplicationCardAdapter agentJobApplicationCardAdapter;
+    SwipeRefreshLayout srlAgentJobApplication;
     MaterialToolbar topAppBar;
+    SharedPreferences sp;
+    private static final String get_job_applications_url = MainActivity.root_url + "/api/agent/get-job-applications.php";
 
     public AgentManageJobApplicationsFragment() {
         // Required empty public constructor
@@ -61,13 +95,41 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
         return inflater.inflate(R.layout.fragment_agent_manage_job_applications, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarAgentManageJobApplication);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
+        getJobApplications();
+        srlAgentJobApplication = view.findViewById(R.id.srlAgentJobApplication);
+        recyclerView = view.findViewById(R.id.rvAgentJobApplicationCard);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        jobApplicationList = new ArrayList<>();
+       agentJobApplicationCardAdapter = new AgentJobApplicationCardAdapter(jobApplicationList, new AgentJobApplicationCardAdapter.OnJobClickListener() {
+           @Override
+           public void onViewUser(String userId) {
+
+           }
+
+           @Override
+           public void onAcceptJobApplication(String userId) {
+
+           }
+
+           @Override
+           public void onRejectJobApplication(String userId) {
+
+           }
+       });
+       recyclerView.setAdapter(agentJobApplicationCardAdapter);
+
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,5 +147,44 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         ((MainActivity) requireActivity()).showBottomNav();
+    }
+
+    private void getJobApplications(){
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("jobId", jobId);
+        String url = UrlUtil.constructUrl(get_job_applications_url, params);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray jobApplicationArray = response.getJSONArray("data");
+                    for (int i = 0; i < jobApplicationArray.length(); i++) {
+                        JSONObject jobApplicationObject = jobApplicationArray.getJSONObject(i);
+                        JobApplication jobApplication = new JobApplication();
+                        User user = new User();
+                        user.setFullName(jobApplicationObject.getString("user_full_name"));
+                        user.setEmail(jobApplicationObject.getString("user_email"));
+                        user.setPhoneNumber(jobApplicationObject.getString("user_phone_number"));
+                        jobApplication.setUser(user);
+                        jobApplication.setUserId(jobApplicationObject.getString("userId"));
+                        jobApplicationList.add(jobApplication);
+                    }
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                // toggle the visibility of loader
+                loadingDialog.dismiss();
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

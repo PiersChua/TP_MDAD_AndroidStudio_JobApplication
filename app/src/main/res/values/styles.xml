@@ -35,11 +35,25 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="Button.OutlinePrimary">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:background">@drawable/button_outline</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Button.Primary.Small">
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:background">@drawable/button_small</item>
     </style>
+
+    <style name="Button.OutlinePrimary.Small">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:background">@drawable/button_outline_small</item>
+    </style>
+
 
     <style name="ButtonIcon" parent="Widget.Material3.Button">
         <item name="android:layout_width">wrap_content</item>

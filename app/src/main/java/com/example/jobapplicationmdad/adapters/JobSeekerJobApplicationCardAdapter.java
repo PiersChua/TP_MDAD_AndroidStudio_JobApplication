@@ -8,13 +8,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobapplicationmdad.R;
-import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.model.JobApplication;
 import com.example.jobapplicationmdad.util.DateConverter;
 
 import java.util.List;
 
-public class JobApplicationCardAdapter extends RecyclerView.Adapter<JobApplicationCardAdapter.ViewHolder> {
+public class JobSeekerJobApplicationCardAdapter extends RecyclerView.Adapter<JobSeekerJobApplicationCardAdapter.ViewHolder> {
 
     private List<JobApplication> jobApplications;
     private final OnJobClickListener listener;
@@ -30,7 +29,7 @@ public class JobApplicationCardAdapter extends RecyclerView.Adapter<JobApplicati
      * @param dataSet  List<Job> containing the list of jobApplications
      * @param listener Defines the event to happen after clicking
      */
-    public JobApplicationCardAdapter(List<JobApplication> dataSet, OnJobClickListener listener) {
+    public JobSeekerJobApplicationCardAdapter(List<JobApplication> dataSet, OnJobClickListener listener) {
         jobApplications = dataSet;
         this.listener = listener;
     }

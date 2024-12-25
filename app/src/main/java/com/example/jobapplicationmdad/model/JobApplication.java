@@ -1,6 +1,9 @@
 package com.example.jobapplicationmdad.model;
 
 public class JobApplication {
+    public JobApplication(){
+
+    }
     public JobApplication(Status status, String createdAt, String updatedAt, Job job) {
         this.status = status;
         this.createdAt = createdAt;
@@ -17,7 +20,34 @@ public class JobApplication {
     private String createdAt;
     private String updatedAt;
     private Status status;
+    private String jobId;
     private Job job;
+    private String userId;
+    private User user;
+
+    public String getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getCreatedAt() {
         return createdAt;

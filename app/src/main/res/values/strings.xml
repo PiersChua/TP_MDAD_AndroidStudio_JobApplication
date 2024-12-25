@@ -88,6 +88,8 @@
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>
     <string name="btn_text_manage">Manage</string>
+    <string name="btn_text_accept">Accept</string>
+    <string name="btn_text_reject">Reject</string>
 
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="200dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_marginTop="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -18,45 +18,37 @@
             android:paddingTop="16dp"
             android:paddingBottom="0dp">
 
+
             <TextView
-                android:id="@+id/tvSmallJobCardTitle"
+                android:id="@+id/tvJobApplicationCardUserName"
                 style="@style/Text.Medium"
-                android:layout_height="45dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="Position"
+                android:text="Name"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_height="50dp"
-                android:id="@+id/tvSmallJobCardDescription"
-                style="@style/Text.Small"
-                android:layout_marginTop="8dp"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:text="Responsbilities" />
 
             <TextView
-                android:id="@+id/tvSmallJobCardSalary"
+                android:id="@+id/tvJobApplicationCardUserEmail"
                 style="@style/Text.Small"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="Salary"
-                android:textColor="@color/secondary"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_money_18" />
+                android:text="Email"
+                app:drawableStartCompat="@drawable/ic_attach_email_18" />
 
             <TextView
-                android:id="@+id/tvSmallJobCardLocations"
+                android:id="@+id/tvJobApplicationCardUserPhoneNumber"
                 style="@style/Text.Small"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="Locations"
-                app:drawableStartCompat="@drawable/ic_location_18" />
+                android:text="Phone Number"
+                app:drawableStartCompat="@drawable/ic_phone_18" />
 
         </LinearLayout>
 
@@ -69,19 +61,27 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingTop="8dp"
             android:paddingBottom="16dp">
 
-            <TextView
-                android:id="@+id/tvSmallJobCardUpdatedAt"
-                style="@style/Text.ExtraSmall"
-                android:drawablePadding="2dp"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="19/2/2024"
-                app:drawableStartCompat="@drawable/ic_time_16" />
+            <android.widget.Button
+                android:id="@+id/btnAcceptJobApplication"
+                style="@style/Button.Primary.Small"
+                android:text="@string/btn_text_accept"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+
+            <android.widget.Button
+                android:id="@+id/btnRejectJobApplication"
+                style="@style/Button.OutlinePrimary.Small"
+                android:text="@string/btn_text_reject"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>

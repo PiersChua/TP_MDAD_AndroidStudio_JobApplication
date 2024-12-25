@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.adapters.JobApplicationCardAdapter;
+import com.example.jobapplicationmdad.adapters.JobSeekerJobApplicationCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
@@ -31,7 +31,6 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +62,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
     View dialogView;
     AlertDialog loadingDialog;
     List<JobApplication> jobApplicationList;
-    JobApplicationCardAdapter jobApplicationCardAdapter;
+    JobSeekerJobApplicationCardAdapter jobApplicationCardAdapter;
     SwipeRefreshLayout srlJobSeekerApplication;
 
     public JobSeekerApplicationsFragment() {
@@ -118,7 +117,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         jobApplicationList = new ArrayList<>();
         // Set the adapter
-        jobApplicationCardAdapter = new JobApplicationCardAdapter(jobApplicationList, new JobApplicationCardAdapter.OnJobClickListener() {
+        jobApplicationCardAdapter = new JobSeekerJobApplicationCardAdapter(jobApplicationList, new JobSeekerJobApplicationCardAdapter.OnJobClickListener() {
 
             @Override
             public void onViewJobDetails(String jobId) {
@@ -153,15 +152,15 @@ public class JobSeekerApplicationsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jobsArray = response.getJSONArray("data");
-                    for (int i = 0; i < jobsArray.length(); i++) {
-                        JSONObject jobObject = jobsArray.getJSONObject(i);
+                    JSONArray jobApplicationsArray = response.getJSONArray("data");
+                    for (int i = 0; i < jobApplicationsArray.length(); i++) {
+                        JSONObject jobApplicationObject = jobApplicationsArray.getJSONObject(i);
                         Agency agency = new Agency();
-                        agency.setName(jobObject.getString("agency_name"));
+                        agency.setName(jobApplicationObject.getString("agency_name"));
                         User user = new User();
                         user.setAgency(agency);
-                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
-                        JobApplication jobApplication = new JobApplication(JobApplication.Status.valueOf(jobObject.getString("status")), jobObject.getString("job_application_created_at"), jobObject.getString("job_application_updated_at"), job);
+                        Job job = new Job(jobApplicationObject.getString("jobId"), jobApplicationObject.getString("position"), jobApplicationObject.getString("responsibilities"), jobApplicationObject.getString("location"), jobApplicationObject.optDouble("partTimeSalary", 0.0), jobApplicationObject.optDouble("fullTimeSalary", 0.0), jobApplicationObject.getString("updatedAt"), user);
+                        JobApplication jobApplication = new JobApplication(JobApplication.Status.valueOf(jobApplicationObject.getString("status")), jobApplicationObject.getString("job_application_created_at"), jobApplicationObject.getString("job_application_updated_at"), job);
                         jobApplicationList.add(jobApplication);
 
                     }
