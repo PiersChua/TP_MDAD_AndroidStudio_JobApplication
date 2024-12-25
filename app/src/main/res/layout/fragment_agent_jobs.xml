@@ -21,6 +21,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:theme="@style/ToolbarThemeLight"
+                app:menu="@menu/menu_agent_listings"
                 app:title="@string/title_menu_listings"
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 

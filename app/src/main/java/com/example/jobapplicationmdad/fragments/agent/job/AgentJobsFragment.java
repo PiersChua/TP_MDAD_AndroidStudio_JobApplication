@@ -145,9 +145,10 @@ public class AgentJobsFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                //if (id == R.id.job_seeker_profile_item_1) {
-                //    return true;
-                //}
+                if (id == R.id.agent_listings_item_1) {
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, new CreateAgentJobFragment()).addToBackStack(null).commit();
+                    return true;
+                }
                 return false;
             }
         });
@@ -170,7 +171,7 @@ public class AgentJobsFragment extends Fragment {
                         Job job = new Job(
                                 jobObject.getString("jobId"),
                                 jobObject.getString("position"),
-                                jobObject.getString("responsibilities"),
+                                jobObject.getString("organisation"),
                                 jobObject.getString("location"),
                                 jobObject.optDouble("partTimeSalary", 0.0),
                                 jobObject.optDouble("fullTimeSalary", 0.0),

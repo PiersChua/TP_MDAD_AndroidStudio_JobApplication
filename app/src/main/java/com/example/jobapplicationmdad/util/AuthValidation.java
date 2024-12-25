@@ -1,11 +1,6 @@
 package com.example.jobapplicationmdad.util;
 
-import android.content.Context;
-
-import com.example.jobapplicationmdad.R;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.sql.Array;
 
 public class AuthValidation extends Validation {
     /*
@@ -34,7 +29,7 @@ public class AuthValidation extends Validation {
             layout.setError("Name is required");
             return false;
         }
-        if (!isValidCharacterLength(name, 5)) {
+        if (!isValidMinCharacterLength(name, 5)) {
             layout.setError("Name is too short");
             return false;
         }

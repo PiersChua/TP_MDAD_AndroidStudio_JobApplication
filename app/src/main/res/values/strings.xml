@@ -17,6 +17,8 @@
     <string name="app_bar_profile_apply_agency">Apply for agency</string>
     <string name="app_bar_profile_settings">Settings</string>
     <string name="app_bar_profile_logout">Logout</string>
+    <string name="app_bar_listings_create">Create Listing</string>
+    <string name="app_bar_listings_delete">Delete Listing</string>
 
     <!-- Menu Title -->
     <string name="title_menu_profile">My Profile</string>
@@ -28,6 +30,8 @@
     <string name="title_menu_listings">Listings</string>
     <string name="title_menu_manage_applications">Manage Applications</string>
     <string name="title_menu_edit_listing">Edit Listing</string>
+    <string name="title_menu_create_listing">Create Listing</string>
+
 
     <!-- Dialog -->
     <string name="dialog_loading_desc">Please wait...</string>
@@ -79,6 +83,7 @@
 
     <!-- Button-->
     <string name="btn_text_update">Update</string>
+    <string name="btn_text_create">Create</string>
     <string name="btn_text_apply">Apply</string>
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>

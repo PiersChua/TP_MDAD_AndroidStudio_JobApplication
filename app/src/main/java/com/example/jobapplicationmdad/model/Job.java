@@ -59,10 +59,10 @@ public class Job implements Serializable {
     }
 
     // Job Cards for Agent Fragment
-    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, int favouriteCount, int applicationCount) {
+    public Job(String jobId, String position, String organisation, String location, double partTimeSalary, double fullTimeSalary, int favouriteCount, int applicationCount) {
         this.jobId = jobId;
         this.position = position;
-        this.responsibilities = responsibilities;
+        this.organisation = organisation;
         this.location = location;
         this.partTimeSalary = partTimeSalary;
         this.fullTimeSalary = fullTimeSalary;

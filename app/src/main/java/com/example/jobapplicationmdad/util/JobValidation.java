@@ -14,8 +14,12 @@ public class JobValidation extends Validation {
             layout.setError("Position is required");
             return false;
         }
-        if (!isValidCharacterLength(position, 10)) {
+        if (!isValidMinCharacterLength(position, 10)) {
             layout.setError("Position is too short");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(position,100)){
+            layout.setError("Position is too long");
             return false;
         }
         layout.setError(null);
@@ -27,8 +31,12 @@ public class JobValidation extends Validation {
             layout.setError("Responsibilities is required");
             return false;
         }
-        if (!isValidCharacterLength(responsibilities, 50)) {
-            layout.setError("Responsibilities is too short");
+        if (!isValidMinCharacterLength(responsibilities, 50)) {
+            layout.setError("Responsibilities is too short, at least 50 characters required");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(responsibilities,250)){
+            layout.setError("Responsibilities is too long");
             return false;
         }
         layout.setError(null);
@@ -40,8 +48,12 @@ public class JobValidation extends Validation {
             layout.setError("Description is required");
             return false;
         }
-        if (!isValidCharacterLength(description, 50)) {
-            layout.setError("Description is too short");
+        if (!isValidMinCharacterLength(description, 50)) {
+            layout.setError("Description is too short, at least 50 characters required");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(description,250)){
+            layout.setError("Description is too long");
             return false;
         }
         layout.setError(null);
@@ -53,8 +65,12 @@ public class JobValidation extends Validation {
             layout.setError("Schedule is required");
             return false;
         }
-        if (!isValidCharacterLength(schedule, 5)) {
+        if (!isValidMinCharacterLength(schedule, 5)) {
             layout.setError("Schedule is too short");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(schedule,50)){
+            layout.setError("Schedule is too long");
             return false;
         }
         layout.setError(null);
@@ -66,8 +82,12 @@ public class JobValidation extends Validation {
             layout.setError("Location is required");
             return false;
         }
-        if (!isValidCharacterLength(location, 2)) {
+        if (!isValidMinCharacterLength(location, 2)) {
             layout.setError("Location is too short");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(location,100)){
+            layout.setError("Location is too long");
             return false;
         }
         layout.setError(null);
@@ -79,8 +99,12 @@ public class JobValidation extends Validation {
             layout.setError("Organisation is required");
             return false;
         }
-        if (!isValidCharacterLength(organisation, 2)) {
+        if (!isValidMinCharacterLength(organisation, 2)) {
             layout.setError("Organisation is too short");
+            return false;
+        }
+        if(!isValidMaxCharacterLength(organisation,100)){
+            layout.setError("Organisation is too long");
             return false;
         }
         layout.setError(null);
@@ -91,6 +115,7 @@ public class JobValidation extends Validation {
         if (( !partTimeCheckbox.isChecked() && !fullTimeCheckbox.isChecked()) || (partTimeSalary == 0.0 && fullTimeSalary == 0.0)) {
             partTimeCheckbox.setError("Either part time or full time salary is required");
             fullTimeCheckbox.setError("Either part time or full time salary is required");
+            partTimeCheckbox.requestFocus();
             return false;
         }
         partTimeCheckbox.setError(null);
