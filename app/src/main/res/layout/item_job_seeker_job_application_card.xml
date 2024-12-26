@@ -14,8 +14,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="16dp"
             android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
             android:paddingBottom="0dp">
 
             <LinearLayout
@@ -30,13 +30,14 @@
                     android:singleLine="true"
                     android:text="Position"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tvJobApplicationCardAgencyName"
                     style="@style/Text.Small"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="@color/placeholder_foreground"
                     android:text="Agency Name"
+                    android:textColor="@color/placeholder_foreground"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:dividerColor="@color/placeholder_background" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,12 +87,14 @@
                 android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textStyle="bold"
                 android:text="PENDING"
+                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_info_18" />
+
             <TextView
                 android:id="@+id/tvJobApplicationCardCreatedAt"
                 style="@style/Text.ExtraSmall"
+                android:layout_marginTop="2dp"
                 android:drawablePadding="2dp"
                 android:ellipsize="end"
                 android:singleLine="true"

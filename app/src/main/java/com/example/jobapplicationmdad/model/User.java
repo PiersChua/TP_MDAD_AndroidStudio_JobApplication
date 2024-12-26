@@ -10,16 +10,42 @@ public class User implements Serializable {
     private String role;
     private String password;
     private String confirmPassword;
+
+    public int getJobCount() {
+        return jobCount;
+    }
+
+    public void setJobCount(int jobCount) {
+        this.jobCount = jobCount;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     private String dateOfBirth;
     private String gender;
     private String race;
     private String nationality;
     private Agency agency;
+    private int jobCount;
 
     //private String resume;  // Nullable
     //private String agencyId;  // Nullable (Foreign Key)
-    //private String createdAt;  // Nullable (Timestamp)
-    //private String updatedAt;  // Nullable (Timestamp)
+    private String createdAt;
+    private String updatedAt;
 
     // Register
     public User(String fullName, String email, String phoneNumber, String role, String password, String confirmPassword, String dateOfBirth, String gender, String race, String nationality) {

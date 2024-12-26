@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -125,6 +126,15 @@ public class AgentApplicantDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
+            }
+        });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
             }
         });
     }

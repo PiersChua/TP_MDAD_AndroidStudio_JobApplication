@@ -170,6 +170,13 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
+        srlAgentJobApplication.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshApplications();
+                srlAgentJobApplication.setRefreshing(false);
+            }
+        });
     }
 
     @Override

@@ -13,6 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminAgentsFragment;
+import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminHomeFragment;
+import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminProfileFragment;
 import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;
 import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
 import com.example.jobapplicationmdad.fragments.agent.profile.AgentProfileFragment;
@@ -105,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());
                 fragments.put(R.id.bottom_nav_agent_item_2, new AgentJobsFragment());
                 fragments.put(R.id.bottom_nav_agent_item_3, new AgentProfileFragment());
+            case "Agency Admin":
+                fragments.put(R.id.bottom_nav_agency_admin_item_1,new AgencyAdminHomeFragment());
+                fragments.put(R.id.bottom_nav_agency_admin_item_2, new AgencyAdminAgentsFragment());
+                fragments.put(R.id.bottom_nav_agency_admin_item_3, new AgencyAdminProfileFragment());
         }
     }
 

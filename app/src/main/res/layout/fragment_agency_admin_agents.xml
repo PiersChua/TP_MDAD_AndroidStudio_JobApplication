@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flAgencyAdminAgents"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.agencyadmin.AgencyAdminAgentsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppbarAgencyAdminAgents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_agents"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlAgencyAdminAgent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvAgencyAdminAgentCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:splitMotionEvents="false"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/flAgentProfile"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.agencyadmin.AgencyAdminProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.google.android.material.appbar.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBarAgencyAdminProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/primary">
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBarAgentProfile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="?attr/actionBarSize"
-                app:menu="@menu/menu_agent_profile"
-                app:theme="@style/ToolbarThemeLight"
-                app:title="@string/title_menu_profile"
-                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
-
-        </com.google.android.material.appbar.AppBarLayout>
-
+            android:minHeight="?attr/actionBarSize"
+            app:menu="@menu/menu_agency_admin_profile"
+            app:theme="@style/ToolbarThemeLight"
+            app:title="@string/title_menu_profile"
+            app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+    </com.google.android.material.appbar.AppBarLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -44,7 +43,7 @@
                     app:cardElevation="4dp">
 
                     <TextView
-                        android:id="@+id/tvAgentProfileName"
+                        android:id="@+id/tvAgencyAdminProfileName"
                         style="@style/Text"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
@@ -52,7 +51,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardAgentProfile"
+                    android:id="@+id/cardAgencyAdminProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -77,13 +76,13 @@
                                 android:textStyle="bold" />
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnNavigateToEditAgentProfile"
+                                android:id="@+id/btnNavigateToEditAgencyAdminProfile"
                                 style="@style/ButtonRoundedIconOutline"
                                 app:icon="@drawable/ic_edit" />
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvAgentProfile"
+                            android:id="@+id/rvAgencyAdminProfile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:overScrollMode="never"
@@ -104,13 +103,27 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
-                            style="@style/Text.Large"
-                            android:text="@string/agency_profile_fragment_header_card"
-                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_weight="1"
+                                style="@style/Text.Large"
+                                android:text="@string/agency_profile_fragment_header_card"
+                                android:textStyle="bold" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnNavigateToEditAgencyAdminAgencyProfile"
+                                style="@style/ButtonRoundedIconOutline"
+                                app:icon="@drawable/ic_edit" />
+                        </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvAgentAgencyProfile"
+                            android:id="@+id/rvAgencyAdminAgencyProfile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:overScrollMode="never"
@@ -120,4 +133,5 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
 </FrameLayout>
