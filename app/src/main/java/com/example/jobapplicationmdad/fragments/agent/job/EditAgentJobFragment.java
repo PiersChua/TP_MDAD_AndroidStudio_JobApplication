@@ -324,7 +324,7 @@ public class EditAgentJobFragment extends Fragment {
                 // allow profile to refresh when return to previous page
                 Bundle result = new Bundle();
                 result.putBoolean("isUpdated", true);
-                getParentFragmentManager().setFragmentResult("editJobResult", result);
+                getParentFragmentManager().setFragmentResult("jobResult", result);
                 getParentFragmentManager().popBackStack();
             } catch (JSONException e) {
                 throw new RuntimeException(e);
@@ -356,8 +356,8 @@ public class EditAgentJobFragment extends Fragment {
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
                 // allow profile to refresh when return to previous page
                 Bundle result = new Bundle();
-                result.putBoolean("isDeleted", true);
-                getParentFragmentManager().setFragmentResult("editJobResult", result);
+                result.putBoolean("isUpdated", true);
+                getParentFragmentManager().setFragmentResult("jobResult", result);
                 getParentFragmentManager().popBackStack();
             } catch (JSONException e) {
                 throw new RuntimeException(e);

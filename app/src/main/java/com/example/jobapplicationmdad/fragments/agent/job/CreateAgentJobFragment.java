@@ -241,7 +241,7 @@ public class CreateAgentJobFragment extends Fragment {
                 // allow profile to refresh when return to previous page
                 Bundle result = new Bundle();
                 result.putBoolean("isUpdated", true);
-                getParentFragmentManager().setFragmentResult("editJobResult", result);
+                getParentFragmentManager().setFragmentResult("jobResult", result);
                 getParentFragmentManager().popBackStack();
             } catch (JSONException e) {
                 throw new RuntimeException(e);

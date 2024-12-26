@@ -165,6 +165,12 @@ public class AgentJobsFragment extends Fragment {
                 return false;
             }
         });
+        getParentFragmentManager().setFragmentResultListener("jobResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated");
+            if (isUpdated) {
+                refreshJobs();
+            }
+        });
     }
 
     private void getJobs() {

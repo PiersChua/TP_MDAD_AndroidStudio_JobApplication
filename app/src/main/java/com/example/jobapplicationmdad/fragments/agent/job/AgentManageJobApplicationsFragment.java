@@ -231,7 +231,10 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 try {
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).show();
-
+                    refreshApplications();
+                    Bundle result = new Bundle();
+                    result.putBoolean("isUpdated", true);
+                    getParentFragmentManager().setFragmentResult("jobResult", result);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -239,5 +242,11 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content))
         );
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+    private void refreshApplications() {
+        jobApplicationList.clear();
+        recyclerView.setVisibility(View.GONE);
+        agentJobApplicationCardAdapter.notifyDataSetChanged();
+        getJobApplications();
     }
 }

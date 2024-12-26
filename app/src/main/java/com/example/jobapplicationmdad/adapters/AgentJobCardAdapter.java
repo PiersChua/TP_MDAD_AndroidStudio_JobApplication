@@ -103,6 +103,7 @@ public class AgentJobCardAdapter extends RecyclerView.Adapter<AgentJobCardAdapte
             }
             tvJobCardLocations.setText(job.getLocation());
             tvJobCardFavouriteCount.setText(String.valueOf(job.getFavouriteCount()));
+            tvJobCardApplicationCount.setVisibility(View.GONE);
             if(job.getApplicationCount()>0){
                 tvJobCardApplicationCount.setText(String.valueOf(job.getApplicationCount()));
                 tvJobCardApplicationCount.setVisibility(View.VISIBLE);
