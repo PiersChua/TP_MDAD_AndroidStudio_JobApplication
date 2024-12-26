@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -111,15 +112,22 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
+        jobApplicationList = new ArrayList<>();
         getJobApplications();
         srlAgentJobApplication = view.findViewById(R.id.srlAgentJobApplication);
         recyclerView = view.findViewById(R.id.rvAgentJobApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        jobApplicationList = new ArrayList<>();
+
         agentJobApplicationCardAdapter = new AgentJobApplicationCardAdapter(jobApplicationList, new AgentJobApplicationCardAdapter.OnJobClickListener() {
             @Override
             public void onViewUser(String userId) {
-
+                // check for double click
+                FragmentManager fragmentManager = getChildFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentManageJobApplication, AgentApplicantDetailsFragment.newInstance(userId)).addToBackStack(null).commit();
             }
 
             @Override
@@ -224,7 +232,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         params.put("jobId", jobId);
         params.put("status", status.toString());
         String url = UrlUtil.constructUrl(update_job_application_url, params);
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, url, params, headers, new Response.Listener<JSONObject>() {
             @Override

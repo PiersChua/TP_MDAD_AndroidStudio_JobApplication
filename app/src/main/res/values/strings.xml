@@ -31,6 +31,7 @@
     <string name="title_menu_manage_applications">Manage Applications</string>
     <string name="title_menu_edit_listing">Edit Listing</string>
     <string name="title_menu_create_listing">Create Listing</string>
+    <string name="title_menu_applicant_details">Applicant Details</string>
 
 
     <!-- Dialog -->
@@ -104,8 +105,10 @@
     <!-- Job Seeker Home Fragment -->
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>
     <string name="home_job_seeker_fragment_sub_header">Recommended for you</string>
+
     <!-- Profile Fragment -->
     <string name="profile_fragment_header_card">Profile Information</string>
+    <string name="agency_profile_fragment_header_card">Agency Information</string>
 
     <!-- Create Agency Application Fragment -->
     <string name="create_agency_application_fragment_header">Join SgJobMarket!</string>

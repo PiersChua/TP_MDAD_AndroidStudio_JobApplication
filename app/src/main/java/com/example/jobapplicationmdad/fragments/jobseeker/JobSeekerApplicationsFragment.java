@@ -110,12 +110,12 @@ public class JobSeekerApplicationsFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
+        jobApplicationList = new ArrayList<>();
         getJobApplications();
         srlJobSeekerApplication = view.findViewById(R.id.srlJobSeekerApplication);
 
         recyclerView = view.findViewById(R.id.rvJobSeekerJobApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        jobApplicationList = new ArrayList<>();
         // Set the adapter
         jobApplicationCardAdapter = new JobSeekerJobApplicationCardAdapter(jobApplicationList, new JobSeekerJobApplicationCardAdapter.OnJobClickListener() {
 

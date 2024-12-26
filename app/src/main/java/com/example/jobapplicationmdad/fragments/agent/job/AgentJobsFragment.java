@@ -113,11 +113,11 @@ public class AgentJobsFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
+        jobList = new ArrayList<>();
         getJobs();
         srlAgentJob = view.findViewById(R.id.srlAgentJob);
         recyclerView = view.findViewById(R.id.rvAgentJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        jobList = new ArrayList<>();
 
         // Set the adapter
         agentJobCardAdapter = new AgentJobCardAdapter(jobList, new AgentJobCardAdapter.OnJobClickListener() {

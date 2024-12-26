@@ -112,12 +112,13 @@ public class JobSeekerHomeFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
+        recommendedJobList = new ArrayList<>();
+        jobList = new ArrayList<>();
         getJobs();
         srlJobSeekerHome = view.findViewById(R.id.srlJobSeekerHome);
         recyclerViewRecommendedJobs = view.findViewById(R.id.rvJobSeekerSmallJobCard);
         recyclerViewRecommendedJobs.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
-        recommendedJobList = new ArrayList<>();
-        jobList = new ArrayList<>();
+
 
         // Set the adapter
         smallJobCardAdapter = new JobSeekerSmallJobCardAdapter(recommendedJobList, new JobSeekerSmallJobCardAdapter.OnJobClickListener() {

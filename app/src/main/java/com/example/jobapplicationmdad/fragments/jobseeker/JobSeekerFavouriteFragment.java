@@ -113,11 +113,11 @@ public class JobSeekerFavouriteFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
+        favouriteJoblist = new ArrayList<>();
         getFavouriteJobs();
         srlJobSeekerFavourite = view.findViewById(R.id.srlJobSeekerFavourite);
         recyclerView = view.findViewById(R.id.rvJobSeekerFavouriteJobCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        favouriteJoblist = new ArrayList<>();
         // Set the adapter
         favouriteJobCardAdapter = new FavouriteJobCardAdapter(favouriteJoblist, new FavouriteJobCardAdapter.OnJobClickListener() {
             @Override
@@ -218,9 +218,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
     private void refreshFavouriteJobs() {
         favouriteJoblist.clear();
         getFavouriteJobs();
-        if (favouriteJoblist.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-        }
+        recyclerView.setVisibility(View.GONE);
         favouriteJobCardAdapter.notifyDataSetChanged();
 
     }
