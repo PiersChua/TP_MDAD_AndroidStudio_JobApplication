@@ -28,6 +28,7 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
 
     /**
      * Request providing ONLY params, no headers
+     * Used by login/register as no token is provided yet
      * @param method           The HTTP method to use for the request
      * @param url              The URL to send the request to
      * @param params           A map of key-value pairs to include as parameters

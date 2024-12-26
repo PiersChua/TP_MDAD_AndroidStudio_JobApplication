@@ -1,6 +1,7 @@
 package com.example.jobapplicationmdad.fragments.agent.job;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
@@ -30,6 +32,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +65,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     MaterialToolbar topAppBar;
     SharedPreferences sp;
     private static final String get_job_applications_url = MainActivity.root_url + "/api/agent/get-job-applications.php";
+    private static final String update_job_application_url = MainActivity.root_url + "/api/agent/update-job-application.php";
 
     public AgentManageJobApplicationsFragment() {
         // Required empty public constructor
@@ -95,7 +99,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_agent_manage_job_applications, container, false);
     }
 
@@ -112,23 +116,45 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rvAgentJobApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         jobApplicationList = new ArrayList<>();
-       agentJobApplicationCardAdapter = new AgentJobApplicationCardAdapter(jobApplicationList, new AgentJobApplicationCardAdapter.OnJobClickListener() {
-           @Override
-           public void onViewUser(String userId) {
+        agentJobApplicationCardAdapter = new AgentJobApplicationCardAdapter(jobApplicationList, new AgentJobApplicationCardAdapter.OnJobClickListener() {
+            @Override
+            public void onViewUser(String userId) {
 
-           }
+            }
 
-           @Override
-           public void onAcceptJobApplication(String userId) {
+            @Override
+            public void onAcceptJobApplication(String userId) {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Accept Job Application").setMessage("You are about to accept this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        updateJobApplication(userId, JobApplication.Status.ACCEPTED);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
 
-           }
+            }
 
-           @Override
-           public void onRejectJobApplication(String userId) {
+            @Override
+            public void onRejectJobApplication(String userId) {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Reject Job Application").setMessage("You are about to reject this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        updateJobApplication(userId, JobApplication.Status.REJECTED);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
 
-           }
-       });
-       recyclerView.setAdapter(agentJobApplicationCardAdapter);
+            }
+        });
+        recyclerView.setAdapter(agentJobApplicationCardAdapter);
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +163,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -149,7 +176,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         ((MainActivity) requireActivity()).showBottomNav();
     }
 
-    private void getJobApplications(){
+    private void getJobApplications() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
@@ -171,6 +198,8 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                         user.setPhoneNumber(jobApplicationObject.getString("user_phone_number"));
                         jobApplication.setUser(user);
                         jobApplication.setUserId(jobApplicationObject.getString("userId"));
+                        jobApplication.setStatus(JobApplication.Status.valueOf(jobApplicationObject.getString("status")));
+                        jobApplication.setUpdatedAt(jobApplicationObject.getString("updatedAt"));
                         jobApplicationList.add(jobApplication);
                     }
 
@@ -185,6 +214,30 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
         });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
+    private void updateJobApplication(String userId, JobApplication.Status status) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId",sp.getString("userId",""));
+        params.put("jobApplicationUserId", userId);
+        params.put("jobId", jobId);
+        params.put("status", status.toString());
+        String url = UrlUtil.constructUrl(update_job_application_url, params);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, url, params, headers, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content))
+        );
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

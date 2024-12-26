@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,9 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
     // Interface for handling on click events
     public interface OnJobClickListener {
         void onViewUser(String userId);
+
         void onAcceptJobApplication(String userId);
+
         void onRejectJobApplication(String userId);
     }
 
@@ -49,6 +52,10 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
         private final TextView tvJobApplicationCardUserPhoneNumber;
         private final Button btnAcceptJobApplication;
         private final Button btnRejectJobApplication;
+        private final LinearLayout llJobApplicationCardStatusDetails;
+        private final LinearLayout llJobApplicationCardButtons;
+        private final TextView tvJobApplicationCardStatus;
+        private final TextView tvJobApplicationCardUpdatedAt;
         private JobApplication currentJobApplication;
 
         public ViewHolder(View view, OnJobClickListener listener) {
@@ -59,6 +66,10 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
             tvJobApplicationCardUserPhoneNumber = view.findViewById(R.id.tvJobApplicationCardUserPhoneNumber);
             btnAcceptJobApplication = view.findViewById(R.id.btnAcceptJobApplication);
             btnRejectJobApplication = view.findViewById(R.id.btnRejectJobApplication);
+            llJobApplicationCardStatusDetails = view.findViewById(R.id.llJobApplicationCardStatusDetails);
+            llJobApplicationCardButtons = view.findViewById(R.id.llJobApplicationCardButtons);
+            tvJobApplicationCardStatus = view.findViewById(R.id.tvJobApplicationCardStatus);
+            tvJobApplicationCardUpdatedAt = view.findViewById(R.id.tvJobApplicationCardUpdatedAt);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -67,7 +78,7 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
                     }
                 }
             });
-            btnAcceptJobApplication.setOnClickListener(new View.OnClickListener(){
+            btnAcceptJobApplication.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentJobApplication != null) {
@@ -75,7 +86,7 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
                     }
                 }
             });
-            btnRejectJobApplication.setOnClickListener(new View.OnClickListener(){
+            btnRejectJobApplication.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentJobApplication != null) {
@@ -90,6 +101,14 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
             tvJobApplicationCardUserName.setText(jobApplication.getUser().getFullName());
             tvJobApplicationCardUserEmail.setText(jobApplication.getUser().getEmail());
             tvJobApplicationCardUserPhoneNumber.setText(jobApplication.getUser().getPhoneNumber());
+            if (jobApplication.getStatus() == JobApplication.Status.PENDING) {
+                return;
+            }
+            llJobApplicationCardStatusDetails.setVisibility(View.VISIBLE);
+            llJobApplicationCardButtons.setVisibility(View.GONE);
+            tvJobApplicationCardStatus.setText(jobApplication.getStatus().toString());
+            tvJobApplicationCardUpdatedAt.setText("Updated on "+DateConverter.formatDateFromSql(jobApplication.getUpdatedAt()));
+
         }
 
     }

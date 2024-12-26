@@ -1,5 +1,6 @@
 package com.example.jobapplicationmdad.fragments.jobseeker.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -122,6 +124,13 @@ public class CreateAgencyApplicationFragment extends Fragment {
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                // Get the currently focused view
+                View currentFocus = requireActivity().getCurrentFocus();
+                // Hide the keyboard if a view is focused
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -164,6 +173,13 @@ public class CreateAgencyApplicationFragment extends Fragment {
         headers.put("Authorization", "Bearer " + token);
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, create_agency_application_url, params, headers, response -> {
             try {
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                // Get the currently focused view
+                View currentFocus = requireActivity().getCurrentFocus();
+                // Hide the keyboard if a view is focused
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
                 getParentFragmentManager().popBackStack();
             } catch (JSONException e) {

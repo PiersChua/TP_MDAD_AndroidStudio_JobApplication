@@ -88,7 +88,7 @@ public class JobSeekerJobApplicationCardAdapter extends RecyclerView.Adapter<Job
             }
             tvJobApplicationCardLocations.setText(jobApplication.getJob().getLocation());
             tvJobApplicationCardStatus.setText(jobApplication.getStatus().toString());
-            tvJobApplicationCardCreatedAt.setText(DateConverter.formatDate(DateConverter.convertDateTimeToDate(jobApplication.getCreatedAt())));
+            tvJobApplicationCardCreatedAt.setText("Submitted on " + DateConverter.formatDate(DateConverter.convertDateTimeToDate(jobApplication.getCreatedAt())));
         }
 
     }
