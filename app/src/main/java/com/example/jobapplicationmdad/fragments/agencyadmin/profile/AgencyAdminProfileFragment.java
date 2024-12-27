@@ -218,8 +218,8 @@ public class AgencyAdminProfileFragment extends Fragment {
                 // Refresh user details only if updated
                 agencyProfileItems.clear();
                 recyclerViewAgencyProfile.setVisibility(View.GONE);
-                agencyProfileAdapter.notifyDataSetChanged();
                 getUserDetails();
+                agencyProfileAdapter.notifyDataSetChanged();
 
             }
         });
@@ -238,6 +238,7 @@ public class AgencyAdminProfileFragment extends Fragment {
                 // retrieve user details
                 tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
+                user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
                 user.setEmail(response.getString("email"));
                 user.setDateOfBirth(DateConverter.formatDateFromSql(response.getString("dateOfBirth")));

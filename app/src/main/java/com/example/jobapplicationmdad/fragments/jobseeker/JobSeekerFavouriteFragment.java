@@ -217,8 +217,8 @@ public class JobSeekerFavouriteFragment extends Fragment {
 
     private void refreshFavouriteJobs() {
         favouriteJoblist.clear();
-        getFavouriteJobs();
         recyclerView.setVisibility(View.GONE);
+        getFavouriteJobs();
         favouriteJobCardAdapter.notifyDataSetChanged();
 
     }

@@ -143,7 +143,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("jobApplicationUserId",userId);
+        params.put("applicantUserId",userId);
         String url = UrlUtil.constructUrl(get_applicant_details_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));

@@ -70,10 +70,10 @@ public class AgentJobsFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
      *
-     * @param userId The userId of the agent managing the job
+     *
+     * @param userId The userId of the agent managing the job. This field is nullable
+     *               if the agent is the one direct managing the fragment
      * @return A new instance of fragment AgentJobsFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -241,7 +241,7 @@ public class AgentJobsFragment extends Fragment {
     private void refreshJobs() {
         jobList.clear();
         recyclerView.setVisibility(View.GONE);
-        agentJobCardAdapter.notifyDataSetChanged();
         getJobs();
+        agentJobCardAdapter.notifyDataSetChanged();
     }
 }

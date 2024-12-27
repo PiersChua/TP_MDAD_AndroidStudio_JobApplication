@@ -206,10 +206,10 @@ public class JobSeekerHomeFragment extends Fragment {
         jobList.clear();
         recyclerViewRecommendedJobs.setVisibility(View.GONE);
         recyclerViewJobs.setVisibility(View.GONE);
+        getJobs();
         smallJobCardAdapter.notifyDataSetChanged();
         jobCardAdapter.notifyDataSetChanged();
 
-        getJobs();
 
     }
 

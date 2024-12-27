@@ -281,7 +281,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     private void refreshApplications() {
         jobApplicationList.clear();
         recyclerView.setVisibility(View.GONE);
-        agentJobApplicationCardAdapter.notifyDataSetChanged();
         getJobApplications();
+        agentJobApplicationCardAdapter.notifyDataSetChanged();
     }
 }

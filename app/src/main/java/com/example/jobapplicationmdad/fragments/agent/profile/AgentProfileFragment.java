@@ -198,8 +198,8 @@ public class AgentProfileFragment extends Fragment {
                 // Refresh user details only if updated
                 profileItems.clear();
                 recyclerViewAgentProfile.setVisibility(View.GONE);
-                profileAdapter.notifyDataSetChanged();
                 getUserDetails();
+                profileAdapter.notifyDataSetChanged();
 
             }
         });
@@ -234,7 +234,6 @@ public class AgentProfileFragment extends Fragment {
                         response.getString("agency_phone_number"),
                         response.getString("agency_address")
                 );
-
 
                 populateAgencyItems(agency);
 

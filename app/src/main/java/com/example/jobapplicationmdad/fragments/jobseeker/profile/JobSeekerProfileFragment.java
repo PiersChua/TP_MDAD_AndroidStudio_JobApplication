@@ -178,8 +178,8 @@ public class JobSeekerProfileFragment extends Fragment {
                 // Refresh user details only if updated
                 profileItems.clear();
                 recyclerView.setVisibility(View.GONE);
-                profileAdapter.notifyDataSetChanged();
                 getUserDetails();
+                profileAdapter.notifyDataSetChanged();
 
             }
         });

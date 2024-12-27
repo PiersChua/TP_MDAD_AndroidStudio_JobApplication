@@ -181,8 +181,8 @@ public class JobSeekerApplicationsFragment extends Fragment {
 
     private void refreshJobApplications() {
         jobApplicationList.clear();
-        getJobApplications();
         recyclerView.setVisibility(View.GONE);
+        getJobApplications();
         jobApplicationCardAdapter.notifyDataSetChanged();
     }
 }

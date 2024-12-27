@@ -149,12 +149,21 @@ public class AgencyAdminAgentsFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(agencyAdminAgentCardAdapter);
+        srlAgencyAdminAgent.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshAgents();
+                srlAgencyAdminAgent.setRefreshing(false);
+            }
+        });
     }
 
     private void getAgents() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        //TODO: Retrieve the current parameter from the fragment arguments managing from admin
+        params.put("agencyAdminUserId", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_agents_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
@@ -190,5 +199,11 @@ public class AgencyAdminAgentsFragment extends Fragment {
             VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+    private void refreshAgents(){
+        agentList.clear();
+        recyclerView.setVisibility(View.GONE);
+        getAgents();
+        agencyAdminAgentCardAdapter.notifyDataSetChanged();
     }
 }

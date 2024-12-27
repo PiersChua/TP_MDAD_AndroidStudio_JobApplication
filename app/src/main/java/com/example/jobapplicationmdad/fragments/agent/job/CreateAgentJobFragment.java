@@ -186,13 +186,19 @@ public class CreateAgentJobFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) requireActivity()).hideBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).hideBottomNav();
+        }
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity) requireActivity()).showBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).showBottomNav();
+        }
+
     }
 
     private Job getJobFromForm() {
