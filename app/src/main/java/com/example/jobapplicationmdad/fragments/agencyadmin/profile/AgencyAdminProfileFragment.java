@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agencyadmin;
+package com.example.jobapplicationmdad.fragments.agencyadmin.profile;
 
 import android.content.Context;
 import android.content.Intent;
@@ -60,6 +60,7 @@ public class AgencyAdminProfileFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private User user;
+    private Agency agency;
 
     View dialogView;
     AlertDialog loadingDialog;
@@ -177,6 +178,29 @@ public class AgencyAdminProfileFragment extends Fragment {
             }
         });
 
+        btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
+                // addToBackStack() allows the back button to return to the current page
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminProfileFragment.newInstance(user)).addToBackStack(null).commit();
+            }
+        });
+        btnNavigateToEditAgencyProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
+                // addToBackStack() allows the back button to return to the current page
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminAgencyProfileFragment.newInstance(agency)).addToBackStack(null).commit();
+            }
+        });
+
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
@@ -184,6 +208,17 @@ public class AgencyAdminProfileFragment extends Fragment {
                 profileItems.clear();
                 recyclerViewAgentProfile.setVisibility(View.GONE);
                 profileAdapter.notifyDataSetChanged();
+                getUserDetails();
+
+            }
+        });
+        getParentFragmentManager().setFragmentResultListener("editAgencyResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated", false);
+            if (isUpdated) {
+                // Refresh user details only if updated
+                agencyProfileItems.clear();
+                recyclerViewAgencyProfile.setVisibility(View.GONE);
+                agencyProfileAdapter.notifyDataSetChanged();
                 getUserDetails();
 
             }
@@ -213,11 +248,12 @@ public class AgencyAdminProfileFragment extends Fragment {
                 populateProfileItems(user);
 
                 // retrieve agency details
-                Agency agency = new Agency();
-                agency.setName(response.getString("agency_name"));
-                agency.setEmail(response.getString("agency_email"));
-                agency.setPhoneNumber(response.getString("agency_phone_number"));
-                agency.setAddress(response.getString("agency_address"));
+                agency = new Agency(
+                        response.getString("agency_name"),
+                        response.getString("agency_email"),
+                        response.getString("agency_phone_number"),
+                        response.getString("agency_address")
+                );
 
                 populateAgencyItems(agency);
 

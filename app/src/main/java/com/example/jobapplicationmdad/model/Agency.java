@@ -1,10 +1,13 @@
 package com.example.jobapplicationmdad.model;
 
-public class Agency {
+import java.io.Serializable;
+
+public class Agency implements Serializable {
     public Agency() {
 
     }
 
+    // Agency Application, get/update agency details
     public Agency(String name, String email, String phoneNumber, String address) {
         this.name = name;
         this.email = email;

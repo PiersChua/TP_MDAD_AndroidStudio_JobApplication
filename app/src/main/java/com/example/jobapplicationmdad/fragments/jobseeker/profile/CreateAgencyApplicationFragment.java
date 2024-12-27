@@ -150,7 +150,7 @@ public class CreateAgencyApplicationFragment extends Fragment {
         String name = etNameAgencyApplication.getText().toString().trim();
         String email = etEmailAgencyApplication.getText().toString();
         String phoneNumber = etPhoneNumberAgencyApplication.getText().toString();
-        String address = etAddressAgencyApplication.getText().toString();
+        String address = etAddressAgencyApplication.getText().toString().trim();
         return new AgencyApplication(name, email, phoneNumber, address, userId);
     }
 

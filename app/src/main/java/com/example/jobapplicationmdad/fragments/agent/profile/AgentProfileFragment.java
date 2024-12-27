@@ -227,11 +227,12 @@ public class AgentProfileFragment extends Fragment {
                 populateProfileItems(user);
 
                 // retrieve agency details
-                Agency agency = new Agency();
-                agency.setName(response.getString("agency_name"));
-                agency.setEmail(response.getString("agency_email"));
-                agency.setPhoneNumber(response.getString("agency_phone_number"));
-                agency.setAddress(response.getString("agency_address"));
+                Agency agency = new Agency(
+                        response.getString("agency_name"),
+                        response.getString("agency_email"),
+                        response.getString("agency_phone_number"),
+                        response.getString("agency_address")
+                );
 
                 populateAgencyItems(agency);
 
@@ -257,7 +258,7 @@ public class AgentProfileFragment extends Fragment {
         profileItems.add(item);
     }
 
-    private void addAgencyProfileItem(String label, String value){
+    private void addAgencyProfileItem(String label, String value) {
         HashMap<String, String> item = new HashMap<>();
         item.put("label", label);
         item.put("value", value);
@@ -277,9 +278,9 @@ public class AgentProfileFragment extends Fragment {
 
     private void populateAgencyItems(Agency agency) {
         agencyProfileItems.clear();
-        addAgencyProfileItem("Name",agency.getName());
+        addAgencyProfileItem("Name", agency.getName());
         addAgencyProfileItem("Email Address", agency.getEmail());
         addAgencyProfileItem("Phone Number", agency.getPhoneNumber());
-        addAgencyProfileItem("Address",agency.getAddress());
+        addAgencyProfileItem("Address", agency.getAddress());
     }
 }
