@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agencyadmin;
+package com.example.jobapplicationmdad.fragments.agencyadmin.agent;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -20,12 +21,17 @@ import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
-import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
-import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
+import com.example.jobapplicationmdad.fragments.agent.profile.EditAgentProfileFragment;
+import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.fragments.jobseeker.profile.EditJobSeekerProfileFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -50,7 +56,8 @@ public class AgencyAdminAgentsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String get_agents_url = MainActivity.root_url+"/api/agency-admin/get-users.php";
+    private static final String get_agents_url = MainActivity.root_url + "/api/agency-admin/get-agents.php";
+    private User agent;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -120,18 +127,31 @@ public class AgencyAdminAgentsFragment extends Fragment {
         agencyAdminAgentCardAdapter = new AgencyAdminAgentCardAdapter(agentList, new AgencyAdminAgentCardAdapter.OnJobClickListener() {
             @Override
             public void onManageAgent(String userId) {
+                FragmentManager fragmentManager = getParentFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, AgentJobsFragment.newInstance(userId)).addToBackStack(null).commit();
+
 
             }
 
             @Override
-            public void onEditAgent(String userId) {
+            public void onEditAgent(User agent) {
+                FragmentManager fragmentManager = getParentFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditAgentProfileFragment.newInstance(agent)).addToBackStack(null).commit();
 
             }
         });
         recyclerView.setAdapter(agencyAdminAgentCardAdapter);
     }
 
-    private void getAgents(){
+    private void getAgents() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
@@ -146,9 +166,14 @@ public class AgencyAdminAgentsFragment extends Fragment {
                     for (int i = 0; i < usersArray.length(); i++) {
                         JSONObject userObject = usersArray.getJSONObject(i);
                         User user = new User();
+                        user.setUserId(userObject.getString("userId"));
                         user.setFullName(userObject.getString("fullName"));
                         user.setEmail(userObject.getString("email"));
+                        user.setDateOfBirth(DateConverter.formatDateFromSql(userObject.getString("dateOfBirth")));
                         user.setPhoneNumber(userObject.getString("phoneNumber"));
+                        user.setRace(userObject.getString("race"));
+                        user.setNationality(userObject.getString("nationality"));
+                        user.setGender(userObject.getString("gender"));
                         user.setJobCount(userObject.getInt("job_count"));
                         agentList.add(user);
                     }

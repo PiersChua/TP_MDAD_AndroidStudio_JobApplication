@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -54,12 +55,14 @@ public class EditAgentJobFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
+    private static final String ARG_PARAM2= "userId";
     private static final String get_job_url = MainActivity.root_url + "/api/agent/get-job.php";
     private static final String update_job_url = MainActivity.root_url + "/api/agent/update-job-details.php";
     private static final String delete_job_url = MainActivity.root_url +"/api/agent/delete-job.php";
 
     // TODO: Rename and change types of parameters
     private String jobId;
+    private String userId;
     MaterialToolbar topAppBar;
     CheckBox checkboxPartTimeJob, checkboxFullTimeJob;
     TextInputLayout etPositionJobLayout, etOrganisationJobLayout, etLocationJobLayout, etScheduleJobLayout, etPartTimeSalaryJobLayout, etFullTimeSalaryJobLayout, etResponsibilitiesJobLayout, etDescriptionJobLayout;
@@ -79,10 +82,11 @@ public class EditAgentJobFragment extends Fragment {
      * @return A new instance of fragment EditAgentJobFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditAgentJobFragment newInstance(String jobId) {
+    public static EditAgentJobFragment newInstance(String jobId,String userId) {
         EditAgentJobFragment fragment = new EditAgentJobFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, jobId);
+        args.putString(ARG_PARAM2, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,6 +96,7 @@ public class EditAgentJobFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             jobId = getArguments().getString(ARG_PARAM1);
+            userId = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -206,7 +211,17 @@ public class EditAgentJobFragment extends Fragment {
 
         etPartTimeSalaryJob.setFilters(new InputFilter[]{new StringUtil.DecimalDigitsInputFilter(4, 2)});
         etFullTimeSalaryJob.setFilters(new InputFilter[]{new StringUtil.DecimalDigitsInputFilter(6, 2)});
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
+            }
+        });
     }
+
 
     @Override
     public void onResume() {
@@ -296,6 +311,7 @@ public class EditAgentJobFragment extends Fragment {
     private void updateJob(Job job) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        params.put("agentUserId", userId != null ? userId : sp.getString("userId", ""));
         params.put("jobId", jobId);
         params.put("position", job.getPosition());
         params.put("organisation", job.getOrganisation());
@@ -348,6 +364,7 @@ public class EditAgentJobFragment extends Fragment {
     private void deleteJob(){
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        params.put("agentUserId", userId != null ? userId : sp.getString("userId", ""));
         params.put("jobId", jobId);
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));

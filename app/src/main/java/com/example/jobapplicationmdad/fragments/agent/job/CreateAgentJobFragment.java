@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -46,12 +47,10 @@ public class CreateAgentJobFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String create_job_url = MainActivity.root_url + "/api/agent/create-job.php";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String userId;
     MaterialToolbar topAppBar;
     CheckBox checkboxPartTimeJob, checkboxFullTimeJob;
     TextInputLayout etPositionJobLayout, etOrganisationJobLayout, etLocationJobLayout, etScheduleJobLayout, etPartTimeSalaryJobLayout, etFullTimeSalaryJobLayout, etResponsibilitiesJobLayout, etDescriptionJobLayout;
@@ -67,16 +66,14 @@ public class CreateAgentJobFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param userId
      * @return A new instance of fragment CreateAgentJobFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CreateAgentJobFragment newInstance(String param1, String param2) {
+    public static CreateAgentJobFragment newInstance(String userId) {
         CreateAgentJobFragment fragment = new CreateAgentJobFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,8 +82,7 @@ public class CreateAgentJobFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -176,6 +172,15 @@ public class CreateAgentJobFragment extends Fragment {
 
         etPartTimeSalaryJob.setFilters(new InputFilter[]{new StringUtil.DecimalDigitsInputFilter(4, 2)});
         etFullTimeSalaryJob.setFilters(new InputFilter[]{new StringUtil.DecimalDigitsInputFilter(6, 2)});
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -214,6 +219,7 @@ public class CreateAgentJobFragment extends Fragment {
     private void createJob(Job job) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        params.put("agentUserId", userId != null ? userId : sp.getString("userId", ""));
         params.put("position", job.getPosition());
         params.put("organisation", job.getOrganisation());
         params.put("location", job.getLocation());

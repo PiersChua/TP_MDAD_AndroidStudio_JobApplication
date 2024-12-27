@@ -197,6 +197,7 @@ public class JobSeekerProfileFragment extends Fragment {
                 // retrieve user details
                 tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
+                user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
                 user.setEmail(response.getString("email"));
                 user.setDateOfBirth(DateConverter.formatDateFromSql(response.getString("dateOfBirth")));

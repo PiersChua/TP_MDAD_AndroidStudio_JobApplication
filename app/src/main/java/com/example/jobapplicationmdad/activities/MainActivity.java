@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.jobapplicationmdad.R;
-import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminAgentsFragment;
+import com.example.jobapplicationmdad.fragments.agencyadmin.agent.AgencyAdminAgentsFragment;
 import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminHomeFragment;
 import com.example.jobapplicationmdad.fragments.agencyadmin.profile.AgencyAdminProfileFragment;
 import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;

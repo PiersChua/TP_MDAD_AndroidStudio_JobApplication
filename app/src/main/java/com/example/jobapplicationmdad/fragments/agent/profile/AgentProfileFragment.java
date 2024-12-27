@@ -217,6 +217,7 @@ public class AgentProfileFragment extends Fragment {
                 // retrieve user details
                 tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
+                user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
                 user.setEmail(response.getString("email"));
                 user.setDateOfBirth(DateConverter.formatDateFromSql(response.getString("dateOfBirth")));
@@ -233,6 +234,7 @@ public class AgentProfileFragment extends Fragment {
                         response.getString("agency_phone_number"),
                         response.getString("agency_address")
                 );
+
 
                 populateAgencyItems(agency);
 
@@ -258,7 +260,7 @@ public class AgentProfileFragment extends Fragment {
         profileItems.add(item);
     }
 
-    private void addAgencyProfileItem(String label, String value) {
+    private void addAgencyProfileItem(String label, String value){
         HashMap<String, String> item = new HashMap<>();
         item.put("label", label);
         item.put("value", value);
@@ -278,9 +280,9 @@ public class AgentProfileFragment extends Fragment {
 
     private void populateAgencyItems(Agency agency) {
         agencyProfileItems.clear();
-        addAgencyProfileItem("Name", agency.getName());
+        addAgencyProfileItem("Name",agency.getName());
         addAgencyProfileItem("Email Address", agency.getEmail());
         addAgencyProfileItem("Phone Number", agency.getPhoneNumber());
-        addAgencyProfileItem("Address", agency.getAddress());
+        addAgencyProfileItem("Address",agency.getAddress());
     }
 }

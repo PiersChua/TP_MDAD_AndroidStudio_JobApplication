@@ -214,17 +214,18 @@ public class EditAgentProfileFragment extends Fragment {
         return isValidName && isValidEmail && isValidPhoneNumber && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
 
-    private void updateUser(User user) {
+    private void updateUser(User userToUpdate) {
         SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("fullName", user.getFullName());
-        params.put("email", user.getEmail());
-        params.put("phoneNumber", user.getPhoneNumber());
-        params.put("dateOfBirth", DateConverter.formatDateForSql(user.getDateOfBirth()));
-        params.put("gender", user.getGender());
-        params.put("race", user.getRace());
-        params.put("nationality", user.getNationality());
+        params.put("userIdToBeUpdated",user.getUserId());
+        params.put("fullName", userToUpdate.getFullName());
+        params.put("email", userToUpdate.getEmail());
+        params.put("phoneNumber", userToUpdate.getPhoneNumber());
+        params.put("dateOfBirth", DateConverter.formatDateForSql(userToUpdate.getDateOfBirth()));
+        params.put("gender", userToUpdate.getGender());
+        params.put("race", userToUpdate.getRace());
+        params.put("nationality", userToUpdate.getNationality());
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
 

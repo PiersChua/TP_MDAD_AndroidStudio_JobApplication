@@ -24,6 +24,7 @@
     <string name="title_menu_home">Home</string>
     <string name="title_menu_profile">My Profile</string>
     <string name="title_menu_profile_edit">Edit Profile</string>
+    <string name="title_menu_agent_edit">Edit Agent</string>
     <string name="title_menu_agency_application">Agency Application</string>
     <string name="title_menu_favourite_jobs">Favourite Jobs</string>
     <string name="title_menu_job_applications">Job Applications</string>

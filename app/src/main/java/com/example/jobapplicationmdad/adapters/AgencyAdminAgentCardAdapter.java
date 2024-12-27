@@ -26,7 +26,7 @@ public class AgencyAdminAgentCardAdapter extends RecyclerView.Adapter<AgencyAdmi
     public interface OnJobClickListener {
         void onManageAgent(String userId);
 
-        void onEditAgent(String userId);
+        void onEditAgent(User agent);
 
     }
 
@@ -75,7 +75,7 @@ public class AgencyAdminAgentCardAdapter extends RecyclerView.Adapter<AgencyAdmi
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentUser != null) {
-                        listener.onManageAgent(currentUser.getUserId());
+                        listener.onEditAgent(currentUser);
                     }
                 }
             });
