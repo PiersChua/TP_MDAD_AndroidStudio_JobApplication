@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.jobseeker.profile;
+package com.example.jobapplicationmdad.fragments.agent;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -39,17 +40,16 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link JobSeekerProfileFragment#newInstance} factory method to
+ * Use the {@link AgentProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class JobSeekerProfileFragment extends Fragment {
+public class AgentProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -63,15 +63,16 @@ public class JobSeekerProfileFragment extends Fragment {
     AlertDialog loadingDialog;
     MaterialToolbar topAppBar;
     TextView tvName;
-    RecyclerView recyclerView;
+    RecyclerView recyclerViewAgentProfile, recyclerViewAgencyProfile;
     ProfileAdapter profileAdapter;
-    ArrayList<HashMap<String, String>> profileItems;
+    ProfileAdapter agencyProfileAdapter;
+    List<HashMap<String, String>> profileItems;
+    List<HashMap<String, String>> agencyProfileItems;
     Button btnNavigateToEditProfile;
     SharedPreferences sp;
     private long mLastClickTime;
 
-
-    public JobSeekerProfileFragment() {
+    public AgentProfileFragment() {
         // Required empty public constructor
     }
 
@@ -81,11 +82,11 @@ public class JobSeekerProfileFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment JobSeekerProfileFragment.
+     * @return A new instance of fragment AgentProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static JobSeekerProfileFragment newInstance(String param1, String param2) {
-        JobSeekerProfileFragment fragment = new JobSeekerProfileFragment();
+    public static AgentProfileFragment newInstance(String param1, String param2) {
+        AgentProfileFragment fragment = new AgentProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -103,39 +104,45 @@ public class JobSeekerProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
-        return inflater.inflate(R.layout.fragment_job_seeker_profile, container, false);
+        return inflater.inflate(R.layout.fragment_agent_profile, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
-        tvName = view.findViewById(R.id.tvJobSeekerProfileName);
-        recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
-        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditJobSeekerProfile);
+        topAppBar = view.findViewById(R.id.topAppBarAgentProfile);
+        tvName = view.findViewById(R.id.tvAgentProfileName);
+        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditAgentProfile);
+        recyclerViewAgentProfile = view.findViewById(R.id.rvAgentProfile);
+        recyclerViewAgencyProfile = view.findViewById(R.id.rvAgentAgencyProfile);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
         profileItems = new ArrayList<>();
-        getUserDetails(); // fetch from db
+        agencyProfileItems = new ArrayList<>();
+        getUserDetails();
+
 
         // Set the adapter
         profileAdapter = new ProfileAdapter(profileItems);
-        recyclerView.setAdapter(profileAdapter);
+        recyclerViewAgentProfile.setAdapter(profileAdapter);
+
+        agencyProfileAdapter = new ProfileAdapter(agencyProfileItems);
+        recyclerViewAgencyProfile.setAdapter(agencyProfileAdapter);
+
+
         topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                if (id == R.id.job_seeker_profile_item_1) {
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId", ""), sp.getString("token", ""))).addToBackStack(null).commit();
+                if (id == R.id.agent_profile_item_1) {
                     return true;
-                } else if (id == R.id.job_seeker_profile_item_2) {
-                    return true;
-                } else if (id == R.id.job_seeker_profile_item_3) {
+                } else if (id == R.id.agent_profile_item_2) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
@@ -149,9 +156,9 @@ public class JobSeekerProfileFragment extends Fragment {
             }
         });
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        GridLayoutManager gridLayoutManagerAgentProfile = new GridLayoutManager(requireContext(), 2);
+        recyclerViewAgentProfile.setLayoutManager(gridLayoutManagerAgentProfile);
+        gridLayoutManagerAgentProfile.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 // If the position is the last item and the list size is odd, take up 2 columns
@@ -162,15 +169,28 @@ public class JobSeekerProfileFragment extends Fragment {
             }
         });
 
+        GridLayoutManager gridLayoutManagerAgencyProfile = new GridLayoutManager(requireContext(), 2);
+        recyclerViewAgencyProfile.setLayoutManager(gridLayoutManagerAgencyProfile);
+        gridLayoutManagerAgencyProfile.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                // If the position is the last item and the list size is odd, take up 2 columns
+                if (position == agencyProfileItems.size() - 1 && agencyProfileItems.size() % 2 != 0) {
+                    return 2;
+                }
+                return 1;
+            }
+        });
+
         btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (System.currentTimeMillis()- mLastClickTime < 1000){
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
@@ -178,7 +198,7 @@ public class JobSeekerProfileFragment extends Fragment {
             if (isUpdated) {
                 // Refresh user details only if updated
                 profileItems.clear();
-                recyclerView.setVisibility(View.GONE);
+                recyclerViewAgentProfile.setVisibility(View.GONE);
                 getUserDetails();
                 profileAdapter.notifyDataSetChanged();
 
@@ -209,19 +229,29 @@ public class JobSeekerProfileFragment extends Fragment {
                 user.setGender(response.getString("gender"));
                 populateProfileItems(user);
 
+                // retrieve agency details
+                Agency agency = new Agency(
+                        response.getString("agency_name"),
+                        response.getString("agency_email"),
+                        response.getString("agency_phone_number"),
+                        response.getString("agency_address")
+                );
+
+                populateAgencyItems(agency);
+
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
             // toggle the visibility of loader
             loadingDialog.dismiss();
-            recyclerView.setVisibility(View.VISIBLE);
+            recyclerViewAgentProfile.setVisibility(View.VISIBLE);
+            recyclerViewAgencyProfile.setVisibility(View.VISIBLE);
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
-
     }
 
     private void addProfileItem(String label, String value) {
@@ -229,6 +259,13 @@ public class JobSeekerProfileFragment extends Fragment {
         item.put("label", label);
         item.put("value", value);
         profileItems.add(item);
+    }
+
+    private void addAgencyProfileItem(String label, String value){
+        HashMap<String, String> item = new HashMap<>();
+        item.put("label", label);
+        item.put("value", value);
+        agencyProfileItems.add(item);
     }
 
     private void populateProfileItems(User user) {
@@ -242,5 +279,11 @@ public class JobSeekerProfileFragment extends Fragment {
         addProfileItem("Gender", user.getGender());
     }
 
-
+    private void populateAgencyItems(Agency agency) {
+        agencyProfileItems.clear();
+        addAgencyProfileItem("Name",agency.getName());
+        addAgencyProfileItem("Email Address", agency.getEmail());
+        addAgencyProfileItem("Phone Number", agency.getPhoneNumber());
+        addAgencyProfileItem("Address",agency.getAddress());
+    }
 }

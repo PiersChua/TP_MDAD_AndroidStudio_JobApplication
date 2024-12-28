@@ -137,7 +137,7 @@
                 <TextView
                     style="@style/Text.Medium"
                     android:layout_marginTop="8dp"
-                    android:text="Description"
+                    android:text="About this role"
                     android:textStyle="bold" />
 
                 <TextView

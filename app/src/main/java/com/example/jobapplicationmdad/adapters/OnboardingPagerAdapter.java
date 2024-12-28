@@ -12,6 +12,7 @@ import java.util.List;
 
 public class OnboardingPagerAdapter extends FragmentStateAdapter {
     public static final int NUM_PAGES = 3;
+
     public OnboardingPagerAdapter(FragmentActivity fa) {
         super(fa);
     }
@@ -22,18 +23,19 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
         //return fList.get(position);
         switch (position) {
             case 0: {
- return FirstOnboardingFragment.newInstance("fragment 1",null);
+                return FirstOnboardingFragment.newInstance("fragment 1", null);
             }
             case 1: {
- return SecondOnboardingFragment.newInstance("fragment 2", null);
+                return SecondOnboardingFragment.newInstance("fragment 2", null);
             }
             case 2: {
- return ThirdOnboardingFragment.newInstance("fragment 3", null);
+                return ThirdOnboardingFragment.newInstance("fragment 3", null);
             }
             default:
                 return new Fragment();
         }
     }
+
     @Override
 // return count of tab items
     public int getItemCount() {

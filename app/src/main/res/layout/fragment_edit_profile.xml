@@ -12,7 +12,7 @@
         android:background="@color/primary">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarEditAgencyAdminProfile"
+            android:id="@+id/topAppBarEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
@@ -21,7 +21,6 @@
             app:theme="@style/ToolbarThemeLight"
             app:title="@string/title_menu_profile_edit"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
@@ -29,13 +28,11 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/llEditAgencyAdminProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/llProfileForm"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
@@ -163,7 +160,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <android.widget.Button
-                    android:id="@+id/btnEditAgencyAdminProfile"
+                    android:id="@+id/btnEditProfile"
                     style="@style/Button.Primary"
                     android:layout_width="match_parent"
                     android:layout_marginTop="16dp"

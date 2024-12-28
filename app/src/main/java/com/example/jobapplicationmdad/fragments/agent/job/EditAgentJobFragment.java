@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -55,15 +56,17 @@ public class EditAgentJobFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
-    private static final String ARG_PARAM2= "userId";
+    private static final String ARG_PARAM2 = "userId";
     private static final String get_job_url = MainActivity.root_url + "/api/agent/get-job.php";
     private static final String update_job_url = MainActivity.root_url + "/api/agent/update-job-details.php";
-    private static final String delete_job_url = MainActivity.root_url +"/api/agent/delete-job.php";
+    private static final String delete_job_url = MainActivity.root_url + "/api/agent/delete-job.php";
 
     // TODO: Rename and change types of parameters
     private String jobId;
     private String userId;
     MaterialToolbar topAppBar;
+    View dialogView;
+    AlertDialog loadingDialog;
     CheckBox checkboxPartTimeJob, checkboxFullTimeJob;
     TextInputLayout etPositionJobLayout, etOrganisationJobLayout, etLocationJobLayout, etScheduleJobLayout, etPartTimeSalaryJobLayout, etFullTimeSalaryJobLayout, etResponsibilitiesJobLayout, etDescriptionJobLayout;
     EditText etPositionJob, etOrganisationJob, etLocationJob, etScheduleJob, etPartTimeSalaryJob, etFullTimeSalaryJob, etResponsibilitiesJob, etDescriptionJob;
@@ -82,7 +85,7 @@ public class EditAgentJobFragment extends Fragment {
      * @return A new instance of fragment EditAgentJobFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditAgentJobFragment newInstance(String jobId,String userId) {
+    public static EditAgentJobFragment newInstance(String jobId, String userId) {
         EditAgentJobFragment fragment = new EditAgentJobFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, jobId);
@@ -103,6 +106,7 @@ public class EditAgentJobFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_edit_agent_job, container, false);
     }
 
@@ -112,6 +116,9 @@ public class EditAgentJobFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarAgentEditJob);
         btnEditAgentJob = view.findViewById(R.id.btnEditAgentJob);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
         getJobDetails();
 
         // Form Layout
@@ -154,7 +161,7 @@ public class EditAgentJobFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                if(id==R.id.agent_edit_listings_item_1){
+                if (id == R.id.agent_edit_listings_item_1) {
                     new MaterialAlertDialogBuilder(requireContext()).setTitle("Delete Job").setMessage("You are about to delete this listing.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int i) {
@@ -226,7 +233,7 @@ public class EditAgentJobFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(userId==null){
+        if (userId == null) {
             ((MainActivity) requireActivity()).hideBottomNav();
         }
     }
@@ -234,13 +241,14 @@ public class EditAgentJobFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(userId==null){
+        if (userId == null) {
             ((MainActivity) requireActivity()).showBottomNav();
         }
 
     }
 
     private void getJobDetails() {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("jobId", jobId);
@@ -270,8 +278,13 @@ public class EditAgentJobFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                loadingDialog.dismiss();
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -366,7 +379,7 @@ public class EditAgentJobFragment extends Fragment {
         return isValidPosition && isValidOrganisation && isValidLocation && isValidSchedule && isValidDescription && isValidResponsibilities && isValidSalary;
     }
 
-    private void deleteJob(){
+    private void deleteJob() {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("agentUserId", userId != null ? userId : sp.getString("userId", ""));

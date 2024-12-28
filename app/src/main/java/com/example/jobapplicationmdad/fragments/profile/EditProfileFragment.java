@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agencyadmin.profile;
+package com.example.jobapplicationmdad.fragments.profile;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -25,9 +26,12 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.StringUtil;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -41,27 +45,32 @@ import java.util.TimeZone;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditAgencyAdminProfileFragment#newInstance} factory method to
+ * Use the {@link EditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditAgencyAdminProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     // TODO: Rename and change types of parameters
-    private static final String ARG_PARAM1 = "user";
+    private static final String ARG_PARAM1 = "userId";
     private static final String update_user_url = MainActivity.root_url + "/api/auth/update-user-details.php";
+    private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     // User that is passed from profile fragment
+    private String userId;
     private User user;
     MaterialToolbar topAppBar;
     Button btnEditProfile;
+    View dialogView;
+    AlertDialog loadingDialog;
+    SharedPreferences sp;
     EditText etFullNameProfile, etEmailProfile, etPhoneNumberProfile, etDateOfBirthProfile;
 
     TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout, etDateOfBirthProfileLayout, etGenderProfileLayout, etNationalityProfileLayout, etRaceProfileLayout;
     AutoCompleteTextView actvGenderProfile, actvRaceProfile, actvNationalityprofile;
 
-    public EditAgencyAdminProfileFragment() {
+    public EditProfileFragment() {
         // Required empty public constructor
     }
 
@@ -69,14 +78,14 @@ public class EditAgencyAdminProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param user The user to edit the profile
-     * @return A new instance of fragment EditAgencyAdminProfileFragment.
+     * @param userId The userId of the user to edit the profile
+     * @return A new instance of fragment EditProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditAgencyAdminProfileFragment newInstance(User user) {
-        EditAgencyAdminProfileFragment fragment = new EditAgencyAdminProfileFragment();
+    public static EditProfileFragment newInstance(String userId) {
+        EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, user);
+        args.putString(ARG_PARAM1, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +94,7 @@ public class EditAgencyAdminProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            user = (User) getArguments().getSerializable(ARG_PARAM1);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -93,7 +102,8 @@ public class EditAgencyAdminProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_agency_admin_profile, container, false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
+        return inflater.inflate(R.layout.fragment_edit_profile, container, false);
     }
 
     @Override
@@ -111,9 +121,13 @@ public class EditAgencyAdminProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        topAppBar = view.findViewById(R.id.topAppBarEditAgencyAdminProfile);
-        btnEditProfile = view.findViewById(R.id.btnEditAgencyAdminProfile);
+        sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        topAppBar = view.findViewById(R.id.topAppBarEditProfile);
+        btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
+        builder.setView(dialogView).setCancelable(false);
+        loadingDialog = builder.create();
+        getUserDetails();
 
         // Form
         etFullNameProfile = view.findViewById(R.id.etFullNameProfile);
@@ -135,21 +149,19 @@ public class EditAgencyAdminProfileFragment extends Fragment {
         actvRaceProfile = view.findViewById(R.id.actvRaceProfile);
         actvNationalityprofile = view.findViewById(R.id.actvNationalityProfile);
 
-        // Populate fields
-        etFullNameProfile.setText(user.getFullName());
-        etEmailProfile.setText(user.getEmail());
-        etPhoneNumberProfile.setText(user.getPhoneNumber());
-        etDateOfBirthProfile.setText(user.getDateOfBirth());
-        actvGenderProfile.setText(user.getGender(), false);
-        actvRaceProfile.setText(user.getRace(), false);
-        actvNationalityprofile.setText(user.getNationality(), false);
-
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // removes the backstack that was added when navigating to the current page
                 // essentially simulates clicking the back button
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                // Get the currently focused view
+                View currentFocus = requireActivity().getCurrentFocus();
+                // Hide the keyboard if a view is focused
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -220,18 +232,18 @@ public class EditAgencyAdminProfileFragment extends Fragment {
         return isValidName && isValidEmail && isValidPhoneNumber && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
 
-    private void updateUser(User userToUpdate) {
+    private void updateUser(User updatedUser) {
         SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToBeUpdated", user.getUserId());
-        params.put("fullName", userToUpdate.getFullName());
-        params.put("email", userToUpdate.getEmail());
-        params.put("phoneNumber", userToUpdate.getPhoneNumber());
-        params.put("dateOfBirth", DateConverter.formatDateForSql(userToUpdate.getDateOfBirth()));
-        params.put("gender", userToUpdate.getGender());
-        params.put("race", userToUpdate.getRace());
-        params.put("nationality", userToUpdate.getNationality());
+        params.put("userIdToBeUpdated", userId);
+        params.put("fullName", updatedUser.getFullName());
+        params.put("email", updatedUser.getEmail());
+        params.put("phoneNumber", updatedUser.getPhoneNumber());
+        params.put("dateOfBirth", DateConverter.formatDateForSql(updatedUser.getDateOfBirth()));
+        params.put("gender", updatedUser.getGender());
+        params.put("race", updatedUser.getRace());
+        params.put("nationality", updatedUser.getNationality());
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
 
@@ -256,5 +268,50 @@ public class EditAgencyAdminProfileFragment extends Fragment {
 
         }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
+    private void getUserDetails() {
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("userIdToGet", userId);
+        String url = UrlUtil.constructUrl(get_user_url, params);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
+            try {
+                // retrieve user details
+                user = new User();
+                user.setFullName(response.getString("fullName"));
+                user.setEmail(response.getString("email"));
+                user.setDateOfBirth(DateConverter.formatDateFromSql(response.getString("dateOfBirth")));
+                user.setPhoneNumber(response.getString("phoneNumber"));
+                user.setRace(response.getString("race"));
+                user.setNationality(response.getString("nationality"));
+                user.setGender(response.getString("gender"));
+                populateUserItems();
+
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+        });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+
+    }
+
+    private void populateUserItems() {
+        // Populate fields
+        etFullNameProfile.setText(user.getFullName());
+        etEmailProfile.setText(user.getEmail());
+        etPhoneNumberProfile.setText(user.getPhoneNumber());
+        etDateOfBirthProfile.setText(user.getDateOfBirth());
+        actvGenderProfile.setText(user.getGender(), false);
+        actvRaceProfile.setText(user.getRace(), false);
+        actvNationalityprofile.setText(user.getNationality(), false);
     }
 }

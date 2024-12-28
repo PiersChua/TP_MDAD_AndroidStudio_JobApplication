@@ -22,16 +22,12 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
 import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
-import com.example.jobapplicationmdad.fragments.agent.profile.EditAgentProfileFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
-import com.example.jobapplicationmdad.fragments.jobseeker.profile.EditJobSeekerProfileFragment;
-import com.example.jobapplicationmdad.model.Agency;
+import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.DateConverter;
-import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -138,13 +134,13 @@ public class AgencyAdminAgentsFragment extends Fragment {
             }
 
             @Override
-            public void onEditAgent(User agent) {
+            public void onEditAgent(String userId) {
                 FragmentManager fragmentManager = getParentFragmentManager();
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditAgentProfileFragment.newInstance(agent)).addToBackStack(null).commit();
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId)).addToBackStack(null).commit();
 
             }
         });
@@ -178,11 +174,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
                         user.setUserId(userObject.getString("userId"));
                         user.setFullName(userObject.getString("fullName"));
                         user.setEmail(userObject.getString("email"));
-                        user.setDateOfBirth(DateConverter.formatDateFromSql(userObject.getString("dateOfBirth")));
                         user.setPhoneNumber(userObject.getString("phoneNumber"));
-                        user.setRace(userObject.getString("race"));
-                        user.setNationality(userObject.getString("nationality"));
-                        user.setGender(userObject.getString("gender"));
                         user.setJobCount(userObject.getInt("job_count"));
                         agentList.add(user);
                     }

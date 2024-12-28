@@ -13,12 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.fragments.admin.AdminHomeFragment;
+import com.example.jobapplicationmdad.fragments.admin.AdminProfileFragment;
 import com.example.jobapplicationmdad.fragments.agencyadmin.agent.AgencyAdminAgentsFragment;
 import com.example.jobapplicationmdad.fragments.agencyadmin.AgencyAdminHomeFragment;
 import com.example.jobapplicationmdad.fragments.agencyadmin.profile.AgencyAdminProfileFragment;
 import com.example.jobapplicationmdad.fragments.agent.AgentHomeFragment;
 import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
-import com.example.jobapplicationmdad.fragments.agent.profile.AgentProfileFragment;
+import com.example.jobapplicationmdad.fragments.agent.AgentProfileFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.JobSeekerHomeFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobsFragment;
 import com.example.jobapplicationmdad.fragments.jobseeker.profile.JobSeekerProfileFragment;
@@ -112,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 fragments.put(R.id.bottom_nav_agency_admin_item_1,new AgencyAdminHomeFragment());
                 fragments.put(R.id.bottom_nav_agency_admin_item_2, new AgencyAdminAgentsFragment());
                 fragments.put(R.id.bottom_nav_agency_admin_item_3, new AgencyAdminProfileFragment());
+            case"Admin":
+                fragments.put(R.id.bottom_nav_admin_item_1,new AdminHomeFragment());
+                fragments.put(R.id.bottom_nav_admin_item_4,new AdminProfileFragment());
         }
     }
 

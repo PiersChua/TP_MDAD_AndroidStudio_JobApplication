@@ -209,8 +209,6 @@ public class JobSeekerHomeFragment extends Fragment {
         getJobs();
         smallJobCardAdapter.notifyDataSetChanged();
         jobCardAdapter.notifyDataSetChanged();
-
-
     }
 
 }

@@ -24,7 +24,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
-import com.example.jobapplicationmdad.fragments.agent.profile.EditAgentProfileFragment;
+import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -186,7 +186,7 @@ public class AgencyAdminProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminProfileFragment.newInstance(user)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
             }
         });
         btnNavigateToEditAgencyProfile.setOnClickListener(new View.OnClickListener() {
@@ -230,6 +230,7 @@ public class AgencyAdminProfileFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        params.put("userIdToGet",  sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));

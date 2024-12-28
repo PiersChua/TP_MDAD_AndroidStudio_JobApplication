@@ -19,7 +19,7 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/background"
             app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile_edit"
+            app:title="@string/title_menu_agency_edit"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
     </com.google.android.material.appbar.AppBarLayout>

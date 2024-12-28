@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -24,6 +24,7 @@
             app:title="@string/title_menu_create_listing"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
     </com.google.android.material.appbar.AppBarLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -112,6 +113,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginBottom="16dp"
                     android:orientation="vertical">
 
                     <CheckBox
@@ -163,9 +165,25 @@
                             style="@style/EditText"
                             android:inputType="number|numberDecimal" />
                     </com.google.android.material.textfield.TextInputLayout>
-
-
                 </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etDescriptionJobLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_description"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="250"
+                    app:helperText="Role overview, purpose, qualifications"
+                    app:helperTextEnabled="true"
+                    app:startIconDrawable="@drawable/ic_description">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDescriptionJob"
+                        style="@style/EditText"
+                        android:maxLines="4"
+                        android:singleLine="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/etResponsibilitiesJobLayout"
@@ -174,6 +192,8 @@
                     android:hint="@string/hint_responsibilities"
                     app:counterEnabled="true"
                     app:counterMaxLength="250"
+                    app:helperText="Key tasks and duties"
+                    app:helperTextEnabled="true"
                     app:startIconDrawable="@drawable/ic_checklist">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -183,21 +203,6 @@
                         android:singleLine="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etDescriptionJobLayout"
-                    style="@style/EditTextLayout"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_description"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="250"
-                    app:startIconDrawable="@drawable/ic_description">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etDescriptionJob"
-                        style="@style/EditText"
-                        android:maxLines="4"
-                        android:singleLine="false" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <android.widget.Button
                     android:id="@+id/btnCreateAgentJob"
