@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.jobseeker;
+package com.example.jobapplicationmdad.fragments.admin;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,17 +20,20 @@ import android.view.ViewGroup;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
-import com.example.jobapplicationmdad.adapters.JobSeekerJobApplicationCardAdapter;
-import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.adapters.AdminAgencyCardAdapter;
+import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
+import com.example.jobapplicationmdad.fragments.agencyadmin.agent.AgencyAdminAgentsFragment;
+import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
+import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.Agency;
-import com.example.jobapplicationmdad.model.Job;
-import com.example.jobapplicationmdad.model.JobApplication;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,29 +46,32 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link JobSeekerApplicationsFragment#newInstance} factory method to
+ * Use the {@link AdminAgenciesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class JobSeekerApplicationsFragment extends Fragment {
+public class AdminAgenciesFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String get_job_applications_url = MainActivity.root_url + "/api/job-seeker/get-job-applications.php";
+    private static final String get_agencies_url = MainActivity.root_url + "/api/admin/get-agencies.php";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    SharedPreferences sp;
     RecyclerView recyclerView;
+    List<Agency> agencyList;
     View dialogView;
     AlertDialog loadingDialog;
-    List<JobApplication> jobApplicationList;
-    JobSeekerJobApplicationCardAdapter jobApplicationCardAdapter;
-    SwipeRefreshLayout srlJobSeekerApplication;
+    AdminAgencyCardAdapter adminAgencyCardAdapter;
+    SwipeRefreshLayout srlAdminAgency;
+    FloatingActionButton fabCreateAgency;
+    private long mLastClickTime;
+    MaterialToolbar topAppBar;
+    SharedPreferences sp;
 
-    public JobSeekerApplicationsFragment() {
+    public AdminAgenciesFragment() {
         // Required empty public constructor
     }
 
@@ -75,11 +81,11 @@ public class JobSeekerApplicationsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment JobSeekerApplicationsFragment.
+     * @return A new instance of fragment AdminAgenciesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static JobSeekerApplicationsFragment newInstance(String param1, String param2) {
-        JobSeekerApplicationsFragment fragment = new JobSeekerApplicationsFragment();
+    public static AdminAgenciesFragment newInstance(String param1, String param2) {
+        AdminAgenciesFragment fragment = new AdminAgenciesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -97,73 +103,90 @@ public class JobSeekerApplicationsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
-        return inflater.inflate(R.layout.fragment_job_seeker_applications, container, false);
+        return inflater.inflate(R.layout.fragment_admin_agencies, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        topAppBar = view.findViewById(R.id.topAppbarAdminAgencies);
+        fabCreateAgency = view.findViewById(R.id.fabAdminCreateAgency);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
-        jobApplicationList = new ArrayList<>();
-        getJobApplications();
-        srlJobSeekerApplication = view.findViewById(R.id.srlJobSeekerApplication);
-
-        recyclerView = view.findViewById(R.id.rvJobSeekerJobApplicationCard);
+        agencyList = new ArrayList<>();
+        getAgencies();
+        srlAdminAgency = view.findViewById(R.id.srlAdminAgency);
+        recyclerView = view.findViewById(R.id.rvAdminAgencyCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        // Set the adapter
-        jobApplicationCardAdapter = new JobSeekerJobApplicationCardAdapter(jobApplicationList, new JobSeekerJobApplicationCardAdapter.OnJobClickListener() {
 
+        adminAgencyCardAdapter = new AdminAgencyCardAdapter(agencyList, new AdminAgencyCardAdapter.OnJobClickListener() {
             @Override
-            public void onViewJobDetails(String jobId) {
-                // check for double click
+            public void onManageAgency(String userId) {
                 FragmentManager fragmentManager = getParentFragmentManager();
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId)).addToBackStack(null).commit();
-            }
-        });
-        recyclerView.setAdapter(jobApplicationCardAdapter);
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, AgencyAdminAgentsFragment.newInstance(userId)).addToBackStack(null).commit();
 
-        srlJobSeekerApplication.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            }
+
+            @Override
+            public void onEditAgency(String agencyId) {
+
+            }
+
+        });
+        recyclerView.setAdapter(adminAgencyCardAdapter);
+        srlAdminAgency.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshJobApplications();
-                srlJobSeekerApplication.setRefreshing(false);
+                refreshAgencies();
+                srlAdminAgency.setRefreshing(false);
             }
         });
+        fabCreateAgency.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
+            }
+        });
+
     }
 
-    private void getJobApplications() {
+    private void getAgencies() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        String url = UrlUtil.constructUrl(get_job_applications_url, params);
+        String url = UrlUtil.constructUrl(get_agencies_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jobApplicationsArray = response.getJSONArray("data");
-                    for (int i = 0; i < jobApplicationsArray.length(); i++) {
-                        JSONObject jobApplicationObject = jobApplicationsArray.getJSONObject(i);
+                    JSONArray agenciesArray = response.getJSONArray("data");
+                    for (int i = 0; i < agenciesArray.length(); i++) {
+                        JSONObject agencyObject = agenciesArray.getJSONObject(i);
                         Agency agency = new Agency();
-                        agency.setName(jobApplicationObject.getString("agency_name"));
-                        User user = new User();
-                        user.setAgency(agency);
-                        Job job = new Job(jobApplicationObject.getString("jobId"), jobApplicationObject.getString("position"), jobApplicationObject.getString("responsibilities"), jobApplicationObject.getString("location"), jobApplicationObject.optDouble("partTimeSalary", 0.0), jobApplicationObject.optDouble("fullTimeSalary", 0.0), jobApplicationObject.getString("updatedAt"), user);
-                        JobApplication jobApplication = new JobApplication(JobApplication.Status.valueOf(jobApplicationObject.getString("status")), jobApplicationObject.getString("job_application_created_at"), jobApplicationObject.getString("job_application_updated_at"), job);
-                        jobApplicationList.add(jobApplication);
-
+                        agency.setAgencyId(agencyObject.getString("agencyId"));
+                        agency.setUserId(agencyObject.getString("userId"));
+                        agency.setName(agencyObject.getString("name"));
+                        agency.setEmail(agencyObject.getString("email"));
+                        agency.setPhoneNumber(agencyObject.getString("phoneNumber"));
+                        agency.setAgentCount(agencyObject.getInt("agentCount"));
+                        agencyList.add(agency);
                     }
+
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -171,7 +194,6 @@ public class JobSeekerApplicationsFragment extends Fragment {
                 loadingDialog.dismiss();
                 recyclerView.setVisibility(View.VISIBLE);
             }
-
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
@@ -179,10 +201,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
-    private void refreshJobApplications() {
-        jobApplicationList.clear();
-        recyclerView.setVisibility(View.GONE);
-        getJobApplications();
-        jobApplicationCardAdapter.notifyDataSetChanged();
+    private void refreshAgencies() {
+
     }
 }

@@ -26,7 +26,7 @@ public class JobSeekerJobApplicationCardAdapter extends RecyclerView.Adapter<Job
     /**
      * Initialize the dataset of the Adapter
      *
-     * @param dataSet  List<Job> containing the list of jobApplications
+     * @param dataSet  List<JobApplication> containing the list of jobApplications
      * @param listener Defines the event to happen after clicking
      */
     public JobSeekerJobApplicationCardAdapter(List<JobApplication> dataSet, OnJobClickListener listener) {

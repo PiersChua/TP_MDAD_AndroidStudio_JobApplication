@@ -20,10 +20,10 @@ public class JobsPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0: {
-                return JobSeekerFavouriteFragment.newInstance("fragment 1",null);
+                return new JobSeekerFavouriteFragment();
             }
             case 1: {
-                return JobSeekerApplicationsFragment.newInstance("fragment 2", null);
+                return new JobSeekerApplicationsFragment();
             }
             default:
                 return new Fragment();

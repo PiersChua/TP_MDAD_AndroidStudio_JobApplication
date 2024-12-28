@@ -23,13 +23,13 @@ public class OnboardingPagerAdapter extends FragmentStateAdapter {
         //return fList.get(position);
         switch (position) {
             case 0: {
-                return FirstOnboardingFragment.newInstance("fragment 1", null);
+                return new FirstOnboardingFragment();
             }
             case 1: {
-                return SecondOnboardingFragment.newInstance("fragment 2", null);
+                return new SecondOnboardingFragment();
             }
             case 2: {
-                return ThirdOnboardingFragment.newInstance("fragment 3", null);
+                return new ThirdOnboardingFragment();
             }
             default:
                 return new Fragment();

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        style="@style/Text.Large"
+        android:layout_marginBottom="8dp"
+        android:text="@string/add_agent_fragment_header"
+        android:textStyle="bold" />
+
+    <TextView
+        style="@style/Text.Medium"
+        android:layout_marginBottom="16dp"
+        android:text="@string/add_agent_fragment_description" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etEmailAddAgentLayout"
+        style="@style/EditTextLayout"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress"
+        app:startIconDrawable="@drawable/ic_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmailAddAgent"
+            style="@style/EditText" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <android.widget.Button
+        android:id="@+id/btnFindUser"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:text="@string/btn_text_find_user"
+        android:textSize="18sp" />
+</LinearLayout>

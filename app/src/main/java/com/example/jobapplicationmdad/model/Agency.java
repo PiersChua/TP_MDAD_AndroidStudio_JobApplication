@@ -87,5 +87,13 @@ public class Agency implements Serializable {
     private String userId;
     private String createdAt;
     private String updatedAt;
+    private int agentCount;
 
+    public int getAgentCount() {
+        return agentCount;
+    }
+
+    public void setAgentCount(int agentCount) {
+        this.agentCount = agentCount;
+    }
 }

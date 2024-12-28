@@ -16,21 +16,23 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
 import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
+import com.example.jobapplicationmdad.fragments.bottomSheet.AddAgentFragment;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
-import com.example.jobapplicationmdad.util.DateConverter;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,14 +52,12 @@ public class AgencyAdminAgentsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "userId";
     private static final String get_agents_url = MainActivity.root_url + "/api/agency-admin/get-agents.php";
     private User agent;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String userId;
     RecyclerView recyclerView;
     List<User> agentList;
     View dialogView;
@@ -65,6 +65,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
     AgencyAdminAgentCardAdapter agencyAdminAgentCardAdapter;
     SwipeRefreshLayout srlAgencyAdminAgent;
     MaterialToolbar topAppBar;
+    FloatingActionButton fabAddAgent;
     SharedPreferences sp;
 
     public AgencyAdminAgentsFragment() {
@@ -75,16 +76,14 @@ public class AgencyAdminAgentsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param userId The userId of the agency admin
      * @return A new instance of fragment AgencyAdminAgentsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgencyAdminAgentsFragment newInstance(String param1, String param2) {
+    public static AgencyAdminAgentsFragment newInstance(String userId) {
         AgencyAdminAgentsFragment fragment = new AgencyAdminAgentsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,8 +92,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -111,6 +109,8 @@ public class AgencyAdminAgentsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarAgentJob);
+        fabAddAgent = view.findViewById(R.id.fabAgencyAdminAddAgent);
+
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
@@ -140,7 +140,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId)).addToBackStack(null).commit();
 
             }
         });
@@ -150,6 +150,13 @@ public class AgencyAdminAgentsFragment extends Fragment {
             public void onRefresh() {
                 refreshAgents();
                 srlAgencyAdminAgent.setRefreshing(false);
+            }
+        });
+        fabAddAgent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddAgentFragment bottomSheet = AddAgentFragment.newInstance("d7ce3787-c0f7-11ef-b4b4-88a4c25ac32d");
+                bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
             }
         });
     }
@@ -188,11 +195,12 @@ public class AgencyAdminAgentsFragment extends Fragment {
             }
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
-    private void refreshAgents(){
+
+    private void refreshAgents() {
         agentList.clear();
         recyclerView.setVisibility(View.GONE);
         getAgents();

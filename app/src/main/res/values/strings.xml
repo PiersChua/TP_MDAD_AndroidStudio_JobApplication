@@ -17,9 +17,7 @@
     <string name="app_bar_profile_apply_agency">Apply for agency</string>
     <string name="app_bar_profile_settings">Settings</string>
     <string name="app_bar_profile_logout">Logout</string>
-    <string name="app_bar_agents_create">Add an agent</string>
     <string name="app_bar_agents_delete">Remove agent</string>
-    <string name="app_bar_listings_create">Create Listing</string>
     <string name="app_bar_listings_delete">Delete Listing</string>
 
     <!-- Menu Title -->
@@ -38,6 +36,7 @@
     <string name="title_menu_create_listing">Create Listing</string>
     <string name="title_menu_applicant_details">Applicant Details</string>
     <string name="title_menu_agents">Agents</string>
+    <string name="title_menu_agencies">Agencies</string>
 
 
     <!-- Dialog -->
@@ -97,6 +96,7 @@
     <string name="btn_text_manage">Manage</string>
     <string name="btn_text_accept">Accept</string>
     <string name="btn_text_reject">Reject</string>
+    <string name="btn_text_find_user">Find user</string>
 
     <!-- Login Activity -->
     <string name="login_activity_header">Login</string>
@@ -119,6 +119,10 @@
     <!-- Create Agency Application Fragment -->
     <string name="create_agency_application_fragment_header">Join SgJobMarket!</string>
     <string name="create_agency_application_fragment_description">Are you interested in connecting talented job seekers with the right opportunities? Complete the form below to register your agency and start using our platform!</string>
+
+    <!-- Add Agent Fragment -->
+    <string name="add_agent_fragment_header">Add an agent</string>
+    <string name="add_agent_fragment_description">Enter the email of an existing user to promote their role to an Agent</string>
 
     <!--TODO: Remove later-->
     <string name="hello_blank_fragment">Hello Blank Fragment</string>

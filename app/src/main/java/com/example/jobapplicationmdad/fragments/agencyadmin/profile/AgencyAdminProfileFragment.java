@@ -269,7 +269,7 @@ public class AgencyAdminProfileFragment extends Fragment {
             recyclerViewAgencyProfile.setVisibility(View.VISIBLE);
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }

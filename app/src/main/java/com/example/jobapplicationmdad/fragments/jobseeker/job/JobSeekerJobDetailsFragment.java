@@ -246,7 +246,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -301,7 +301,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
@@ -322,7 +322,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)));
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 

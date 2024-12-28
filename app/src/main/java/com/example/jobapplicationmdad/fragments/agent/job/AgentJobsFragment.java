@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -31,6 +32,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,7 +65,11 @@ public class AgentJobsFragment extends Fragment {
     AgentJobCardAdapter agentJobCardAdapter;
     SwipeRefreshLayout srlAgentJob;
     MaterialToolbar topAppBar;
+    FloatingActionButton fabCreateJob;
+    private long mLastClickTime;
     SharedPreferences sp;
+
+
 
     public AgentJobsFragment() {
         // Required empty public constructor
@@ -116,6 +122,7 @@ public class AgentJobsFragment extends Fragment {
                 }
             });
         }
+        fabCreateJob = view.findViewById(R.id.fabAgentCreateJob);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
@@ -160,15 +167,14 @@ public class AgentJobsFragment extends Fragment {
                 srlAgentJob.setRefreshing(false);
             }
         });
-        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        fabCreateJob.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.agent_listings_item_1) {
-                    getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, CreateAgentJobFragment.newInstance(userId)).addToBackStack(null).commit();
-                    return true;
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
                 }
-                return false;
+                mLastClickTime = System.currentTimeMillis();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, CreateAgentJobFragment.newInstance(userId)).addToBackStack(null).commit();
             }
         });
         getChildFragmentManager().setFragmentResultListener("jobResult", this, (requestKey, result) -> {
@@ -233,7 +239,7 @@ public class AgentJobsFragment extends Fragment {
             }
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }

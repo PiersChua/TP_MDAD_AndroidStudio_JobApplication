@@ -189,7 +189,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
 
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(requireContext(), requireActivity().findViewById(android.R.id.content)).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
@@ -211,7 +211,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
             }
-        }, VolleyErrorHandler.newErrorListener(requireContext(),requireActivity().findViewById(android.R.id.content)));
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
