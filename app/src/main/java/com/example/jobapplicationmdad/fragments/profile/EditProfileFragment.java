@@ -1,15 +1,18 @@
 package com.example.jobapplicationmdad.fragments.profile;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -57,6 +60,7 @@ public class EditProfileFragment extends Fragment {
     private static final String ARG_PARAM1 = "userId";
     private static final String update_user_url = MainActivity.root_url + "/api/auth/update-user-details.php";
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
+    private static final String delete_user_url = MainActivity.root_url + "/api/auth/delete-user.php";
     // User that is passed from profile fragment
     private String userId;
     private User user;
@@ -149,7 +153,30 @@ public class EditProfileFragment extends Fragment {
         actvRaceProfile = view.findViewById(R.id.actvRaceProfile);
         actvNationalityprofile = view.findViewById(R.id.actvNationalityProfile);
 
-
+        if (userId != null) {
+            topAppBar.inflateMenu(R.menu.menu_edit_profile);
+            topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.edit_profile_item_1) {
+                        new MaterialAlertDialogBuilder(requireContext()).setTitle("Delete User").setMessage("You are about to delete this user. This action is NON REVERSIBLE. \nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                deleteUser();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int i) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -274,7 +301,7 @@ public class EditProfileFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToGet", userId);
+        params.put("userIdToGet", userId != null ? userId : sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
@@ -313,5 +340,29 @@ public class EditProfileFragment extends Fragment {
         actvGenderProfile.setText(user.getGender(), false);
         actvRaceProfile.setText(user.getRace(), false);
         actvNationalityprofile.setText(user.getNationality(), false);
+    }
+
+    private void deleteUser() {
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("userIdToBeDeleted", userId);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST,delete_user_url,params, headers, response -> {
+            try {
+                getParentFragmentManager().popBackStack();
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
+        });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

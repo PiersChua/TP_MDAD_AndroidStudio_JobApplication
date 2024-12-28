@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
             loadingDialog.dismiss();
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(getApplicationContext()).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(LoginActivity.this).onErrorResponse(error);
         });
         VolleySingleton.getInstance(this).addToRequestQueue(req);
     }

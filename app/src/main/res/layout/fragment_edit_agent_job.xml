@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/menu_agent_edit_listings"
+            app:menu="@menu/menu_agent_edit_listing"
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/background"
             app:theme="@style/ToolbarThemeLight"

@@ -165,12 +165,12 @@ public class JobSeekerProfileFragment extends Fragment {
         btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (System.currentTimeMillis()- mLastClickTime < 1000){
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
                     return;
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, new EditProfileFragment()).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
@@ -190,7 +190,7 @@ public class JobSeekerProfileFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToGet",  sp.getString("userId", ""));
+        params.put("userIdToGet", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));

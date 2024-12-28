@@ -195,7 +195,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         }, error -> {
             loadingDialog.dismiss();
-            VolleyErrorHandler.newErrorListener(getApplicationContext()).onErrorResponse(error);
+            VolleyErrorHandler.newErrorListener(RegisterActivity.this).onErrorResponse(error);
         });
         VolleySingleton.getInstance(this).addToRequestQueue(req);
     }

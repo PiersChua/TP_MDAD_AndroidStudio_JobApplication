@@ -19,8 +19,6 @@
         <item name="tabIndicatorFullWidth">false</item>
         <item name="tabMode">scrollable</item>
     </style>
-    <!-- Dialog Styles -->
-    <style name="Dialog"></style>
     <!-- Button Styles-->
     <style name="Button">
         <item name="android:layout_width">wrap_content</item>

@@ -190,7 +190,7 @@ public class AgentProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentProfile, new EditProfileFragment()).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
@@ -210,7 +210,7 @@ public class AgentProfileFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToGet",  sp.getString("userId", ""));
+        params.put("userIdToGet", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
@@ -261,7 +261,7 @@ public class AgentProfileFragment extends Fragment {
         profileItems.add(item);
     }
 
-    private void addAgencyProfileItem(String label, String value){
+    private void addAgencyProfileItem(String label, String value) {
         HashMap<String, String> item = new HashMap<>();
         item.put("label", label);
         item.put("value", value);
@@ -281,9 +281,9 @@ public class AgentProfileFragment extends Fragment {
 
     private void populateAgencyItems(Agency agency) {
         agencyProfileItems.clear();
-        addAgencyProfileItem("Name",agency.getName());
+        addAgencyProfileItem("Name", agency.getName());
         addAgencyProfileItem("Email Address", agency.getEmail());
         addAgencyProfileItem("Phone Number", agency.getPhoneNumber());
-        addAgencyProfileItem("Address",agency.getAddress());
+        addAgencyProfileItem("Address", agency.getAddress());
     }
 }

@@ -165,7 +165,7 @@ public class AdminProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminProfile, EditProfileFragment.newInstance(user.getUserId())).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminProfile, new EditProfileFragment()).addToBackStack(null).commit();
             }
         });
         getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {

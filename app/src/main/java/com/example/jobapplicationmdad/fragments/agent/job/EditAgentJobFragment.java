@@ -53,15 +53,12 @@ import java.util.Map;
  */
 public class EditAgentJobFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
     private static final String ARG_PARAM2 = "userId";
     private static final String get_job_url = MainActivity.root_url + "/api/agent/get-job.php";
     private static final String update_job_url = MainActivity.root_url + "/api/agent/update-job-details.php";
     private static final String delete_job_url = MainActivity.root_url + "/api/agent/delete-job.php";
 
-    // TODO: Rename and change types of parameters
     private String jobId;
     private String userId;
     MaterialToolbar topAppBar;

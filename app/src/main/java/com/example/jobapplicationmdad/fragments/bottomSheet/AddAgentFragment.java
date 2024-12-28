@@ -43,7 +43,7 @@ import java.util.Map;
 
 public class AddAgentFragment extends BottomSheetDialogFragment {
     private static final String get_job_seeker_url = MainActivity.root_url + "/api/agency-admin/get-job-seeker-details.php";
-    private static final String promote_job_seeker_url = MainActivity.root_url + "/api/agency-admin/promote-job-seeker.php";
+    private static final String add_agent_url = MainActivity.root_url + "/api/agency-admin/add-agent.php";
     private static final String ARG_PARAM1 = "agencyAdminUserId";
     EditText etEmailAddAgent;
     SharedPreferences sp;
@@ -166,24 +166,28 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
     }
 
     private void promoteJobSeekerToAgent(User user) {
+        loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("email", user.getEmail());
         params.put("agencyAdminUserId", agencyAdminUserId);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, promote_job_seeker_url, params, headers, new Response.Listener<JSONObject>() {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, add_agent_url, params, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    dismiss();
-                    messageDialog.dismiss();
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                dismiss();
+                messageDialog.dismiss();
+                loadingDialog.dismiss();
             }
         }, error -> {
+            loadingDialog.dismiss();
+            messageDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
         });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
