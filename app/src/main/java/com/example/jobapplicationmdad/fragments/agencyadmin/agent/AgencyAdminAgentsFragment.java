@@ -97,8 +97,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_agency_admin_agents, container, false);
@@ -155,7 +154,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
         fabAddAgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddAgentFragment bottomSheet = AddAgentFragment.newInstance("d7ce3787-c0f7-11ef-b4b4-88a4c25ac32d");
+                AddAgentFragment bottomSheet = AddAgentFragment.newInstance(userId != null ? userId : sp.getString("userId", ""));
                 bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
             }
         });

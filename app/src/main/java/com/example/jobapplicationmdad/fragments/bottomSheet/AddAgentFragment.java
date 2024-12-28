@@ -44,19 +44,23 @@ import java.util.Map;
 public class AddAgentFragment extends BottomSheetDialogFragment {
     private static final String get_job_seeker_url = MainActivity.root_url + "/api/agency-admin/get-job-seeker-details.php";
     private static final String promote_job_seeker_url = MainActivity.root_url + "/api/agency-admin/promote-job-seeker.php";
-    private static final String ARG_PARAM1 = "agencyId";
+    private static final String ARG_PARAM1 = "agencyAdminUserId";
     EditText etEmailAddAgent;
     SharedPreferences sp;
     TextInputLayout etEmailAddAgentLayout;
     AlertDialog loadingDialog;
+    View dialogLoader, dialogMessage;
     AlertDialog messageDialog;
-    Button btnFindUser;
-    private String agencyId;
+    Button btnFindUser,btnPrimary,btnOutline;
+    ImageView icon;
+    TextView title,desc;
+    private String agencyAdminUserId;
+    private User user;
 
-    public static AddAgentFragment newInstance(String agencyId) {
+    public static AddAgentFragment newInstance(String agencyAdminUserId) {
         AddAgentFragment fragment = new AddAgentFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, agencyId);
+        args.putString(ARG_PARAM1, agencyAdminUserId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +69,7 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            agencyId = getArguments().getString(ARG_PARAM1);
+            agencyAdminUserId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -84,6 +88,34 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
         etEmailAddAgentLayout = view.findViewById(R.id.etEmailAddAgentLayout);
         btnFindUser = view.findViewById(R.id.btnFindUser);
 
+        dialogLoader = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_loader, null);
+        MaterialAlertDialogBuilder dialogLoaderBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogLoaderBuilder.setView(dialogLoader).setCancelable(false);
+        loadingDialog = dialogLoaderBuilder.create();
+
+        dialogMessage = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_message, null);
+        MaterialAlertDialogBuilder dialogMessageBuilder = new MaterialAlertDialogBuilder(requireContext());
+        dialogMessageBuilder.setView(dialogMessage);
+        messageDialog = dialogMessageBuilder.create();
+
+        icon = dialogMessage.findViewById(R.id.ivDialogIcon);
+        title = dialogMessage.findViewById(R.id.tvDialogTitle);
+        desc = dialogMessage.findViewById(R.id.tvDialogMessage);
+        btnPrimary = dialogMessage.findViewById(R.id.btnDialogPrimary);
+        btnOutline = dialogMessage.findViewById(R.id.btnDialogOutline);
+
+        btnPrimary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                promoteJobSeekerToAgent(user);
+            }
+        });
+        btnOutline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                messageDialog.dismiss();
+            }
+        });
 
         btnFindUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,10 +130,6 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
     }
 
     private void findJobSeeker(String email) {
-        View dialogLoader = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_loader, null);
-        MaterialAlertDialogBuilder dialogLoaderBuilder = new MaterialAlertDialogBuilder(requireContext());
-        dialogLoaderBuilder.setView(dialogLoader).setCancelable(false);
-        loadingDialog = dialogLoaderBuilder.create();
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
@@ -113,31 +141,10 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    User user = new User();
+                    user = new User();
                     user.setFullName(response.getString("fullName"));
                     user.setEmail(response.getString("email"));
 
-                    View dialogMessage = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_message, null);
-                    MaterialAlertDialogBuilder dialogMessageBuilder = new MaterialAlertDialogBuilder(requireContext());
-                    dialogMessageBuilder.setView(dialogMessage);
-                    messageDialog = dialogMessageBuilder.create();
-                    ImageView icon = dialogMessage.findViewById(R.id.ivDialogIcon);
-                    TextView title = dialogMessage.findViewById(R.id.tvDialogTitle);
-                    TextView desc = dialogMessage.findViewById(R.id.tvDialogMessage);
-                    Button btnPrimary = dialogMessage.findViewById(R.id.btnDialogPrimary);
-                    Button btnOutline = dialogMessage.findViewById(R.id.btnDialogOutline);
-                    btnPrimary.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            promoteJobSeekerToAgent(user);
-                        }
-                    });
-                    btnOutline.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            messageDialog.dismiss();
-                        }
-                    });
                     icon.setVisibility(View.GONE);
                     title.setText("User found");
                     desc.setText("Name: " + user.getFullName() + "\nEmail: " + user.getEmail() + "\nWould you like to promote this user to an agent?");
@@ -162,7 +169,7 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("email", user.getEmail());
-        params.put("agencyId", agencyId);
+        params.put("agencyAdminUserId", agencyAdminUserId);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, promote_job_seeker_url, params, headers, new Response.Listener<JSONObject>() {
