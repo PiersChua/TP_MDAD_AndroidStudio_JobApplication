@@ -35,7 +35,7 @@ public class JobValidation extends Validation {
             layout.setError("Responsibilities is too short, at least 50 characters required");
             return false;
         }
-        if(!isValidMaxCharacterLength(responsibilities,250)){
+        if(!isValidMaxCharacterLength(responsibilities,1000)){
             layout.setError("Responsibilities is too long");
             return false;
         }
@@ -52,7 +52,7 @@ public class JobValidation extends Validation {
             layout.setError("Description is too short, at least 50 characters required");
             return false;
         }
-        if(!isValidMaxCharacterLength(description,250)){
+        if(!isValidMaxCharacterLength(description,1000)){
             layout.setError("Description is too long");
             return false;
         }

@@ -192,6 +192,17 @@ public class AgencyAdminAgentsFragment extends Fragment {
 
             }
         });
+        getParentFragmentManager().setFragmentResultListener("addAgentResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated", false);
+            if (isUpdated) {
+                // Refresh user details only if updated
+                agentList.clear();
+                recyclerView.setVisibility(View.GONE);
+                getAgents();
+                agencyAdminAgentCardAdapter.notifyDataSetChanged();
+
+            }
+        });
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

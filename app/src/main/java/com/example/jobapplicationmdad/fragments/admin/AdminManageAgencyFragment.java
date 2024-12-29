@@ -182,7 +182,7 @@ public class AdminManageAgencyFragment extends Fragment {
         btnDeleteUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MaterialAlertDialogBuilder(requireContext()).setTitle("Delete User").setMessage("You are about to delete the agency. This will delete ALL AGENTS, JOBS that are linked to this agency. \nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Delete User").setMessage("You are about to delete the agency. This will delete ALL RECORDS that are linked to this agency. \nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
                         deleteUser();

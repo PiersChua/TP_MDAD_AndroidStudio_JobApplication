@@ -112,6 +112,10 @@ public class EditProfileFragment extends Fragment {
             showAppBarIfFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
             isDeleteAgencyAdmin = getArguments().getBoolean(ARG_PARAM3, false);
         }
+        else{
+            showAppBarIfFragmentClosed = true;
+            isDeleteAgencyAdmin = false;
+        }
     }
 
     @Override

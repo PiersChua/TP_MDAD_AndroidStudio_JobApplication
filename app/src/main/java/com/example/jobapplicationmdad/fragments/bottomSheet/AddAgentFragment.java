@@ -144,7 +144,6 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
                     user = new User();
                     user.setFullName(response.getString("fullName"));
                     user.setEmail(response.getString("email"));
-
                     icon.setVisibility(View.GONE);
                     title.setText("User found");
                     desc.setText("Name: " + user.getFullName() + "\nEmail: " + user.getEmail() + "\nWould you like to promote this user to an agent?");
@@ -178,6 +177,9 @@ public class AddAgentFragment extends BottomSheetDialogFragment {
             public void onResponse(JSONObject response) {
                 try {
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                    Bundle result = new Bundle();
+                    result.putBoolean("isUpdated", true);
+                    getParentFragmentManager().setFragmentResult("addAgentResult", result);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
