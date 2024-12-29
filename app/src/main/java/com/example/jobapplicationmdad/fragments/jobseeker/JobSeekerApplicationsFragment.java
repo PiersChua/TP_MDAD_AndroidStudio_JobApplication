@@ -159,7 +159,7 @@ public class JobSeekerApplicationsFragment extends Fragment {
                         agency.setName(jobApplicationObject.getString("agency_name"));
                         User user = new User();
                         user.setAgency(agency);
-                        Job job = new Job(jobApplicationObject.getString("jobId"), jobApplicationObject.getString("position"), jobApplicationObject.getString("responsibilities"), jobApplicationObject.getString("location"), jobApplicationObject.optDouble("partTimeSalary", 0.0), jobApplicationObject.optDouble("fullTimeSalary", 0.0), jobApplicationObject.getString("updatedAt"), user);
+                        Job job = new Job(jobApplicationObject.getString("jobId"), jobApplicationObject.getString("position"), jobApplicationObject.getString("location"), jobApplicationObject.optDouble("partTimeSalary", 0.0), jobApplicationObject.optDouble("fullTimeSalary", 0.0), jobApplicationObject.getString("updatedAt"), user);
                         JobApplication jobApplication = new JobApplication(JobApplication.Status.valueOf(jobApplicationObject.getString("status")), jobApplicationObject.getString("job_application_created_at"), jobApplicationObject.getString("job_application_updated_at"), job);
                         jobApplicationList.add(jobApplication);
 

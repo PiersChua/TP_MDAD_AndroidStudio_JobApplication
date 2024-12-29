@@ -24,8 +24,6 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
     public interface OnJobClickListener {
         void onManageAgency(String userId);
 
-        void onEditAgency(String agencyId);
-
     }
 
     /**
@@ -49,7 +47,6 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
         private final TextView tvAgencyCardPhoneNumber;
         private final TextView tvAgencyCardAgentCount;
         private final Button btnManageAgency;
-        private final Button btnNavigateToEditAgency;
         private Agency currentAgency;
 
         public ViewHolder(View view, OnJobClickListener listener) {
@@ -60,20 +57,11 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
             tvAgencyCardPhoneNumber = view.findViewById(R.id.tvAgencyCardPhoneNumber);
             tvAgencyCardAgentCount = view.findViewById(R.id.tvAgencyCardAgentCount);
             btnManageAgency = view.findViewById(R.id.btnManageAgency);
-            btnNavigateToEditAgency = view.findViewById(R.id.btnNavigateToEditAgency);
             btnManageAgency.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentAgency != null) {
                         listener.onManageAgency(currentAgency.getUserId());
-                    }
-                }
-            });
-            btnNavigateToEditAgency.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null && currentAgency != null) {
-                        listener.onEditAgency(currentAgency.getAgencyId());
                     }
                 }
             });

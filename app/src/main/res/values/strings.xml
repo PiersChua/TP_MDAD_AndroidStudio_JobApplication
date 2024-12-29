@@ -32,6 +32,7 @@
     <string name="title_menu_jobs">My Jobs</string>
     <string name="title_menu_listings">Listings</string>
     <string name="title_menu_manage_applications">Manage Applications</string>
+    <string name="title_menu_manage_agency">Manage Agency</string>
     <string name="title_menu_edit_listing">Edit Listing</string>
     <string name="title_menu_create_listing">Create Listing</string>
     <string name="title_menu_applicant_details">Applicant Details</string>
@@ -90,10 +91,12 @@
     <!-- Button-->
     <string name="btn_text_update">Update</string>
     <string name="btn_text_create">Create</string>
+    <string name="btn_text_delete">Delete</string>
     <string name="btn_text_apply">Apply</string>
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>
     <string name="btn_text_manage">Manage</string>
+    <string name="btn_text_manage_agents">Manage Agents</string>
     <string name="btn_text_accept">Accept</string>
     <string name="btn_text_reject">Reject</string>
     <string name="btn_text_find_user">Find user</string>
@@ -115,6 +118,9 @@
     <!-- Profile Fragment -->
     <string name="profile_fragment_header_card">Profile Information</string>
     <string name="agency_profile_fragment_header_card">Agency Information</string>
+
+    <!-- Manage Agency Fragment -->
+    <string name="manage_agency_manager_fragment_header_card">Agency Manager</string>
 
     <!-- Create Agency Application Fragment -->
     <string name="create_agency_application_fragment_header">Join SgJobMarket!</string>

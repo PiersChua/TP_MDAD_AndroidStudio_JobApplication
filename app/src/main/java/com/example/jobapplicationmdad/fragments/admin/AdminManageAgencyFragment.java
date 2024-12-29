@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agencyadmin.profile;
+package com.example.jobapplicationmdad.fragments.admin;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.fragments.agencyadmin.agent.AgencyAdminAgentsFragment;
+import com.example.jobapplicationmdad.fragments.agencyadmin.profile.EditAgencyAdminAgencyProfileFragment;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
@@ -34,6 +37,7 @@ import com.example.jobapplicationmdad.util.DateConverter;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONException;
@@ -45,37 +49,36 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AgencyAdminProfileFragment#newInstance} factory method to
+ * Use the {@link AdminManageAgencyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AgencyAdminProfileFragment extends Fragment {
+public class AdminManageAgencyFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "userId";
     private static final String get_user_url = MainActivity.root_url + "/api/agency-admin/get-user-details.php";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private User user;
-    private Agency agency;
 
+    // TODO: Rename and change types of parameters
+    private String userId;
+    private Agency agency;
+    private User user;
     View dialogView;
     AlertDialog loadingDialog;
     MaterialToolbar topAppBar;
-    TextView tvName;
-    RecyclerView recyclerViewAgentProfile, recyclerViewAgencyProfile;
+    RecyclerView recyclerViewAgencyAdminProfile, recyclerViewAgencyProfile;
     ProfileAdapter profileAdapter;
     ProfileAdapter agencyProfileAdapter;
     List<HashMap<String, String>> profileItems;
     List<HashMap<String, String>> agencyProfileItems;
-    Button btnNavigateToEditProfile, btnNavigateToEditAgencyProfile;
+    Button btnNavigateToEditAgencyAdminProfile, btnNavigateToEditAgencyProfile;
     SharedPreferences sp;
+    BottomAppBar bottomAppBar;
+    Button btnManageAgents, btnDeleteAgency;
     private long mLastClickTime;
 
-    public AgencyAdminProfileFragment() {
+    public AdminManageAgencyFragment() {
         // Required empty public constructor
     }
 
@@ -83,16 +86,14 @@ public class AgencyAdminProfileFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AgencyAdminProfileFragment.
+     * @param userId Parameter 1.
+     * @return A new instance of fragment AdminManageAgencyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgencyAdminProfileFragment newInstance(String param1, String param2) {
-        AgencyAdminProfileFragment fragment = new AgencyAdminProfileFragment();
+    public static AdminManageAgencyFragment newInstance(String userId) {
+        AdminManageAgencyFragment fragment = new AdminManageAgencyFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,8 +102,7 @@ public class AgencyAdminProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            userId = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -110,20 +110,25 @@ public class AgencyAdminProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        dialogView = inflater.inflate(R.layout.dialog_loader,container,false);
-        return inflater.inflate(R.layout.fragment_agency_admin_profile, container, false);
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
+        return inflater.inflate(R.layout.fragment_admin_manage_agency, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        topAppBar = view.findViewById(R.id.topAppBarAgencyAdminProfile);
-        tvName = view.findViewById(R.id.tvAgencyAdminProfileName);
-        btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminProfile);
-        btnNavigateToEditAgencyProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminAgencyProfile);
-        recyclerViewAgentProfile = view.findViewById(R.id.rvAgencyAdminProfile);
-        recyclerViewAgencyProfile = view.findViewById(R.id.rvAgencyAdminAgencyProfile);
+        topAppBar = view.findViewById(R.id.topAppbarAdminManageAgency);
+        bottomAppBar = view.findViewById(R.id.bottomAppBarManageAgency);
+        bottomAppBar.setPadding(0, 0, 0, 0);
+        bottomAppBar.setOnApplyWindowInsetsListener(null);
+        btnManageAgents = view.findViewById(R.id.btnManageAgents);
+        btnDeleteAgency = view.findViewById(R.id.btnDeleteAgency);
+        btnNavigateToEditAgencyAdminProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminProfile);
+        btnNavigateToEditAgencyProfile = view.findViewById(R.id.btnNavigateToEditAgencyProfile);
+        recyclerViewAgencyAdminProfile = view.findViewById(R.id.rvAdminManageAgencyAgencyAdminProfile);
+        recyclerViewAgencyProfile = view.findViewById(R.id.rvAdminManageAgencyAgencyProfile);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
@@ -133,14 +138,14 @@ public class AgencyAdminProfileFragment extends Fragment {
 
         // Set the adapter
         profileAdapter = new ProfileAdapter(profileItems);
-        recyclerViewAgentProfile.setAdapter(profileAdapter);
+        recyclerViewAgencyAdminProfile.setAdapter(profileAdapter);
 
         agencyProfileAdapter = new ProfileAdapter(agencyProfileItems);
         recyclerViewAgencyProfile.setAdapter(agencyProfileAdapter);
 
-        GridLayoutManager gridLayoutManagerAgentProfile = new GridLayoutManager(requireContext(), 2);
-        recyclerViewAgentProfile.setLayoutManager(gridLayoutManagerAgentProfile);
-        gridLayoutManagerAgentProfile.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        GridLayoutManager gridLayoutManagerAgencyAdminProfile = new GridLayoutManager(requireContext(), 2);
+        recyclerViewAgencyAdminProfile.setLayoutManager(gridLayoutManagerAgencyAdminProfile);
+        gridLayoutManagerAgencyAdminProfile.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
                 // If the position is the last item and the list size is odd, take up 2 columns
@@ -150,36 +155,15 @@ public class AgencyAdminProfileFragment extends Fragment {
                 return 1;
             }
         });
+        recyclerViewAgencyProfile.setLayoutManager(new LinearLayoutManager(requireContext()));
 
-        GridLayoutManager gridLayoutManagerAgencyProfile = new GridLayoutManager(requireContext(), 2);
-        recyclerViewAgencyProfile.setLayoutManager(gridLayoutManagerAgencyProfile);
-        gridLayoutManagerAgencyProfile.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public int getSpanSize(int position) {
-                // If the position is the last item and the list size is odd, take up 2 columns
-                if (position == agencyProfileItems.size() - 1 && agencyProfileItems.size() % 2 != 0) {
-                    return 2;
-                }
-                return 1;
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
             }
         });
-        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.agency_admin_profile_item_1) {
-                    sp.edit().clear().apply();
-                    Intent i = new Intent(getActivity(), LoginActivity.class);
-                    // Clear the fragment back stack
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        btnNavigateToEditProfile.setOnClickListener(new View.OnClickListener() {
+        btnManageAgents.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (System.currentTimeMillis() - mLastClickTime < 1000) {
@@ -187,7 +171,18 @@ public class AgencyAdminProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile,new EditProfileFragment()).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, AgencyAdminAgentsFragment.newInstance(userId,false)).addToBackStack(null).commit();
+            }
+        });
+        btnNavigateToEditAgencyAdminProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
+                // addToBackStack() allows the back button to return to the current page
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditProfileFragment.newInstance(userId)).addToBackStack(null).commit();
             }
         });
         btnNavigateToEditAgencyProfile.setOnClickListener(new View.OnClickListener() {
@@ -198,22 +193,22 @@ public class AgencyAdminProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminAgencyProfileFragment.newInstance(agency,null)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditAgencyAdminAgencyProfileFragment.newInstance(agency, userId)).addToBackStack(null).commit();
             }
         });
 
-        getParentFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
+        getChildFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
                 // Refresh user details only if updated
                 profileItems.clear();
-                recyclerViewAgentProfile.setVisibility(View.GONE);
+                recyclerViewAgencyAdminProfile.setVisibility(View.GONE);
                 profileAdapter.notifyDataSetChanged();
                 getUserDetails();
 
             }
         });
-        getParentFragmentManager().setFragmentResultListener("editAgencyResult", this, (requestKey, result) -> {
+        getChildFragmentManager().setFragmentResultListener("editAgencyResult", this, (requestKey, result) -> {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
                 // Refresh user details only if updated
@@ -224,21 +219,32 @@ public class AgencyAdminProfileFragment extends Fragment {
 
             }
         });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).hideBottomNav();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        ((MainActivity) requireActivity()).showBottomNav();
     }
 
     private void getUserDetails() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToGet", sp.getString("userId", ""));
+        params.put("userIdToGet", userId);
         String url = UrlUtil.constructUrl(get_user_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
                 // retrieve user details
-                tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
                 user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
@@ -266,8 +272,8 @@ public class AgencyAdminProfileFragment extends Fragment {
             }
             // toggle the visibility of loader
             loadingDialog.dismiss();
-            recyclerViewAgentProfile.setVisibility(View.VISIBLE);
             recyclerViewAgencyProfile.setVisibility(View.VISIBLE);
+            recyclerViewAgencyAdminProfile.setVisibility(View.VISIBLE);
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);

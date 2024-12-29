@@ -23,7 +23,9 @@ import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.JobSeekerSmallJobCardAdapter;
 import com.example.jobapplicationmdad.adapters.JobSeekerJobCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.job.JobSeekerJobDetailsFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
@@ -175,7 +177,11 @@ public class JobSeekerHomeFragment extends Fragment {
                     JSONArray jobsArray = response.getJSONArray("data");
                     for (int i = 0; i < jobsArray.length(); i++) {
                         JSONObject jobObject = jobsArray.getJSONObject(i);
-                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"));
+                        Agency agency = new Agency();
+                        agency.setName(jobObject.getString("agency_name"));
+                        User user = new User();
+                        user.setAgency(agency);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"),user);
                         // add the first 5 jobs to the recommended job list
                         if (i < 5) {
                             recommendedJobList.add(job);

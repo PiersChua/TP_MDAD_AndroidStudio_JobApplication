@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -50,9 +51,11 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "agency";
+    private static final String ARG_PARAM2 = "userId";
 
     // TODO: Rename and change types of parameters
     private Agency agency;
+    private String userId;
     private static final String update_agency_url = MainActivity.root_url + "/api/auth/update-agency-details.php";
     // User that is passed from profile fragment
     MaterialToolbar topAppBar;
@@ -73,10 +76,11 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
      * @return A new instance of fragment EditAgencyAdminAgencyProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditAgencyAdminAgencyProfileFragment newInstance(Agency agency) {
+    public static EditAgencyAdminAgencyProfileFragment newInstance(Agency agency, String userId) {
         EditAgencyAdminAgencyProfileFragment fragment = new EditAgencyAdminAgencyProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, agency);
+        args.putString(ARG_PARAM2, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,6 +90,7 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             agency = (Agency) getArguments().getSerializable(ARG_PARAM1);
+            userId = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -99,13 +104,17 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) requireActivity()).hideBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).hideBottomNav();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity) requireActivity()).showBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).showBottomNav();
+        }
     }
 
     @Override
@@ -152,6 +161,15 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
                 }
             }
         });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
+            }
+        });
     }
 
     private Agency getAgencyFromForm() {
@@ -173,6 +191,7 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
         SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
+        params.put("agencyAdminUserId", userId != null ? userId : sp.getString("userId", ""));
         params.put("name", agency.getName());
         params.put("email", agency.getEmail());
         params.put("phoneNumber", agency.getPhoneNumber());

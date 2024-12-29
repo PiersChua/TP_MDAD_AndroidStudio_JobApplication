@@ -173,7 +173,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                         agency.setName(jobObject.getString("agency_name"));
                         User user = new User();
                         user.setAgency(agency);
-                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("responsibilities"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
                         favouriteJoblist.add(job);
 
 

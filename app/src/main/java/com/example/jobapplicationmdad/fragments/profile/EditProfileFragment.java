@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -113,13 +114,19 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((MainActivity) requireActivity()).hideBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).hideBottomNav();
+        }
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity) requireActivity()).showBottomNav();
+        if (userId == null) {
+            ((MainActivity) requireActivity()).showBottomNav();
+        }
+
     }
 
     @Override
@@ -231,6 +238,15 @@ public class EditProfileFragment extends Fragment {
                 datePicker.addOnPositiveButtonClickListener(selection -> {
                     etDateOfBirthProfile.setText(DateConverter.formatDateFromMilliseconds(selection));
                 });
+            }
+        });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
             }
         });
     }
@@ -349,7 +365,7 @@ public class EditProfileFragment extends Fragment {
         params.put("userIdToBeDeleted", userId);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST,delete_user_url,params, headers, response -> {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, delete_user_url, params, headers, response -> {
             try {
                 getParentFragmentManager().popBackStack();
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();

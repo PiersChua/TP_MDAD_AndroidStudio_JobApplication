@@ -40,7 +40,7 @@ public class JobSeekerSmallJobCardAdapter extends RecyclerView.Adapter<JobSeeker
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvSmallJobCardTitle;
-        private final TextView tvSmallJobCardDescription;
+        private final TextView tvSmallJobCardAgencyName;
         private final TextView tvSmallJobCardSalary;
         private final TextView tvSmallJobCardLocations;
         private final TextView tvSmallJobCardUpdatedAt;
@@ -50,7 +50,7 @@ public class JobSeekerSmallJobCardAdapter extends RecyclerView.Adapter<JobSeeker
             super(view);
             // Define click listener for the ViewHolder's View
             tvSmallJobCardTitle = view.findViewById(R.id.tvSmallJobCardTitle);
-            tvSmallJobCardDescription = view.findViewById(R.id.tvSmallJobCardDescription);
+            tvSmallJobCardAgencyName = view.findViewById(R.id.tvSmallJobCardAgencyName);
             tvSmallJobCardSalary = view.findViewById(R.id.tvSmallJobCardSalary);
             tvSmallJobCardLocations = view.findViewById(R.id.tvSmallJobCardLocations);
             tvSmallJobCardUpdatedAt = view.findViewById(R.id.tvSmallJobCardUpdatedAt);
@@ -68,7 +68,7 @@ public class JobSeekerSmallJobCardAdapter extends RecyclerView.Adapter<JobSeeker
         public void bind(Job job) {
             currentJob = job;
             tvSmallJobCardTitle.setText(job.getPosition());
-            tvSmallJobCardDescription.setText(job.getResponsibilities());
+            tvSmallJobCardAgencyName.setText(job.getUser().getAgency().getName());
             StringBuilder salary = new StringBuilder();
             if (job.getPartTimeSalary() != 0.0) {
                 salary.append("$").append(String.format("%.2f",job.getPartTimeSalary())).append(" per hr");

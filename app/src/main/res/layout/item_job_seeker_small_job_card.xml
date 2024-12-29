@@ -28,13 +28,15 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_height="50dp"
-                android:id="@+id/tvSmallJobCardDescription"
+                android:id="@+id/tvSmallJobCardAgencyName"
                 style="@style/Text.Small"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:minHeight="30dp"
                 android:ellipsize="end"
-                android:maxLines="3"
-                android:text="Responsbilities" />
+                android:maxLines="2"
+                android:text="Agency Name"
+                android:textColor="@color/placeholder_foreground"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSmallJobCardSalary"

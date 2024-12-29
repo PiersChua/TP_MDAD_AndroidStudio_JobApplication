@@ -2,7 +2,7 @@ package com.example.jobapplicationmdad.model;
 
 import java.io.Serializable;
 
-public class Job implements Serializable {
+public class Job {
     private String jobId;
     private String position;
     private String responsibilities;
@@ -35,22 +35,11 @@ public class Job implements Serializable {
         this.description = description;
     }
 
-    // Job Cards at Home Fragment
-    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt) {
-        this.jobId = jobId;
-        this.position = position;
-        this.responsibilities = responsibilities;
-        this.location = location;
-        this.partTimeSalary = partTimeSalary;
-        this.fullTimeSalary = fullTimeSalary;
-        this.updatedAt = updatedAt;
-    }
 
-    // Job Cards at Favourite, Application Fragments
-    public Job(String jobId, String position, String responsibilities, String location, double partTimeSalary, double fullTimeSalary, String updatedAt, User user) {
+    // Job Cards at Home, Favourite, Application Fragments
+    public Job(String jobId, String position ,String location, double partTimeSalary, double fullTimeSalary, String updatedAt, User user) {
         this.jobId = jobId;
         this.position = position;
-        this.responsibilities = responsibilities;
         this.location = location;
         this.partTimeSalary = partTimeSalary;
         this.fullTimeSalary = fullTimeSalary;

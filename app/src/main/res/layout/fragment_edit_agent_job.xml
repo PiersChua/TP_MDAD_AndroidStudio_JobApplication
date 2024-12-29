@@ -175,6 +175,8 @@
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="16dp"
                     android:hint="@string/hint_description"
+                    app:helperText="Role overview, purpose, qualifications"
+                    app:helperTextEnabled="true"
                     app:counterEnabled="true"
                     app:counterMaxLength="250"
                     app:startIconDrawable="@drawable/ic_description">
@@ -192,6 +194,8 @@
                     android:layout_marginBottom="16dp"
                     android:hint="@string/hint_responsibilities"
                     app:counterEnabled="true"
+                    app:helperText="Key tasks and duties"
+                    app:helperTextEnabled="true"
                     app:counterMaxLength="250"
                     app:startIconDrawable="@drawable/ic_checklist">
 
