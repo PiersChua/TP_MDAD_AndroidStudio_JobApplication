@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -171,7 +172,7 @@ public class AdminManageAgencyFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, AgencyAdminAgentsFragment.newInstance(userId,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, AgencyAdminAgentsFragment.newInstance(userId, false,false)).addToBackStack(null).commit();
             }
         });
         btnNavigateToEditAgencyAdminProfile.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +183,7 @@ public class AdminManageAgencyFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditProfileFragment.newInstance(userId)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditProfileFragment.newInstance(userId,false)).addToBackStack(null).commit();
             }
         });
         btnNavigateToEditAgencyProfile.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +220,15 @@ public class AdminManageAgencyFragment extends Fragment {
 
             }
         });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -226,12 +236,14 @@ public class AdminManageAgencyFragment extends Fragment {
         super.onResume();
         ((MainActivity) requireActivity()).hideBottomNav();
 
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
         ((MainActivity) requireActivity()).showBottomNav();
+
     }
 
     private void getUserDetails() {

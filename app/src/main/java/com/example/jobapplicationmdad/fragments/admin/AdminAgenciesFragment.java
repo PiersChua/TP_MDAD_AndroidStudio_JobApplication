@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -128,12 +129,12 @@ public class AdminAgenciesFragment extends Fragment {
         adminAgencyCardAdapter = new AdminAgencyCardAdapter(agencyList, new AdminAgencyCardAdapter.OnJobClickListener() {
             @Override
             public void onManageAgency(String userId) {
-                FragmentManager fragmentManager = getParentFragmentManager();
+                FragmentManager fragmentManager = getChildFragmentManager();
                 if (fragmentManager.getBackStackEntryCount() > 0) {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminAgencies, AdminManageAgencyFragment.newInstance(userId)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminAgencies, AdminManageAgencyFragment.newInstance(userId)).addToBackStack(null).commit();
 
             }
 

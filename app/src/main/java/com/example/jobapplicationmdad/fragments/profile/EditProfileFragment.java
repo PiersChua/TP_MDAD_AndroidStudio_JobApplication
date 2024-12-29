@@ -59,11 +59,13 @@ public class EditProfileFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private static final String ARG_PARAM1 = "userId";
+    private static final String ARG_PARAM2 = "showAppBarIfFragmentClosed";
     private static final String update_user_url = MainActivity.root_url + "/api/auth/update-user-details.php";
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private static final String delete_user_url = MainActivity.root_url + "/api/auth/delete-user.php";
     // User that is passed from profile fragment
     private String userId;
+    private boolean showAppBarIfFragmentClosed;
     private User user;
     MaterialToolbar topAppBar;
     Button btnEditProfile;
@@ -87,10 +89,11 @@ public class EditProfileFragment extends Fragment {
      * @return A new instance of fragment EditProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditProfileFragment newInstance(String userId) {
+    public static EditProfileFragment newInstance(String userId, boolean showAppBarIfFragmentClosed) {
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userId);
+        args.putBoolean(ARG_PARAM2, showAppBarIfFragmentClosed);
         fragment.setArguments(args);
         return fragment;
     }
@@ -100,6 +103,9 @@ public class EditProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userId = getArguments().getString(ARG_PARAM1);
+            showAppBarIfFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
+        } else {
+            showAppBarIfFragmentClosed = true;
         }
     }
 
@@ -114,18 +120,17 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (userId == null) {
-            ((MainActivity) requireActivity()).hideBottomNav();
-        }
+        ((MainActivity) requireActivity()).hideBottomNav();
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (userId == null) {
+        if (showAppBarIfFragmentClosed) {
             ((MainActivity) requireActivity()).showBottomNav();
         }
+
 
     }
 

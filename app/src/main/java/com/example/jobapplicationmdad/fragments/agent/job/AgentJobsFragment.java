@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -55,12 +56,12 @@ public class AgentJobsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "userId";
-    private static final String ARG_PARAM2 = "showAppBarIfFragmentClosed";
+    private static final String ARG_PARAM2 = "showAppBarIfAgentJobsFragmentClosed";
 
     // TODO: Rename and change types of parameters
     private static final String get_jobs_url = MainActivity.root_url + "/api/agent/get-jobs.php";
     private String userId;
-    private boolean showAppBarIfFragmentClosed;
+    private boolean showAppBarIfAgentJobsFragmentClosed;
     RecyclerView recyclerView;
     List<Job> jobList;
     View dialogView;
@@ -83,11 +84,11 @@ public class AgentJobsFragment extends Fragment {
      * @return A new instance of fragment AgentJobsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfFragmentClosed) {
+    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfAgentJobsFragmentClosed) {
         AgentJobsFragment fragment = new AgentJobsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userId);
-        args.putBoolean(ARG_PARAM2, showAppBarIfFragmentClosed);
+        args.putBoolean(ARG_PARAM2, showAppBarIfAgentJobsFragmentClosed);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,10 +98,10 @@ public class AgentJobsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             userId = getArguments().getString(ARG_PARAM1);
-            showAppBarIfFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
+            showAppBarIfAgentJobsFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
         }
         else {
-            showAppBarIfFragmentClosed = true;
+            showAppBarIfAgentJobsFragmentClosed = true;
         }
     }
 
@@ -188,6 +189,15 @@ public class AgentJobsFragment extends Fragment {
                 refreshJobs();
             }
         });
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (isAdded()) {
+                    getParentFragmentManager().popBackStack();
+                }
+
+            }
+        });
     }
 
     public void onResume() {
@@ -201,7 +211,7 @@ public class AgentJobsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (userId != null && showAppBarIfFragmentClosed) {
+        if (userId != null && showAppBarIfAgentJobsFragmentClosed) {
             ((MainActivity) requireActivity()).showBottomNav();
         }
 
