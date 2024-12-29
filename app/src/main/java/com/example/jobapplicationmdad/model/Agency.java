@@ -85,6 +85,7 @@ public class Agency implements Serializable {
     private String phoneNumber;
     private String address; // Nullable
     private String userId;
+    private User user;
     private String createdAt;
     private String updatedAt;
     private int agentCount;
@@ -95,5 +96,13 @@ public class Agency implements Serializable {
 
     public void setAgentCount(int agentCount) {
         this.agentCount = agentCount;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

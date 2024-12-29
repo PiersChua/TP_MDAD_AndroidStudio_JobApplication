@@ -141,7 +141,7 @@
                 android:orientation="horizontal">
 
                 <android.widget.Button
-                    android:id="@+id/btnDeleteAgency"
+                    android:id="@+id/btnDeleteUser"
                     style="@style/Button.OutlinePrimary"
                     android:layout_width="0dp"
                     android:layout_weight="1"

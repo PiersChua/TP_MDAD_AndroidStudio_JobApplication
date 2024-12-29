@@ -162,7 +162,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId, showAppBarIfEditProfileFragmentClosed)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId, showAppBarIfEditProfileFragmentClosed,false)).addToBackStack(null).commit();
 
             }
         });
@@ -179,6 +179,17 @@ public class AgencyAdminAgentsFragment extends Fragment {
             public void onClick(View view) {
                 AddAgentFragment bottomSheet = AddAgentFragment.newInstance(userId != null ? userId : sp.getString("userId", ""));
                 bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
+            }
+        });
+        getChildFragmentManager().setFragmentResultListener("editProfileResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated", false);
+            if (isUpdated) {
+                // Refresh user details only if updated
+                agentList.clear();
+                recyclerView.setVisibility(View.GONE);
+                getAgents();
+                agencyAdminAgentCardAdapter.notifyDataSetChanged();
+
             }
         });
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {

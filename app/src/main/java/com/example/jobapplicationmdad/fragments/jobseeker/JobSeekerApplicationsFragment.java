@@ -162,7 +162,6 @@ public class JobSeekerApplicationsFragment extends Fragment {
                         Job job = new Job(jobApplicationObject.getString("jobId"), jobApplicationObject.getString("position"), jobApplicationObject.getString("location"), jobApplicationObject.optDouble("partTimeSalary", 0.0), jobApplicationObject.optDouble("fullTimeSalary", 0.0), jobApplicationObject.getString("updatedAt"), user);
                         JobApplication jobApplication = new JobApplication(JobApplication.Status.valueOf(jobApplicationObject.getString("status")), jobApplicationObject.getString("job_application_created_at"), jobApplicationObject.getString("job_application_updated_at"), job);
                         jobApplicationList.add(jobApplication);
-
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);

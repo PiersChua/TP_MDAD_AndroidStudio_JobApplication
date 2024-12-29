@@ -1,173 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flEditProfile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary">
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarEditProfile"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="@color/background"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile_edit"
-            app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:background="@color/primary">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/background"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_profile_edit"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etFullNameProfileLayout"
-                    style="@style/EditTextLayout"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_full_name"
-                    app:startIconDrawable="@drawable/ic_person">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etFullNameProfile"
-                        style="@style/EditText" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etEmailProfileLayout"
-                    style="@style/EditTextLayout"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_email"
-                    android:inputType="textEmailAddress"
-                    app:startIconDrawable="@drawable/ic_email">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etEmailProfile"
-                        style="@style/EditText" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etPhoneNumberProfileLayout"
-                    style="@style/EditTextLayout"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_phone_number"
-                    app:prefixText="+65 "
-                    app:startIconDrawable="@drawable/ic_phone">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etPhoneNumberProfile"
-                        style="@style/EditText"
-                        android:inputType="phone"
-                        android:maxLength="8" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etDateOfBirthProfileLayout"
-                    style="@style/EditTextLayout"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_date_of_birth"
-                    app:startIconDrawable="@drawable/ic_calendar">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etDateOfBirthProfile"
-                        style="@style/EditText"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etGenderProfileLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_gender"
-                    android:textColorHint="@color/placeholder_foreground"
-                    app:boxBackgroundColor="@color/placeholder_background"
-                    app:boxStrokeColor="@color/foreground"
-                    app:cursorColor="@color/foreground"
-                    app:startIconDrawable="@drawable/ic_people">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actvGenderProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        app:simpleItems="@array/gender_items" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etRaceProfileLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_race"
-                    android:textColorHint="@color/placeholder_foreground"
-                    app:boxBackgroundColor="@color/placeholder_background"
-                    app:boxStrokeColor="@color/foreground"
-                    app:cursorColor="@color/foreground"
-                    app:startIconDrawable="@drawable/ic_race">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actvRaceProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        app:simpleItems="@array/race_items" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/etNationalityProfileLayout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:hint="@string/hint_nationality"
-                    android:textColorHint="@color/placeholder_foreground"
-                    app:boxBackgroundColor="@color/placeholder_background"
-                    app:boxStrokeColor="@color/foreground"
-                    app:cursorColor="@color/foreground"
-                    app:startIconDrawable="@drawable/ic_nationality">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/actvNationalityProfile"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none"
-                        app:simpleItems="@array/nationality_items" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <android.widget.Button
-                    android:id="@+id/btnEditProfile"
-                    style="@style/Button.Primary"
-                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="16dp"
-                    android:text="@string/btn_text_update"
-                    android:textSize="18sp"
-                    android:layout_marginBottom="16dp"/>
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etFullNameProfileLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_full_name"
+                        app:startIconDrawable="@drawable/ic_person">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFullNameProfile"
+                            style="@style/EditText" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etEmailProfileLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_email"
+                        android:inputType="textEmailAddress"
+                        app:startIconDrawable="@drawable/ic_email">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEmailProfile"
+                            style="@style/EditText" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etPhoneNumberProfileLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_phone_number"
+                        app:prefixText="+65 "
+                        app:startIconDrawable="@drawable/ic_phone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPhoneNumberProfile"
+                            style="@style/EditText"
+                            android:inputType="phone"
+                            android:maxLength="8" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etDateOfBirthProfileLayout"
+                        style="@style/EditTextLayout"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_date_of_birth"
+                        app:startIconDrawable="@drawable/ic_calendar">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDateOfBirthProfile"
+                            style="@style/EditText"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etGenderProfileLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_gender"
+                        android:textColorHint="@color/placeholder_foreground"
+                        app:boxBackgroundColor="@color/placeholder_background"
+                        app:boxStrokeColor="@color/foreground"
+                        app:cursorColor="@color/foreground"
+                        app:startIconDrawable="@drawable/ic_people">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvGenderProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            app:simpleItems="@array/gender_items" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etRaceProfileLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_race"
+                        android:textColorHint="@color/placeholder_foreground"
+                        app:boxBackgroundColor="@color/placeholder_background"
+                        app:boxStrokeColor="@color/foreground"
+                        app:cursorColor="@color/foreground"
+                        app:startIconDrawable="@drawable/ic_race">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvRaceProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            app:simpleItems="@array/race_items" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/etNationalityProfileLayout"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="@string/hint_nationality"
+                        android:textColorHint="@color/placeholder_foreground"
+                        app:boxBackgroundColor="@color/placeholder_background"
+                        app:boxStrokeColor="@color/foreground"
+                        app:cursorColor="@color/foreground"
+                        app:startIconDrawable="@drawable/ic_nationality">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvNationalityProfile"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            app:simpleItems="@array/nationality_items" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <android.widget.Button
+                        android:id="@+id/btnEditProfile"
+                        style="@style/Button.Primary"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="@string/btn_text_update"
+                        android:textSize="18sp" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</FrameLayout>

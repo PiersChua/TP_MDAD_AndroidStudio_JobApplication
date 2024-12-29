@@ -1,6 +1,7 @@
 package com.example.jobapplicationmdad.fragments.admin;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
@@ -40,6 +42,7 @@ import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 
@@ -59,6 +62,7 @@ public class AdminManageAgencyFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "userId";
     private static final String get_user_url = MainActivity.root_url + "/api/agency-admin/get-user-details.php";
+    private static final String delete_user_url = MainActivity.root_url + "/api/auth/delete-user.php";
 
 
     // TODO: Rename and change types of parameters
@@ -76,7 +80,7 @@ public class AdminManageAgencyFragment extends Fragment {
     Button btnNavigateToEditAgencyAdminProfile, btnNavigateToEditAgencyProfile;
     SharedPreferences sp;
     BottomAppBar bottomAppBar;
-    Button btnManageAgents, btnDeleteAgency;
+    Button btnManageAgents, btnDeleteUser;
     private long mLastClickTime;
 
     public AdminManageAgencyFragment() {
@@ -125,7 +129,7 @@ public class AdminManageAgencyFragment extends Fragment {
         bottomAppBar.setPadding(0, 0, 0, 0);
         bottomAppBar.setOnApplyWindowInsetsListener(null);
         btnManageAgents = view.findViewById(R.id.btnManageAgents);
-        btnDeleteAgency = view.findViewById(R.id.btnDeleteAgency);
+        btnDeleteUser = view.findViewById(R.id.btnDeleteUser);
         btnNavigateToEditAgencyAdminProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminProfile);
         btnNavigateToEditAgencyProfile = view.findViewById(R.id.btnNavigateToEditAgencyProfile);
         recyclerViewAgencyAdminProfile = view.findViewById(R.id.rvAdminManageAgencyAgencyAdminProfile);
@@ -172,7 +176,23 @@ public class AdminManageAgencyFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, AgencyAdminAgentsFragment.newInstance(userId, false,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, AgencyAdminAgentsFragment.newInstance(userId, false, false)).addToBackStack(null).commit();
+            }
+        });
+        btnDeleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Delete User").setMessage("You are about to delete the agency. This will delete ALL AGENTS, JOBS that are linked to this agency. \nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        deleteUser();
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
             }
         });
         btnNavigateToEditAgencyAdminProfile.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +203,7 @@ public class AdminManageAgencyFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditProfileFragment.newInstance(userId,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditProfileFragment.newInstance(userId, false,true)).addToBackStack(null).commit();
             }
         });
         btnNavigateToEditAgencyProfile.setOnClickListener(new View.OnClickListener() {
@@ -324,5 +344,31 @@ public class AdminManageAgencyFragment extends Fragment {
         addAgencyProfileItem("Email Address", agency.getEmail());
         addAgencyProfileItem("Phone Number", agency.getPhoneNumber());
         addAgencyProfileItem("Address", agency.getAddress());
+    }
+
+    private void deleteUser() {
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("userIdToBeDeleted", userId);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, delete_user_url, params, headers, response -> {
+            try {
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                Bundle result = new Bundle();
+                result.putBoolean("isUpdated", true);
+                getParentFragmentManager().setFragmentResult("deleteAgencyResult", result);
+                getParentFragmentManager().popBackStack();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
+        });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 }

@@ -45,6 +45,7 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
         private final TextView tvAgencyCardName;
         private final TextView tvAgencyCardEmail;
         private final TextView tvAgencyCardPhoneNumber;
+        private final TextView tvAgencyCardUserName;
         private final TextView tvAgencyCardAgentCount;
         private final Button btnManageAgency;
         private Agency currentAgency;
@@ -56,6 +57,7 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
             tvAgencyCardEmail = view.findViewById(R.id.tvAgencyCardEmail);
             tvAgencyCardPhoneNumber = view.findViewById(R.id.tvAgencyCardPhoneNumber);
             tvAgencyCardAgentCount = view.findViewById(R.id.tvAgencyCardAgentCount);
+            tvAgencyCardUserName = view.findViewById(R.id.tvAgencyCardUserName);
             btnManageAgency = view.findViewById(R.id.btnManageAgency);
             btnManageAgency.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,6 +74,7 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
             tvAgencyCardName.setText(agency.getName());
             tvAgencyCardEmail.setText(agency.getEmail());
             tvAgencyCardPhoneNumber.setText(agency.getPhoneNumber());
+            tvAgencyCardUserName.setText(agency.getUser().getFullName());
             tvAgencyCardAgentCount.setText(String.valueOf(agency.getAgentCount()));
         }
 

@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,6 +25,8 @@ import android.widget.EditText;
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.fragments.admin.AdminAgenciesFragment;
+import com.example.jobapplicationmdad.fragments.admin.AdminManageAgencyFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -60,12 +63,14 @@ public class EditProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private static final String ARG_PARAM1 = "userId";
     private static final String ARG_PARAM2 = "showAppBarIfFragmentClosed";
+    private static final String ARG_PARAM3 = "isDeleteAgencyAdmin";
     private static final String update_user_url = MainActivity.root_url + "/api/auth/update-user-details.php";
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private static final String delete_user_url = MainActivity.root_url + "/api/auth/delete-user.php";
     // User that is passed from profile fragment
     private String userId;
     private boolean showAppBarIfFragmentClosed;
+    private boolean isDeleteAgencyAdmin;
     private User user;
     MaterialToolbar topAppBar;
     Button btnEditProfile;
@@ -89,11 +94,12 @@ public class EditProfileFragment extends Fragment {
      * @return A new instance of fragment EditProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditProfileFragment newInstance(String userId, boolean showAppBarIfFragmentClosed) {
+    public static EditProfileFragment newInstance(String userId, boolean showAppBarIfFragmentClosed, boolean isDeleteAgencyAdmin) {
         EditProfileFragment fragment = new EditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userId);
         args.putBoolean(ARG_PARAM2, showAppBarIfFragmentClosed);
+        args.putBoolean(ARG_PARAM3, isDeleteAgencyAdmin);
         fragment.setArguments(args);
         return fragment;
     }
@@ -104,8 +110,7 @@ public class EditProfileFragment extends Fragment {
         if (getArguments() != null) {
             userId = getArguments().getString(ARG_PARAM1);
             showAppBarIfFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
-        } else {
-            showAppBarIfFragmentClosed = true;
+            isDeleteAgencyAdmin = getArguments().getBoolean(ARG_PARAM3, false);
         }
     }
 
@@ -284,7 +289,7 @@ public class EditProfileFragment extends Fragment {
         SharedPreferences sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("userIdToBeUpdated", userId);
+        params.put("userIdToBeUpdated", userId != null ? userId : sp.getString("userId", ""));
         params.put("fullName", updatedUser.getFullName());
         params.put("email", updatedUser.getEmail());
         params.put("phoneNumber", updatedUser.getPhoneNumber());
@@ -364,6 +369,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void deleteUser() {
+
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
@@ -372,8 +378,19 @@ public class EditProfileFragment extends Fragment {
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, delete_user_url, params, headers, response -> {
             try {
-                getParentFragmentManager().popBackStack();
                 Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
+                if (isDeleteAgencyAdmin) {
+                    Bundle result = new Bundle();
+                    result.putBoolean("isUpdated", true);
+                    getParentFragmentManager().setFragmentResult("deleteAgencyResult", result);
+                    requireActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    requireActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_left_to_right, R.anim.exit_left_to_right, R.anim.slide_right_to_left, R.anim.exit_right_to_left).replace(R.id.flMain, new AdminAgenciesFragment()).commit();
+                } else {
+                    Bundle result = new Bundle();
+                    result.putBoolean("isUpdated", true);
+                    getParentFragmentManager().setFragmentResult("editProfileResult", result);
+                    getParentFragmentManager().popBackStack();
+                }
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);

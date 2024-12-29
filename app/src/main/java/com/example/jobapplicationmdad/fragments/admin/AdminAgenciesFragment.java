@@ -156,6 +156,17 @@ public class AdminAgenciesFragment extends Fragment {
                 mLastClickTime = System.currentTimeMillis();
             }
         });
+        getChildFragmentManager().setFragmentResultListener("deleteAgencyResult", this, (requestKey, result) -> {
+            boolean isUpdated = result.getBoolean("isUpdated", false);
+            if (isUpdated) {
+                // Refresh user details only if updated
+                agencyList.clear();
+                recyclerView.setVisibility(View.GONE);
+                getAgencies();
+                adminAgencyCardAdapter.notifyDataSetChanged();
+
+            }
+        });
 
     }
 
@@ -179,7 +190,10 @@ public class AdminAgenciesFragment extends Fragment {
                         agency.setName(agencyObject.getString("name"));
                         agency.setEmail(agencyObject.getString("email"));
                         agency.setPhoneNumber(agencyObject.getString("phoneNumber"));
-                        agency.setAgentCount(agencyObject.getInt("agentCount"));
+                        agency.setAgentCount(agencyObject.getInt("agent_count"));
+                        User user = new User();
+                        user.setFullName(agencyObject.getString("user_full_name"));
+                        agency.setUser(user);
                         agencyList.add(agency);
                     }
 
@@ -197,7 +211,11 @@ public class AdminAgenciesFragment extends Fragment {
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
-    private void refreshAgencies() {
 
+    private void refreshAgencies() {
+        agencyList.clear();
+        recyclerView.setVisibility(View.GONE);
+        getAgencies();
+        adminAgencyCardAdapter.notifyDataSetChanged();
     }
 }
