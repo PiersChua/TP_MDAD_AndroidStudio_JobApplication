@@ -26,16 +26,25 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="BottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:width">0dp</item>
+        <item name="android:height">0dp</item>
+    </style>
+
     <style name="Button.Primary">
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textColor">@color/background</item>
         <item name="android:background">@drawable/button</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">12dp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Button.OutlinePrimary">
         <item name="android:fontFamily">@font/inter</item>
         <item name="android:textColor">@color/primary</item>
+        <item name="android:paddingHorizontal">16dp</item>
+        <item name="android:paddingVertical">12dp</item>
         <item name="android:background">@drawable/button_outline</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -43,12 +52,16 @@
     <style name="Button.Primary.Small">
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">8dp</item>
         <item name="android:background">@drawable/button_small</item>
     </style>
 
     <style name="Button.OutlinePrimary.Small">
         <item name="android:minHeight">0dp</item>
         <item name="android:minWidth">0dp</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:paddingVertical">8dp</item>
         <item name="android:background">@drawable/button_outline_small</item>
     </style>
 
