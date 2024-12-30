@@ -1,20 +1,19 @@
-package com.example.jobapplicationmdad.fragments.agent.job;
+package com.example.jobapplicationmdad.fragments.admin.agencies;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.adapters.AdminAgencyApplicationCardAdapter;
 import com.example.jobapplicationmdad.adapters.AgentJobApplicationCardAdapter;
-import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
-import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.AgencyApplication;
 import com.example.jobapplicationmdad.model.JobApplication;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -47,31 +46,31 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AgentManageJobApplicationsFragment#newInstance} factory method to
+ * Use the {@link AdminManageAgencyApplicationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AgentManageJobApplicationsFragment extends Fragment {
+public class AdminManageAgencyApplicationsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "jobId";
-    private static final String ARG_PARAM2 = "userId";
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String jobId;
-    private String userId;
+    private String mParam1;
+    private String mParam2;
     RecyclerView recyclerView;
-    List<JobApplication> jobApplicationList;
+    List<AgencyApplication> agencyApplicationList;
     View dialogView;
     AlertDialog loadingDialog;
-    AgentJobApplicationCardAdapter agentJobApplicationCardAdapter;
-    SwipeRefreshLayout srlAgentJobApplication;
+    AdminAgencyApplicationCardAdapter adminAgencyApplicationCardAdapter;
+    SwipeRefreshLayout srlAdminAgencyApplication;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
-    private static final String get_job_applications_url = MainActivity.root_url + "/api/agent/get-job-applications.php";
-    private static final String update_job_application_url = MainActivity.root_url + "/api/agent/update-job-application.php";
+    private static final String get_agency_applications_url = MainActivity.root_url + "/api/admin/get-agency-applications.php";
+    private static final String update_agency_applications_url = MainActivity.root_url + "/api/admin/update-agency-application.php";
 
-    public AgentManageJobApplicationsFragment() {
+    public AdminManageAgencyApplicationsFragment() {
         // Required empty public constructor
     }
 
@@ -79,15 +78,16 @@ public class AgentManageJobApplicationsFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param jobId The associated jobId to manage the job applications
-     * @return A new instance of fragment AgentManageJobApplicationsFragment.
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment AdminManageAgencyApplicationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentManageJobApplicationsFragment newInstance(String jobId, String userId) {
-        AgentManageJobApplicationsFragment fragment = new AgentManageJobApplicationsFragment();
+    public static AdminManageAgencyApplicationsFragment newInstance(String param1, String param2) {
+        AdminManageAgencyApplicationsFragment fragment = new AdminManageAgencyApplicationsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, jobId);
-        args.putString(ARG_PARAM2, userId);
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -96,8 +96,8 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            jobId = getArguments().getString(ARG_PARAM1);
-            userId = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -106,68 +106,22 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
-        return inflater.inflate(R.layout.fragment_agent_manage_job_applications, container, false);
+        return inflater.inflate(R.layout.fragment_admin_manage_agency_applications, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        topAppBar = view.findViewById(R.id.topAppBarAgentManageJobApplication);
+        topAppBar = view.findViewById(R.id.topAppBarAdminManageAgencyApplication);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
-        jobApplicationList = new ArrayList<>();
-        getJobApplications();
-        srlAgentJobApplication = view.findViewById(R.id.srlAgentJobApplication);
-        recyclerView = view.findViewById(R.id.rvAgentJobApplicationCard);
+        agencyApplicationList = new ArrayList<>();
+        getAgencyApplications();
+        srlAdminAgencyApplication = view.findViewById(R.id.srlAdminAgencyApplication);
+        recyclerView = view.findViewById(R.id.rvAdminAgencyApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        agentJobApplicationCardAdapter = new AgentJobApplicationCardAdapter(jobApplicationList, new AgentJobApplicationCardAdapter.OnJobClickListener() {
-            @Override
-            public void onViewUser(String userId) {
-                // check for double click
-                FragmentManager fragmentManager = getChildFragmentManager();
-                if (fragmentManager.getBackStackEntryCount() > 0) {
-                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
-                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentManageJobApplication, AgentApplicantDetailsFragment.newInstance(userId)).addToBackStack(null).commit();
-            }
-
-            @Override
-            public void onAcceptJobApplication(String userId) {
-                new MaterialAlertDialogBuilder(requireContext()).setTitle("Accept Job Application").setMessage("You are about to accept this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        updateJobApplication(userId, JobApplication.Status.ACCEPTED);
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.dismiss();
-                    }
-                }).show();
-
-            }
-
-            @Override
-            public void onRejectJobApplication(String userId) {
-                new MaterialAlertDialogBuilder(requireContext()).setTitle("Reject Job Application").setMessage("You are about to reject this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        updateJobApplication(userId, JobApplication.Status.REJECTED);
-                    }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.dismiss();
-                    }
-                }).show();
-
-            }
-        });
-        recyclerView.setAdapter(agentJobApplicationCardAdapter);
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,20 +129,49 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
-        srlAgentJobApplication.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        adminAgencyApplicationCardAdapter = new AdminAgencyApplicationCardAdapter(agencyApplicationList, new AdminAgencyApplicationCardAdapter.OnJobClickListener() {
+            @Override
+            public void onViewApplication(String agencyApplicationId) {
+
+            }
+
+            @Override
+            public void onAcceptAgencyApplication(String agencyApplicationId) {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Accept Agency Application").setMessage("You are about to accept this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        updateAgencyApplication(agencyApplicationId, AgencyApplication.Status.ACCEPTED);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
+            }
+
+            @Override
+            public void onRejectAgencyApplication(String agencyApplicationId) {
+                new MaterialAlertDialogBuilder(requireContext()).setTitle("Reject Agency Application").setMessage("You are about to reject this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        updateAgencyApplication(agencyApplicationId, AgencyApplication.Status.REJECTED);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.dismiss();
+                    }
+                }).show();
+            }
+        });
+        recyclerView.setAdapter(adminAgencyApplicationCardAdapter);
+        srlAdminAgencyApplication.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshApplications();
-                srlAgentJobApplication.setRefreshing(false);
-            }
-        });
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                if (isAdded()) {
-                    getParentFragmentManager().popBackStack();
-                }
-
+                srlAdminAgencyApplication.setRefreshing(false);
             }
         });
     }
@@ -197,7 +180,6 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((MainActivity) requireActivity()).hideBottomNav();
-
     }
 
     @Override
@@ -206,32 +188,29 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         ((MainActivity) requireActivity()).showBottomNav();
     }
 
-    private void getJobApplications() {
+    private void getAgencyApplications() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("jobId", jobId);
-        params.put("agentUserId", userId != null ? userId : sp.getString("userId", ""));
-        String url = UrlUtil.constructUrl(get_job_applications_url, params);
+        String url = UrlUtil.constructUrl(get_agency_applications_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    JSONArray jobApplicationArray = response.getJSONArray("data");
-                    for (int i = 0; i < jobApplicationArray.length(); i++) {
-                        JSONObject jobApplicationObject = jobApplicationArray.getJSONObject(i);
-                        JobApplication jobApplication = new JobApplication();
-                        User user = new User();
-                        user.setFullName(jobApplicationObject.getString("user_full_name"));
-                        user.setEmail(jobApplicationObject.getString("user_email"));
-                        user.setPhoneNumber(jobApplicationObject.getString("user_phone_number"));
-                        jobApplication.setUser(user);
-                        jobApplication.setUserId(jobApplicationObject.getString("userId"));
-                        jobApplication.setStatus(JobApplication.Status.valueOf(jobApplicationObject.getString("status")));
-                        jobApplication.setUpdatedAt(jobApplicationObject.getString("updatedAt"));
-                        jobApplicationList.add(jobApplication);
+                    JSONArray agencyApplicationArray = response.getJSONArray("data");
+                    for (int i = 0; i < agencyApplicationArray.length(); i++) {
+                        JSONObject agencyApplicationObject = agencyApplicationArray.getJSONObject(i);
+                        AgencyApplication agencyApplication = new AgencyApplication();
+                        agencyApplication.setAgencyApplicationId(agencyApplicationObject.getString("agencyApplicationId"));
+                        agencyApplication.setName(agencyApplicationObject.getString("name"));
+                        agencyApplication.setEmail(agencyApplicationObject.getString("email"));
+                        agencyApplication.setPhoneNumber(agencyApplicationObject.getString("phoneNumber"));
+                        agencyApplication.setAddress(agencyApplicationObject.getString("address"));
+                        agencyApplication.setStatus(AgencyApplication.Status.valueOf(agencyApplicationObject.getString("status")));
+                        agencyApplication.setUpdatedAt(agencyApplicationObject.getString("updatedAt"));
+                        agencyApplicationList.add(agencyApplication);
                     }
 
                 } catch (JSONException e) {
@@ -248,16 +227,14 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
-    private void updateJobApplication(String userId, JobApplication.Status status) {
-        Map<String, String> params = new HashMap<String, String>();
+    private void updateAgencyApplication(String agencyApplicationId, AgencyApplication.Status status) {
+        Map<String, String> params = new HashMap<>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("jobApplicationUserId", userId);
-        params.put("jobId", jobId);
+        params.put("agencyApplicationId", agencyApplicationId);
         params.put("status", status.toString());
-        String url = UrlUtil.constructUrl(update_job_application_url, params);
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
-        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, url, params, headers, new Response.Listener<JSONObject>() {
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, update_agency_applications_url, params, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -265,7 +242,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                     refreshApplications();
                     Bundle result = new Bundle();
                     result.putBoolean("isUpdated", true);
-                    getParentFragmentManager().setFragmentResult("jobResult", result);
+                    getParentFragmentManager().setFragmentResult("applicationResult", result);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -276,9 +253,9 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     }
 
     private void refreshApplications() {
-        jobApplicationList.clear();
+        agencyApplicationList.clear();
         recyclerView.setVisibility(View.GONE);
-        getJobApplications();
-        agentJobApplicationCardAdapter.notifyDataSetChanged();
+        getAgencyApplications();
+        adminAgencyApplicationCardAdapter.notifyDataSetChanged();
     }
 }

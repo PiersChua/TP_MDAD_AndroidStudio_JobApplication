@@ -58,6 +58,30 @@ public class AgencyApplication {
         this.userId = userId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
 
     public enum Status {
         PENDING,
@@ -72,6 +96,12 @@ public class AgencyApplication {
     private String phoneNumber;
     private String address;
     private String userId;
+    private User user;
+    private String createdAt;
+    private String updatedAt;
+    public AgencyApplication(){
+
+    }
 
     // For job seeker
     public AgencyApplication(String name, String email, String phoneNumber, String address, String userId) {

@@ -49,6 +49,8 @@
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="16dp"
                     android:hint="@string/hint_name"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
                     app:startIconDrawable="@drawable/ic_person">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -88,6 +90,8 @@
                     android:id="@+id/etAddressProfileLayout"
                     style="@style/EditTextLayout"
                     android:layout_marginBottom="16dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
                     android:hint="@string/hint_address"
                     app:startIconDrawable="@drawable/ic_location">
 

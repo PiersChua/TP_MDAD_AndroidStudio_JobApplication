@@ -222,6 +222,7 @@ import com.example.jobapplicationmdad.model.AgencyApplication;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.ApplicationValidation;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
@@ -344,7 +345,8 @@ public class CreateAgencyApplicationFragment extends Fragment {
         boolean isValidName = AuthValidation.validateName(etNameAgencyApplicationLayout, application.getName());
         boolean isValidEmail = AuthValidation.validateEmail(etEmailAgencyApplicationLayout, application.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberAgencyApplicationLayout, application.getPhoneNumber());
-        return isValidName && isValidEmail && isValidPhoneNumber;
+        boolean isValidAddress = ApplicationValidation.validateAddress(etAddressAgencyApplicationLayout, application.getAddress());
+        return isValidName && isValidEmail && isValidPhoneNumber && isValidAddress;
     }
 
     private void createAgencyApplication(AgencyApplication application) {

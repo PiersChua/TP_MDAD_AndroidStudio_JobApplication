@@ -33,6 +33,10 @@ public class AuthValidation extends Validation {
             layout.setError("Name is too short");
             return false;
         }
+        if(!isValidMaxCharacterLength(name,100)){
+            layout.setError("Schedule is too long");
+            return false;
+        }
         if (name.matches(".*\\d.*")) {
             layout.setError("Name cannot have numbers");
             return false;

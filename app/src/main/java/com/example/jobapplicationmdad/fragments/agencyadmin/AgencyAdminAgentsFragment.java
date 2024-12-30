@@ -1,4 +1,4 @@
-package com.example.jobapplicationmdad.fragments.agencyadmin.agent;
+package com.example.jobapplicationmdad.fragments.agencyadmin;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -185,10 +183,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
                 // Refresh user details only if updated
-                agentList.clear();
-                recyclerView.setVisibility(View.GONE);
-                getAgents();
-                agencyAdminAgentCardAdapter.notifyDataSetChanged();
+                refreshAgents();
 
             }
         });
@@ -196,10 +191,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
                 // Refresh user details only if updated
-                agentList.clear();
-                recyclerView.setVisibility(View.GONE);
-                getAgents();
-                agencyAdminAgentCardAdapter.notifyDataSetChanged();
+                refreshAgents();
 
             }
         });

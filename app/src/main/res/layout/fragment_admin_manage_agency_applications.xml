@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/flAdminAgencies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.admin.agencies.AdminAgenciesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flAdminManageAgencyApplication"
+    tools:context=".fragments.admin.agencies.AdminManageAgencyApplicationsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/background"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -18,19 +19,20 @@
             android:background="@color/primary">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppbarAdminAgencies"
+                android:id="@+id/topAppBarAdminManageAgencyApplication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:navigationIconTint="@color/background"
                 app:theme="@style/ToolbarThemeLight"
-                app:menu="@menu/menu_admin_agencies"
-                app:title="@string/title_menu_agencies"
+                app:title="@string/title_menu_manage_applications"
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srlAdminAgency"
+            android:id="@+id/srlAdminAgencyApplication"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -45,11 +47,11 @@
                     android:paddingHorizontal="16dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvAdminAgencyCard"
+                        android:id="@+id/rvAdminAgencyApplicationCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:overScrollMode="never"
+                        android:layout_marginBottom="16dp"
                         android:visibility="gone" />
                 </LinearLayout>
 

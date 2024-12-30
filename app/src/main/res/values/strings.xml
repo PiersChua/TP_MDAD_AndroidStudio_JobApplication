@@ -18,7 +18,8 @@
     <string name="app_bar_profile_settings">Settings</string>
     <string name="app_bar_profile_logout">Logout</string>
     <string name="app_bar_user_delete">Delete user</string>
-    <string name="app_bar_listings_delete">Delete Listing</string>
+    <string name="app_bar_listings_delete">Delete listing</string>
+    <string name="app_bar_applications_manage">Manage applications</string>
 
     <!-- Menu Title -->
     <string name="title_menu_home">Home</string>
@@ -37,6 +38,7 @@
     <string name="title_menu_create_listing">Create Listing</string>
     <string name="title_menu_applicant_details">Applicant Details</string>
     <string name="title_menu_agents">Agents</string>
+    <string name="title_menu_users">Users</string>
     <string name="title_menu_agencies">Agencies</string>
 
 

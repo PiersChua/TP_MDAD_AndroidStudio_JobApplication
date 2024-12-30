@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.ApplicationValidation;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.util.DateConverter;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -184,7 +185,8 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
         boolean isValidName = AuthValidation.validateName(etNameProfileLayout, agency.getName());
         boolean isValidEmail = AuthValidation.validateEmail(etEmailProfileLayout, agency.getEmail());
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberProfileLayout, agency.getPhoneNumber());
-        return isValidName && isValidEmail && isValidPhoneNumber;
+        boolean isValidAddress = ApplicationValidation.validateAddress(etAddressProfileLayout, agency.getAddress());
+        return isValidName && isValidEmail && isValidPhoneNumber && isValidAddress;
     }
 
     private void updateAgency(Agency agency) {

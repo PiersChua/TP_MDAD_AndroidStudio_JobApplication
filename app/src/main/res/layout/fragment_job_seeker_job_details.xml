@@ -203,7 +203,15 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFavouriteJobJobDetails"
+                style="@style/ButtonIcon"
+                app:icon="@drawable/ic_favourite_outline"
+                app:iconSize="24dp"
+                app:rippleColor="@color/ripple" />
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
             <android.widget.Button
                 android:id="@+id/btnApplyJob"
                 style="@style/Button.Primary"
@@ -211,15 +219,6 @@
                 android:layout_weight="1"
                 android:text="@string/btn_text_apply_now"
                 android:textSize="18sp" />
-            <View
-                android:layout_width="8dp"
-                android:layout_height="match_parent" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFavouriteJobJobDetails"
-                style="@style/ButtonIcon"
-                app:icon="@drawable/ic_favourite_outline"
-                app:iconSize="24dp"
-                app:rippleColor="@color/ripple" />
         </LinearLayout>
 
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/flAdminAgencies"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.admin.agencies.AdminAgenciesFragment">
+    android:id="@+id/flAdminUsers"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.admin.AdminUsersFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,19 +18,18 @@
             android:background="@color/primary">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppbarAdminAgencies"
+                android:id="@+id/topAppbarAdminUsers"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:theme="@style/ToolbarThemeLight"
-                app:menu="@menu/menu_admin_agencies"
-                app:title="@string/title_menu_agencies"
+                app:title="@string/title_menu_agents"
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srlAdminAgency"
+            android:id="@+id/srlAdminUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -45,11 +44,11 @@
                     android:paddingHorizontal="16dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvAdminAgencyCard"
+                        android:id="@+id/rvAdminUserCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
                         android:overScrollMode="never"
+                        android:layout_marginBottom="16dp"
                         android:visibility="gone" />
                 </LinearLayout>
 

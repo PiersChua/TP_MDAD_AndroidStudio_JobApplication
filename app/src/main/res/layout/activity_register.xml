@@ -48,6 +48,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etFullNameRegisterLayout"
                 style="@style/EditTextLayout"
+                app:counterEnabled="true"
+                app:counterMaxLength="100"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_full_name"
                 app:startIconDrawable="@drawable/ic_person">
