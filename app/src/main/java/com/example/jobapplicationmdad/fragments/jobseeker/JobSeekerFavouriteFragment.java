@@ -175,16 +175,13 @@ public class JobSeekerFavouriteFragment extends Fragment {
                         user.setAgency(agency);
                         Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
                         favouriteJoblist.add(job);
-
-
                     }
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
                 // toggle the visibility of loader
-                loadingDialog.dismiss();
-                recyclerView.setVisibility(favouriteJoblist.isEmpty() ? View.GONE : View.VISIBLE);
                 recyclerView.setVisibility(View.VISIBLE);
+                loadingDialog.dismiss();
             }
 
         }, error -> {

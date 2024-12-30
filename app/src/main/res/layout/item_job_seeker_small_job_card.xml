@@ -21,19 +21,16 @@
             <TextView
                 android:id="@+id/tvSmallJobCardTitle"
                 style="@style/Text.Medium"
-                android:layout_height="45dp"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:singleLine="true"
                 android:text="Position"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvSmallJobCardAgencyName"
                 style="@style/Text.Small"
-                android:layout_height="wrap_content"
-                android:minHeight="30dp"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:singleLine="true"
                 android:text="Agency Name"
                 android:textColor="@color/placeholder_foreground"
                 android:textStyle="bold" />
@@ -47,7 +44,7 @@
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="Salary"
-                android:textColor="@color/secondary"
+                android:textColor="@color/foreground"
                 android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_money_18" />
 

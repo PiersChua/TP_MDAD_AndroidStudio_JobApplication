@@ -29,6 +29,7 @@ import com.example.jobapplicationmdad.util.DateConverter;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -146,7 +147,7 @@ public class RegisterActivity extends AppCompatActivity {
         String role = Objects.requireNonNull(etRoleRegisterLayout.getEditText()).getText().toString();
         String password = etPasswordRegister.getText().toString();
         String confirmPassword = etConfirmPasswordRegister.getText().toString();
-        String dateOfBirth =etDateOfBirthRegister.getText().toString();
+        String dateOfBirth = etDateOfBirthRegister.getText().toString();
         String gender = Objects.requireNonNull(etGenderRegisterLayout.getEditText()).getText().toString();
         String race = Objects.requireNonNull(etRaceRegisterLayout.getEditText()).getText().toString();
         String nationality = Objects.requireNonNull(etNationalityRegisterLayout.getEditText()).getText().toString();
@@ -163,7 +164,8 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isValidDateOfBirth = AuthValidation.validateNull(etDateOfBirthRegisterLayout, "Date of Birth", user.getDateOfBirth());
         boolean isValidGender = AuthValidation.validateEnum(etGenderRegisterLayout, "Gender", user.getGender(), getResources().getStringArray(R.array.gender_items));
         boolean isValidRace = AuthValidation.validateEnum(etRaceRegisterLayout, "Race", user.getRace(), getResources().getStringArray(R.array.race_items));
-        boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));;
+        boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));
+        ;
 
         return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
     }
@@ -176,9 +178,9 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("role", user.getRole());
         params.put("password", user.getPassword());
         params.put("dateOfBirth", DateConverter.formatDateForSql(user.getDateOfBirth()));
-        params.put("gender",user.getGender());
-        params.put("race",user.getRace());
-        params.put("nationality",user.getNationality());
+        params.put("gender", user.getGender());
+        params.put("race", user.getRace());
+        params.put("nationality", user.getNationality());
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             // Get the currently focused view
@@ -186,13 +188,13 @@ public class RegisterActivity extends AppCompatActivity {
             // Hide the keyboard if a view is focused
             if (currentFocus != null) {
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+
             }
             Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+            i.putExtra("isAccountCreated", true);
             startActivity(i);
             finish();
-
             loadingDialog.dismiss();
-
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(RegisterActivity.this).onErrorResponse(error);

@@ -13,38 +13,51 @@
             android:layout_height="wrap_content"
             android:background="@color/background">
 
-            <LinearLayout
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="16dp">
+                android:minHeight="0dp"
+                app:contentScrim="@color/background"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="60dp"
-                    app:srcCompat="@drawable/app_icon" />
-
-                <View
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    app:layout_collapseMode="parallax">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnNavigateToNotifications"
-                    style="@style/ButtonIcon"
-                    app:icon="@drawable/ic_notification"
-                    app:iconSize="24dp"
-                    app:rippleColor="@color/ripple" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        app:srcCompat="@drawable/app_icon" />
 
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNavigateToNotifications"
+                        style="@style/ButtonIcon"
+                        app:icon="@drawable/ic_notification"
+                        app:iconSize="30dp"
+                        app:rippleColor="@color/ripple" />
+                </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <!-- Fixed SearchBar -->
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_search_market" />
+                android:hint="@string/hint_search_market"
+                app:backgroundTint="@color/background"
+                app:layout_scrollFlags="enterAlways" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/srlJobSeekerHome"
@@ -112,8 +125,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
                         android:layout_marginBottom="16dp"
+                        android:orientation="vertical"
                         android:paddingHorizontal="16dp">
 
 
@@ -133,6 +146,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_search_jobs"
+            app:backgroundTint="@color/background"
             app:layout_anchor="@id/search_bar">
 
             <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->

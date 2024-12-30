@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -47,6 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+        boolean isAccountCreated = getIntent().getBooleanExtra("isAccountCreated", false);
+        if (isAccountCreated) {
+            Snackbar.make(findViewById(android.R.id.content), "Account created successfully", Snackbar.LENGTH_SHORT).show();
+        }
         tvRedirectToRegister = findViewById(R.id.tvRedirectToRegister);
         btnLogin = findViewById(R.id.btnLogin);
 
@@ -54,7 +59,6 @@ public class LoginActivity extends AppCompatActivity {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
-
         sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 
         // Form

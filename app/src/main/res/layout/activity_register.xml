@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_role"
+                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
 
                 app:boxBackgroundColor="@color/placeholder_background"
@@ -130,6 +131,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_gender"
+                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
@@ -150,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_race"
+                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
@@ -170,6 +173,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_nationality"
+                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
@@ -196,30 +200,21 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPasswordRegister"
                     style="@style/EditText"
-                    android:inputType="textPassword"
-                    app:startIconDrawable="@drawable/ic_lock" />
+                    android:inputType="textPassword" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etConfirmPasswordRegisterLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/EditTextLayout"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_confirm_password"
-                android:textColorHint="@color/placeholder_foreground"
-
-                app:boxBackgroundColor="@color/placeholder_background"
-                app:boxStrokeColor="@color/foreground"
-                app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/foreground"
                 app:passwordToggleEnabled="true"
                 app:startIconDrawable="@drawable/ic_lock">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etConfirmPasswordRegister"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditText"
                     android:inputType="textPassword"
                     android:singleLine="true" />
 

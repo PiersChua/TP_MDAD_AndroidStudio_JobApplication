@@ -59,7 +59,7 @@
         <!-- Job Details-->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
@@ -93,7 +93,7 @@
                     style="@style/Text.Small"
                     android:layout_marginTop="8dp"
                     android:drawablePadding="4dp"
-                    android:textColor="@color/secondary"
+                    android:textColor="@color/foreground"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/ic_money_18" />
 
@@ -142,7 +142,8 @@
 
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsDescription"
-                    style="@style/Text.Small"
+                    style="@style/Text"
+                    android:textSize="14sp"
                     android:layout_marginTop="8dp" />
             </LinearLayout>
 
@@ -168,7 +169,8 @@
 
                 <TextView
                     android:id="@+id/tvJobSeekerJobDetailsResponsibilities"
-                    style="@style/Text.Small"
+                    style="@style/Text"
+                    android:textSize="14sp"
                     android:layout_marginTop="8dp" />
             </LinearLayout>
         </LinearLayout>

@@ -194,9 +194,9 @@ public class JobSeekerHomeFragment extends Fragment {
                     throw new RuntimeException(e);
                 }
                 // toggle the visibility of loader
-                loadingDialog.dismiss();
                 recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
                 recyclerViewJobs.setVisibility( View.VISIBLE);
+                loadingDialog.dismiss();
             }
 
         }, error -> {
