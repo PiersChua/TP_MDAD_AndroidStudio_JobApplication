@@ -55,12 +55,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <!-- Job Details-->
         <LinearLayout
+            android:paddingTop="16dp"
+            android:paddingBottom="32dp"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:layout_marginBottom="100dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -172,6 +174,96 @@
                     style="@style/Text"
                     android:textSize="14sp"
                     android:layout_marginTop="8dp" />
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dividerColor="@color/placeholder_background" />
+            <!-- Employer Details-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
+                <TextView
+                    style="@style/Text.Medium"
+                    android:layout_marginTop="8dp"
+                    android:text="About this agent"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgentDetailsAgentName"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="16dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_person_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgentDetailsAgentEmail"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/foreground"
+                    app:drawableStartCompat="@drawable/ic_attach_email_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgentDetailsAgentPhoneNumber"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_phone_18" />
+            </LinearLayout>
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:dividerColor="@color/placeholder_background" />
+
+            <!-- Agency Details-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
+                <TextView
+                    style="@style/Text.Medium"
+                    android:layout_marginTop="8dp"
+                    android:text="About this agency"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgencyDetailsAgencyName"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="16dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_agency_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgencyDetailsAgencyEmail"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/foreground"
+                    app:drawableStartCompat="@drawable/ic_attach_email_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgencyDetailsAgencyPhoneNumber"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_phone_18" />
+
+                <TextView
+                    android:id="@+id/tvJobSeekerAgencyDetailsAgencyAddress"
+                    style="@style/Text.Small"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="4dp"
+                    app:drawableStartCompat="@drawable/ic_location_18" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

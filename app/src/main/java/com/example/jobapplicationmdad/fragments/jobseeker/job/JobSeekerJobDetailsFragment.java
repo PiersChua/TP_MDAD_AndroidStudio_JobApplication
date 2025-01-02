@@ -64,7 +64,9 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     LinearProgressIndicator progressIndicator;
     Button btnApplyJob;
     MaterialButton btnFavouriteJob;
-    TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities;
+    TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities,
+            tvAgentDetailsAgentName, tvAgentDetailsAgentEmail,tvAgentDetailsAgentPhoneNumber,
+            tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail,tvAgencyDetailsAgencyPhoneNumber,tvAgencyDetailsAgencyAddress;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
     private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
     private static final String favourite_job_url = MainActivity.root_url + "/api/job-seeker/favourite-job.php";
@@ -135,6 +137,13 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvSchedule = view.findViewById(R.id.tvJobSeekerJobDetailsSchedule);
         tvDescription = view.findViewById(R.id.tvJobSeekerJobDetailsDescription);
         tvResponsibilities = view.findViewById(R.id.tvJobSeekerJobDetailsResponsibilities);
+        tvAgentDetailsAgentName = view.findViewById(R.id.tvJobSeekerAgentDetailsAgentName);
+        tvAgentDetailsAgentEmail = view.findViewById(R.id.tvJobSeekerAgentDetailsAgentEmail);
+        tvAgentDetailsAgentPhoneNumber = view.findViewById(R.id.tvJobSeekerAgentDetailsAgentPhoneNumber);
+        tvAgencyDetailsAgencyName = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyName);
+        tvAgencyDetailsAgencyEmail = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyEmail);
+        tvAgencyDetailsAgencyPhoneNumber = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyPhoneNumber);
+        tvAgencyDetailsAgencyAddress = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyAddress);
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -271,6 +280,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             tvSalary.setText(salary);
         }
 
+        // init jobs
         tvPosition.setText(job.getPosition());
         tvAgencyName.setText(job.getUser().getAgency().getName());
         tvLocation.setText(job.getLocation());
@@ -279,6 +289,16 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvSchedule.setText(job.getSchedule());
         tvDescription.setText(job.getDescription());
         tvResponsibilities.setText(job.getResponsibilities());
+        // init agent
+        tvAgentDetailsAgentName.setText(job.getUser().getFullName());
+        tvAgentDetailsAgentEmail.setText(job.getUser().getEmail());
+        tvAgentDetailsAgentPhoneNumber.setText(job.getUser().getPhoneNumber());
+
+        // init agency
+        tvAgencyDetailsAgencyName.setText(job.getUser().getAgency().getName());
+        tvAgencyDetailsAgencyEmail.setText(job.getUser().getAgency().getEmail());
+        tvAgencyDetailsAgencyPhoneNumber.setText(job.getUser().getAgency().getPhoneNumber());
+        tvAgencyDetailsAgencyAddress.setText(job.getUser().getAgency().getAddress());
         // Toggle the loader
         nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);
         progressIndicator.setVisibility(View.GONE);

@@ -57,7 +57,6 @@ public class JobSeekerSmallJobCardAdapter extends RecyclerView.Adapter<JobSeeker
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    long now = System.currentTimeMillis();
                     if (listener != null && currentJob != null) {
                         listener.onViewJobDetails(currentJob.getJobId());
                     }
