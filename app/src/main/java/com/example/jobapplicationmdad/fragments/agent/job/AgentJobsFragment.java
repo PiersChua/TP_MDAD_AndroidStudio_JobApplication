@@ -60,11 +60,13 @@ public class AgentJobsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "userId";
     private static final String ARG_PARAM2 = "showAppBarIfAgentJobsFragmentClosed";
+    private static final String ARG_PARAM3 = "showAppBarIfAgentManageJobApplicationsFragmentClosed";
 
     // TODO: Rename and change types of parameters
     private static final String get_jobs_url = MainActivity.root_url + "/api/agent/get-jobs.php";
     private String userId;
     private boolean showAppBarIfAgentJobsFragmentClosed;
+    private boolean showAppBarIfAgentManageJobApplicationsFragmentClosed;
     RecyclerView recyclerView;
     List<Job> jobList;
     View dialogView;
@@ -88,11 +90,12 @@ public class AgentJobsFragment extends Fragment {
      * @return A new instance of fragment AgentJobsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfAgentJobsFragmentClosed) {
+    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfAgentJobsFragmentClosed,boolean showAppBarIfAgentManageJobApplicationsFragmentClosed) {
         AgentJobsFragment fragment = new AgentJobsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userId);
         args.putBoolean(ARG_PARAM2, showAppBarIfAgentJobsFragmentClosed);
+        args.putBoolean(ARG_PARAM3, showAppBarIfAgentManageJobApplicationsFragmentClosed);
         fragment.setArguments(args);
         return fragment;
     }
@@ -103,9 +106,11 @@ public class AgentJobsFragment extends Fragment {
         if (getArguments() != null) {
             userId = getArguments().getString(ARG_PARAM1);
             showAppBarIfAgentJobsFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
+            showAppBarIfAgentManageJobApplicationsFragmentClosed = getArguments().getBoolean(ARG_PARAM3, true);
         }
         else {
             showAppBarIfAgentJobsFragmentClosed = true;
+            showAppBarIfAgentManageJobApplicationsFragmentClosed = true;
         }
     }
 
@@ -157,7 +162,7 @@ public class AgentJobsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, AgentManageJobApplicationsFragment.newInstance(jobId, userId)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, AgentManageJobApplicationsFragment.newInstance(jobId, userId,showAppBarIfAgentManageJobApplicationsFragmentClosed)).addToBackStack(null).commit();
             }
 
             @Override

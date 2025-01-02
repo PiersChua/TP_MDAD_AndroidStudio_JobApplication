@@ -59,10 +59,12 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
     private static final String ARG_PARAM2 = "userId";
+    private static final String ARG_PARAM3 = "showAppBarIfAgentManageJobApplicationsFragmentClosed";
 
     // TODO: Rename and change types of parameters
     private String jobId;
     private String userId;
+    private boolean showAppBarIfAgentManageJobApplicationsFragmentClosed;
     RecyclerView recyclerView;
     List<JobApplication> jobApplicationList;
     View dialogView;
@@ -71,7 +73,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     SwipeRefreshLayout srlAgentJobApplication;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
-    FrameLayout flContent,flEmptyState;
+    FrameLayout flContent, flEmptyState;
     private static final String get_job_applications_url = MainActivity.root_url + "/api/agent/get-job-applications.php";
     private static final String update_job_application_url = MainActivity.root_url + "/api/agent/update-job-application.php";
 
@@ -87,11 +89,12 @@ public class AgentManageJobApplicationsFragment extends Fragment {
      * @return A new instance of fragment AgentManageJobApplicationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentManageJobApplicationsFragment newInstance(String jobId, String userId) {
+    public static AgentManageJobApplicationsFragment newInstance(String jobId, String userId, boolean showAppBarIfAgentManageJobApplicationsFragmentClosed) {
         AgentManageJobApplicationsFragment fragment = new AgentManageJobApplicationsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, jobId);
         args.putString(ARG_PARAM2, userId);
+        args.putBoolean(ARG_PARAM3, showAppBarIfAgentManageJobApplicationsFragmentClosed);
         fragment.setArguments(args);
         return fragment;
     }
@@ -102,6 +105,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         if (getArguments() != null) {
             jobId = getArguments().getString(ARG_PARAM1);
             userId = getArguments().getString(ARG_PARAM2);
+            showAppBarIfAgentManageJobApplicationsFragmentClosed = getArguments().getBoolean(ARG_PARAM3);
         }
     }
 
@@ -211,7 +215,10 @@ public class AgentManageJobApplicationsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity) requireActivity()).showBottomNav();
+        if (showAppBarIfAgentManageJobApplicationsFragmentClosed) {
+            ((MainActivity) requireActivity()).showBottomNav();
+        }
+
     }
 
     private void getJobApplications() {
@@ -245,10 +252,9 @@ public class AgentManageJobApplicationsFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(!jobApplicationList.isEmpty()){
+                if (!jobApplicationList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
                     params.gravity = Gravity.CENTER;
