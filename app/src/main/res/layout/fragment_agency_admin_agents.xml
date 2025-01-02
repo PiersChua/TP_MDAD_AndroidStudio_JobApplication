@@ -42,12 +42,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
+                    <FrameLayout
+                        android:id="@+id/flContent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_height="match_parent"
                         android:paddingHorizontal="16dp">
-
+                        <include
+                            android:id="@+id/flEmptyState"
+                            layout="@layout/placeholder_empty_state" />
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvAgencyAdminAgentCard"
                             android:layout_width="match_parent"
@@ -55,7 +57,7 @@
                             android:overScrollMode="never"
                             android:layout_marginBottom="16dp"
                             android:visibility="gone" />
-                    </LinearLayout>
+                    </FrameLayout>
 
                 </androidx.core.widget.NestedScrollView>
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -132,6 +132,8 @@
     <string name="add_agent_fragment_header">Add an agent</string>
     <string name="add_agent_fragment_description">Enter the email of an existing user to promote their role to an Agent</string>
 
+    <!-- Miscellaneous -->
+    <string name="empty_state_header">Oops\nNo resource found.</string>
     <!--TODO: Remove later-->
     <string name="hello_blank_fragment">Hello Blank Fragment</string>
 </resources>

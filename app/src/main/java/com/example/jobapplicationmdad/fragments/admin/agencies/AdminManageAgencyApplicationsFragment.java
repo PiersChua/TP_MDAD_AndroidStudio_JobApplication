@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -67,6 +70,7 @@ public class AdminManageAgencyApplicationsFragment extends Fragment {
     SwipeRefreshLayout srlAdminAgencyApplication;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
+    FrameLayout flContent,flEmptyState;
     private static final String get_agency_applications_url = MainActivity.root_url + "/api/admin/get-agency-applications.php";
     private static final String update_agency_applications_url = MainActivity.root_url + "/api/admin/update-agency-application.php";
 
@@ -119,6 +123,10 @@ public class AdminManageAgencyApplicationsFragment extends Fragment {
         loadingDialog = builder.create();
         agencyApplicationList = new ArrayList<>();
         getAgencyApplications();
+        flContent = view.findViewById(R.id.flContent);
+        flEmptyState = view.findViewById(R.id.flEmptyState);
+        TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
+        emptyStateText.setText("Oops\nNo applications found");
         srlAdminAgencyApplication = view.findViewById(R.id.srlAdminAgencyApplication);
         recyclerView = view.findViewById(R.id.rvAdminAgencyApplicationCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -216,9 +224,16 @@ public class AdminManageAgencyApplicationsFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                // toggle the visibility of loader
+                if(!agencyApplicationList.isEmpty()){
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
+                else{
+                    flEmptyState.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.CENTER;
+                    flContent.setLayoutParams(params);
+                }
                 loadingDialog.dismiss();
-                recyclerView.setVisibility(View.VISIBLE);
             }
         }, error -> {
             loadingDialog.dismiss();

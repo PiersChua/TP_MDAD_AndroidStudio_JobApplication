@@ -19,11 +19,12 @@
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom_nav_background"
+        android:background="@color/background"
         android:clipToPadding="false"
-        app:itemTextColor="@drawable/bottom_nav_item_color"
-        app:itemIconTint="@drawable/bottom_nav_item_color"
+        app:elevation="20dp"
         app:itemActiveIndicatorStyle="@style/BottomNavIndicator"
         app:itemBackground="@drawable/bottom_nav_item_background"
+        app:itemIconTint="@drawable/bottom_nav_item_color"
+        app:itemTextColor="@drawable/bottom_nav_item_color"
         app:labelVisibilityMode="labeled" />
 </LinearLayout>
