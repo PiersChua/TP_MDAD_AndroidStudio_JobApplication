@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,8 +18,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -29,6 +32,7 @@ import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
 import com.example.jobapplicationmdad.fragments.agent.job.AgentJobsFragment;
 import com.example.jobapplicationmdad.fragments.bottomSheet.AddAgentFragment;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -65,6 +69,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
     private String userId;
     private boolean showAppBarIfAgentJobsFragmentClosed;
     private boolean showAppBarIfEditProfileFragmentClosed;
+    private long mLastClickTime;
     RecyclerView recyclerView;
     List<User> agentList;
     View dialogView;
@@ -73,8 +78,10 @@ public class AgencyAdminAgentsFragment extends Fragment {
     SwipeRefreshLayout srlAgencyAdminAgent;
     MaterialToolbar topAppBar;
     FloatingActionButton fabAddAgent;
+    SearchView searchView;
     SharedPreferences sp;
-    FrameLayout flContent,flEmptyState;
+    FrameLayout flContent, flEmptyState;
+
 
     public AgencyAdminAgentsFragment() {
         // Required empty public constructor
@@ -144,6 +151,26 @@ public class AgencyAdminAgentsFragment extends Fragment {
         flEmptyState = view.findViewById(R.id.flEmptyState);
         TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
         emptyStateText.setText("Oops\nNo agents found");
+
+        MenuItem searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setQueryHint("Search for agents...");
+        EditText etSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        etSearch.setTextColor(requireContext().getColor(R.color.background));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterAgents(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filterAgents(query);
+                return true;
+            }
+        });
+
         srlAgencyAdminAgent = view.findViewById(R.id.srlAgencyAdminAgent);
         recyclerView = view.findViewById(R.id.rvAgencyAdminAgentCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -156,7 +183,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, AgentJobsFragment.newInstance(userId, showAppBarIfAgentJobsFragmentClosed,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, AgentJobsFragment.newInstance(userId, showAppBarIfAgentJobsFragmentClosed, false)).addToBackStack(null).commit();
 
 
             }
@@ -168,7 +195,7 @@ public class AgencyAdminAgentsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId, showAppBarIfEditProfileFragmentClosed,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminAgents, EditProfileFragment.newInstance(userId, showAppBarIfEditProfileFragmentClosed, false)).addToBackStack(null).commit();
 
             }
         });
@@ -183,6 +210,10 @@ public class AgencyAdminAgentsFragment extends Fragment {
         fabAddAgent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (System.currentTimeMillis() - mLastClickTime < 1000) {
+                    return;
+                }
+                mLastClickTime = System.currentTimeMillis();
                 AddAgentFragment bottomSheet = AddAgentFragment.newInstance(userId != null ? userId : sp.getString("userId", ""));
                 bottomSheet.show(getParentFragmentManager(), bottomSheet.getTag());
             }
@@ -212,6 +243,12 @@ public class AgencyAdminAgentsFragment extends Fragment {
 
             }
         });
+    }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        searchView.setIconified(true);
+        searchView.setIconified(true);
     }
 
     @Override
@@ -257,10 +294,9 @@ public class AgencyAdminAgentsFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(!agentList.isEmpty()){
+                if (!agentList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
                     params.gravity = Gravity.CENTER;
@@ -280,5 +316,34 @@ public class AgencyAdminAgentsFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getAgents();
         agencyAdminAgentCardAdapter.notifyDataSetChanged();
+    }
+
+    private void filterAgents(String query) {
+        if (query.isEmpty()) {
+            agencyAdminAgentCardAdapter.filterList(agentList);
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+            return;
+        }
+        List<User> filteredList = new ArrayList<>();
+        for (User user : agentList) {
+            if (user.getFullName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(user);
+            }
+        }
+        if (!filteredList.isEmpty()) {
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+        } else {
+            flEmptyState.setVisibility(View.VISIBLE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.CENTER;
+            flContent.setLayoutParams(params);
+        }
+        agencyAdminAgentCardAdapter.filterList(filteredList);
     }
 }

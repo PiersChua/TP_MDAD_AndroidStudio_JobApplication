@@ -40,6 +40,10 @@ public class AgencyAdminAgentCardAdapter extends RecyclerView.Adapter<AgencyAdmi
         agents = dataSet;
         this.listener = listener;
     }
+    public void filterList(List<User> filteredAgents){
+        agents = filteredAgents;
+        notifyDataSetChanged();
+    }
 
     /**
      * Provide a reference to the type of views that you are using

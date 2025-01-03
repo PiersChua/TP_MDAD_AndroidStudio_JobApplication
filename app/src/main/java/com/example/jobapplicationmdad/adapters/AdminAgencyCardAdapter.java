@@ -37,9 +37,10 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
         agencies = dataSet;
         this.listener = listener;
     }
-    public void filterList(List<Agency> filteredAgencies){
-       agencies = filteredAgencies;
-        notifyDataSetChanged(); // Notify RecyclerView about data changes
+
+    public void filterList(List<Agency> filteredAgencies) {
+        agencies = filteredAgencies;
+        notifyDataSetChanged();
     }
 
     /**

@@ -8,6 +8,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -32,6 +34,7 @@ import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AgentJobCardAdapter;
 import com.example.jobapplicationmdad.fragments.jobseeker.profile.CreateAgencyApplicationFragment;
 import com.example.jobapplicationmdad.model.Job;
+import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
@@ -67,6 +70,7 @@ public class AgentJobsFragment extends Fragment {
     private String userId;
     private boolean showAppBarIfAgentJobsFragmentClosed;
     private boolean showAppBarIfAgentManageJobApplicationsFragmentClosed;
+    private long mLastClickTime;
     RecyclerView recyclerView;
     List<Job> jobList;
     View dialogView;
@@ -75,8 +79,9 @@ public class AgentJobsFragment extends Fragment {
     SwipeRefreshLayout srlAgentJob;
     MaterialToolbar topAppBar;
     FloatingActionButton fabCreateJob;
-    private long mLastClickTime;
-    FrameLayout flContent,flEmptyState;
+    SearchView searchView;
+
+    FrameLayout flContent, flEmptyState;
     SharedPreferences sp;
 
 
@@ -90,7 +95,7 @@ public class AgentJobsFragment extends Fragment {
      * @return A new instance of fragment AgentJobsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfAgentJobsFragmentClosed,boolean showAppBarIfAgentManageJobApplicationsFragmentClosed) {
+    public static AgentJobsFragment newInstance(String userId, boolean showAppBarIfAgentJobsFragmentClosed, boolean showAppBarIfAgentManageJobApplicationsFragmentClosed) {
         AgentJobsFragment fragment = new AgentJobsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, userId);
@@ -107,8 +112,7 @@ public class AgentJobsFragment extends Fragment {
             userId = getArguments().getString(ARG_PARAM1);
             showAppBarIfAgentJobsFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
             showAppBarIfAgentManageJobApplicationsFragmentClosed = getArguments().getBoolean(ARG_PARAM3, true);
-        }
-        else {
+        } else {
             showAppBarIfAgentJobsFragmentClosed = true;
             showAppBarIfAgentManageJobApplicationsFragmentClosed = true;
         }
@@ -143,6 +147,27 @@ public class AgentJobsFragment extends Fragment {
         loadingDialog = builder.create();
         jobList = new ArrayList<>();
         getJobs();
+
+        MenuItem searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setQueryHint("Search for listings...");
+        searchView.setQuery("",false);
+        EditText etSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        etSearch.setTextColor(requireContext().getColor(R.color.background));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterJobs(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filterJobs(query);
+                return true;
+            }
+        });
+
         flContent = view.findViewById(R.id.flContent);
         flEmptyState = view.findViewById(R.id.flEmptyState);
         TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
@@ -162,7 +187,7 @@ public class AgentJobsFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, AgentManageJobApplicationsFragment.newInstance(jobId, userId,showAppBarIfAgentManageJobApplicationsFragmentClosed)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgentJob, AgentManageJobApplicationsFragment.newInstance(jobId, userId, showAppBarIfAgentManageJobApplicationsFragmentClosed)).addToBackStack(null).commit();
             }
 
             @Override
@@ -213,6 +238,13 @@ public class AgentJobsFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        searchView.setIconified(true);
+        searchView.setIconified(true);
+    }
+
     public void onResume() {
         super.onResume();
         if (userId != null) {
@@ -261,10 +293,9 @@ public class AgentJobsFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(!jobList.isEmpty()){
+                if (!jobList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
                     params.gravity = Gravity.CENTER;
@@ -284,5 +315,34 @@ public class AgentJobsFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getJobs();
         agentJobCardAdapter.notifyDataSetChanged();
+    }
+
+    private void filterJobs(String query) {
+        if (query.isEmpty()) {
+            agentJobCardAdapter.filterList(jobList);
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+            return;
+        }
+        List<Job> filteredList = new ArrayList<>();
+        for (Job job : jobList) {
+            if (job.getPosition().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(job);
+            }
+        }
+        if (!filteredList.isEmpty()) {
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+        } else {
+            flEmptyState.setVisibility(View.VISIBLE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.CENTER;
+            flContent.setLayoutParams(params);
+        }
+        agentJobCardAdapter.filterList(filteredList);
     }
 }

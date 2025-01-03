@@ -24,7 +24,7 @@
                 android:minHeight="?attr/actionBarSize"
                 app:menu="@menu/menu_admin_users"
                 app:theme="@style/ToolbarThemeLight"
-                app:title="@string/title_menu_agents"
+                app:title="@string/title_menu_users"
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
         </com.google.android.material.appbar.AppBarLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,8 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -27,6 +30,7 @@ import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AdminUserCardAdapter;
 import com.example.jobapplicationmdad.adapters.AgencyAdminAgentCardAdapter;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
+import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -69,7 +73,8 @@ public class AdminUsersFragment extends Fragment {
     SwipeRefreshLayout srlAdminUser;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
-    FrameLayout flContent,flEmptyState;
+    SearchView searchView;
+    FrameLayout flContent, flEmptyState;
 
     public AdminUsersFragment() {
         // Required empty public constructor
@@ -126,6 +131,26 @@ public class AdminUsersFragment extends Fragment {
         flEmptyState = view.findViewById(R.id.flEmptyState);
         TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
         emptyStateText.setText("Oops\nNo users found");
+
+        MenuItem searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setQueryHint("Search for users...");
+        EditText etSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        etSearch.setTextColor(requireContext().getColor(R.color.background));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterUsers(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filterUsers(query);
+                return true;
+            }
+        });
+
         srlAdminUser = view.findViewById(R.id.srlAdminUser);
         recyclerView = view.findViewById(R.id.rvAdminUserCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -138,7 +163,7 @@ public class AdminUsersFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminUsers, EditProfileFragment.newInstance(userId, true,false)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminUsers, EditProfileFragment.newInstance(userId, true, false)).addToBackStack(null).commit();
             }
         });
         recyclerView.setAdapter(adminUserCardAdapter);
@@ -157,6 +182,12 @@ public class AdminUsersFragment extends Fragment {
 
             }
         });
+    }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        searchView.setIconified(true);
+        searchView.setIconified(true);
     }
 
     private void getUsers() {
@@ -185,10 +216,9 @@ public class AdminUsersFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(!userList.isEmpty()){
+                if (!userList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
                     params.gravity = Gravity.CENTER;
@@ -208,5 +238,34 @@ public class AdminUsersFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getUsers();
         adminUserCardAdapter.notifyDataSetChanged();
+    }
+
+    private void filterUsers(String query) {
+        if (query.isEmpty()) {
+            adminUserCardAdapter.filterList(userList);
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+            return;
+        }
+        List<User> filteredList = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getFullName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(user);
+            }
+        }
+        if (!filteredList.isEmpty()) {
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+        } else {
+            flEmptyState.setVisibility(View.VISIBLE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.CENTER;
+            flContent.setLayoutParams(params);
+        }
+        adminUserCardAdapter.filterList(filteredList);
     }
 }

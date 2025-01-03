@@ -36,6 +36,10 @@ public class AgentJobCardAdapter extends RecyclerView.Adapter<AgentJobCardAdapte
         jobs = dataSet;
         this.listener = listener;
     }
+    public void filterList(List<Job> filteredJobs){
+        jobs = filteredJobs;
+        notifyDataSetChanged();
+    }
 
     /**
      * Provide a reference to the type of views that you are using

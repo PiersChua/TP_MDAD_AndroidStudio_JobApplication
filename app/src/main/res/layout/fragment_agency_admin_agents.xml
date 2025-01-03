@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="?attr/actionBarSize"
                     app:theme="@style/ToolbarThemeLight"
+                    app:menu="@menu/menu_agency_admin_agents"
                     app:title="@string/title_menu_agents"
                     app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 

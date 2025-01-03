@@ -39,6 +39,10 @@ public class AdminUserCardAdapter extends RecyclerView.Adapter<AdminUserCardAdap
         users = dataSet;
         this.listener = listener;
     }
+    public void filterList(List<User> filteredUsers){
+        users = filteredUsers;
+        notifyDataSetChanged();
+    }
 
     /**
      * Provide a reference to the type of views that you are using

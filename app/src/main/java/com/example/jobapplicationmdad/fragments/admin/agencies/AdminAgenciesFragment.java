@@ -33,6 +33,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AdminAgencyCardAdapter;
 import com.example.jobapplicationmdad.model.Agency;
+import com.example.jobapplicationmdad.model.Job;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -73,7 +74,6 @@ public class AdminAgenciesFragment extends Fragment {
     AdminAgencyCardAdapter adminAgencyCardAdapter;
     SwipeRefreshLayout srlAdminAgency;
     SearchView searchView;
-    MenuItem searchMenuItem;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
     FrameLayout flContent, flEmptyState;
@@ -132,12 +132,9 @@ public class AdminAgenciesFragment extends Fragment {
         TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
         emptyStateText.setText("Oops\nNo agencies found");
 
-        searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
+        MenuItem searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
         searchView = (SearchView) searchMenuItem.getActionView();
         searchView.setQueryHint("Search for agencies...");
-
-        searchView.setQuery("", false);
-        searchMenuItem.collapseActionView();
         EditText etSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         etSearch.setTextColor(requireContext().getColor(R.color.background));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -209,7 +206,9 @@ public class AdminAgenciesFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         searchView.setIconified(true);
+        searchView.setIconified(true);
     }
+
 
     private void getAgencies() {
         loadingDialog.show();
@@ -267,11 +266,30 @@ public class AdminAgenciesFragment extends Fragment {
     }
 
     private void filterAgencies(String query) {
+        if (query.isEmpty()) {
+            adminAgencyCardAdapter.filterList(agencyList);
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+            return;
+        }
         List<Agency> filteredList = new ArrayList<>();
         for (Agency agency : agencyList) {
             if (agency.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(agency);
             }
+        }
+        if (!filteredList.isEmpty()) {
+            flEmptyState.setVisibility(View.GONE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.TOP;
+            flContent.setLayoutParams(params);
+        } else {
+            flEmptyState.setVisibility(View.VISIBLE);
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+            params.gravity = Gravity.CENTER;
+            flContent.setLayoutParams(params);
         }
         adminAgencyCardAdapter.filterList(filteredList);
     }
