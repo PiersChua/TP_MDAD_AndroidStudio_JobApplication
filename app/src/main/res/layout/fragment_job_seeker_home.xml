@@ -143,6 +143,7 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.search.SearchView
+            android:id="@+id/svJobs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/hint_search_jobs"

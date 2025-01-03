@@ -12,6 +12,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCardAdapter.ViewHolder> {
@@ -35,6 +36,10 @@ public class AdminAgencyCardAdapter extends RecyclerView.Adapter<AdminAgencyCard
     public AdminAgencyCardAdapter(List<Agency> dataSet, OnJobClickListener listener) {
         agencies = dataSet;
         this.listener = listener;
+    }
+    public void filterList(List<Agency> filteredAgencies){
+       agencies = filteredAgencies;
+        notifyDataSetChanged(); // Notify RecyclerView about data changes
     }
 
     /**

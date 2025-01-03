@@ -34,7 +34,7 @@ public class AuthValidation extends Validation {
             return false;
         }
         if(!isValidMaxCharacterLength(name,100)){
-            layout.setError("Schedule is too long");
+            layout.setError("Name is too long");
             return false;
         }
         if (name.matches(".*\\d.*")) {

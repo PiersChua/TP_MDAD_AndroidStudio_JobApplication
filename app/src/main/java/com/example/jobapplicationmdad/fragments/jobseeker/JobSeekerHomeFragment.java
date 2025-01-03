@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -31,6 +33,8 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.search.SearchBar;
+import com.google.android.material.search.SearchView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -67,6 +71,8 @@ public class JobSeekerHomeFragment extends Fragment {
     JobSeekerSmallJobCardAdapter smallJobCardAdapter;
     JobSeekerJobCardAdapter jobCardAdapter;
     SwipeRefreshLayout srlJobSeekerHome;
+    SearchView searchView;
+    SearchBar searchBar;
 
 
     public JobSeekerHomeFragment() {
@@ -117,6 +123,8 @@ public class JobSeekerHomeFragment extends Fragment {
         recommendedJobList = new ArrayList<>();
         jobList = new ArrayList<>();
         getJobs();
+        searchView = view.findViewById(R.id.svJobs);
+        searchBar = view.findViewById(R.id.search_bar);
         srlJobSeekerHome = view.findViewById(R.id.srlJobSeekerHome);
         recyclerViewRecommendedJobs = view.findViewById(R.id.rvJobSeekerSmallJobCard);
         recyclerViewRecommendedJobs.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -160,6 +168,22 @@ public class JobSeekerHomeFragment extends Fragment {
                 srlJobSeekerHome.setRefreshing(false);
             }
         });
+        searchView.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                ((MainActivity) requireActivity()).hideBottomNav();
+            }
+            else{
+                ((MainActivity) requireActivity()).showBottomNav();
+            }
+        });
+        searchView.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                searchView.hide();
+                searchBar.setText(textView.getText());
+                return false;
+            }
+        });
     }
 
 
@@ -181,7 +205,7 @@ public class JobSeekerHomeFragment extends Fragment {
                         agency.setName(jobObject.getString("agency_name"));
                         User user = new User();
                         user.setAgency(agency);
-                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"),user);
+                        Job job = new Job(jobObject.getString("jobId"), jobObject.getString("position"), jobObject.getString("location"), jobObject.optDouble("partTimeSalary", 0.0), jobObject.optDouble("fullTimeSalary", 0.0), jobObject.getString("updatedAt"), user);
                         // add the first 5 jobs to the recommended job list
                         if (i < 5) {
                             recommendedJobList.add(job);
@@ -195,7 +219,7 @@ public class JobSeekerHomeFragment extends Fragment {
                 }
                 // toggle the visibility of loader
                 recyclerViewRecommendedJobs.setVisibility(View.VISIBLE);
-                recyclerViewJobs.setVisibility( View.VISIBLE);
+                recyclerViewJobs.setVisibility(View.VISIBLE);
                 loadingDialog.dismiss();
             }
 
@@ -207,7 +231,7 @@ public class JobSeekerHomeFragment extends Fragment {
 
     }
 
-    private void refreshJobs(){
+    private void refreshJobs() {
         recommendedJobList.clear();
         jobList.clear();
         recyclerViewRecommendedJobs.setVisibility(View.GONE);

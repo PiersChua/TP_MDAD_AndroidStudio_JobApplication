@@ -4,23 +4,29 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SearchView;
 
 import com.android.volley.Response;
 import com.example.jobapplicationmdad.R;
@@ -66,10 +72,11 @@ public class AdminAgenciesFragment extends Fragment {
     AlertDialog loadingDialog;
     AdminAgencyCardAdapter adminAgencyCardAdapter;
     SwipeRefreshLayout srlAdminAgency;
-    private long mLastClickTime;
+    SearchView searchView;
+    MenuItem searchMenuItem;
     MaterialToolbar topAppBar;
     SharedPreferences sp;
-    FrameLayout flContent,flEmptyState;
+    FrameLayout flContent, flEmptyState;
 
     public AdminAgenciesFragment() {
         // Required empty public constructor
@@ -124,6 +131,29 @@ public class AdminAgenciesFragment extends Fragment {
         flEmptyState = view.findViewById(R.id.flEmptyState);
         TextView emptyStateText = flEmptyState.findViewById(R.id.emptyStateText);
         emptyStateText.setText("Oops\nNo agencies found");
+
+        searchMenuItem = topAppBar.getMenu().findItem(R.id.search);
+        searchView = (SearchView) searchMenuItem.getActionView();
+        searchView.setQueryHint("Search for agencies...");
+
+        searchView.setQuery("", false);
+        searchMenuItem.collapseActionView();
+        EditText etSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        etSearch.setTextColor(requireContext().getColor(R.color.background));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterAgencies(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                filterAgencies(query);
+                return true;
+            }
+        });
+
         srlAdminAgency = view.findViewById(R.id.srlAdminAgency);
         recyclerView = view.findViewById(R.id.rvAdminAgencyCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -175,6 +205,12 @@ public class AdminAgenciesFragment extends Fragment {
 
     }
 
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        searchView.setIconified(true);
+    }
+
     private void getAgencies() {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
@@ -205,10 +241,9 @@ public class AdminAgenciesFragment extends Fragment {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                if(!agencyList.isEmpty()){
+                if (!agencyList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
                     params.gravity = Gravity.CENTER;
@@ -229,5 +264,15 @@ public class AdminAgenciesFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getAgencies();
         adminAgencyCardAdapter.notifyDataSetChanged();
+    }
+
+    private void filterAgencies(String query) {
+        List<Agency> filteredList = new ArrayList<>();
+        for (Agency agency : agencyList) {
+            if (agency.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(agency);
+            }
+        }
+        adminAgencyCardAdapter.filterList(filteredList);
     }
 }
