@@ -296,6 +296,9 @@ public class AgencyAdminAgentsFragment extends Fragment {
                 }
                 if (!agentList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    flContent.setLayoutParams(params);
                 } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
@@ -316,6 +319,8 @@ public class AgencyAdminAgentsFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getAgents();
         agencyAdminAgentCardAdapter.notifyDataSetChanged();
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
     }
 
     private void filterAgents(String query) {

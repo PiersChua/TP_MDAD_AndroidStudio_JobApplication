@@ -226,6 +226,9 @@ public class AdminManageAgencyApplicationsFragment extends Fragment {
                 }
                 if(!agencyApplicationList.isEmpty()){
                     recyclerView.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    flContent.setLayoutParams(params);
                 }
                 else{
                     flEmptyState.setVisibility(View.VISIBLE);

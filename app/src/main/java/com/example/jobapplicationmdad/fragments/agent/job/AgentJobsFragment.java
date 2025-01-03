@@ -295,6 +295,9 @@ public class AgentJobsFragment extends Fragment {
                 }
                 if (!jobList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    flContent.setLayoutParams(params);
                 } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
@@ -315,6 +318,8 @@ public class AgentJobsFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getJobs();
         agentJobCardAdapter.notifyDataSetChanged();
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
     }
 
     private void filterJobs(String query) {

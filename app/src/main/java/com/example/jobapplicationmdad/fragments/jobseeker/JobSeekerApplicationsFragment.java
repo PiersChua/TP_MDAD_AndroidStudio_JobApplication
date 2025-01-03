@@ -176,6 +176,9 @@ public class JobSeekerApplicationsFragment extends Fragment {
                 }
                 if(!jobApplicationList.isEmpty()){
                     recyclerView.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    flContent.setLayoutParams(params);
                 }
                 else{
                     flEmptyState.setVisibility(View.VISIBLE);

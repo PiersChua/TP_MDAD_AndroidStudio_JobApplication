@@ -218,6 +218,9 @@ public class AdminUsersFragment extends Fragment {
                 }
                 if (!userList.isEmpty()) {
                     recyclerView.setVisibility(View.VISIBLE);
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    params.gravity = Gravity.TOP;
+                    flContent.setLayoutParams(params);
                 } else {
                     flEmptyState.setVisibility(View.VISIBLE);
                     FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) flContent.getLayoutParams();
@@ -238,6 +241,8 @@ public class AdminUsersFragment extends Fragment {
         recyclerView.setVisibility(View.GONE);
         getUsers();
         adminUserCardAdapter.notifyDataSetChanged();
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
     }
 
     private void filterUsers(String query) {
