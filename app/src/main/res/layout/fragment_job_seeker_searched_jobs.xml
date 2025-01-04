@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flJobSeekerSearchedJobs"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".fragments.jobseeker.JobSeekerSearchedJobsFragment">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/background">
+
+            <LinearLayout
+                android:paddingStart="16dp"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBack"
+                    style="@style/ButtonIcon"
+                    app:icon="@drawable/ic_arrow_back"
+                    app:iconSize="24dp"
+                    app:rippleColor="@color/ripple" />
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_search_market"
+                    app:backgroundTint="@color/background"
+                    app:layout_scrollFlags="enterAlways" />
+            </LinearLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srlJobSeekerSearchedJobs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:id="@+id/flContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="16dp">
+
+                    <include
+                        android:id="@+id/flEmptyState"
+                        layout="@layout/placeholder_empty_state" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvJobSeekerJobCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:overScrollMode="never"
+                        android:visibility="gone" />
+                </FrameLayout>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.search.SearchView
+            android:id="@+id/svJobs"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/hint_search_jobs"
+            app:backgroundTint="@color/background"
+            app:layout_anchor="@id/search_bar">
+
+            <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
+        </com.google.android.material.search.SearchView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>

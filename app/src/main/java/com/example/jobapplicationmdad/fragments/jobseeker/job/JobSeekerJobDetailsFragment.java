@@ -53,9 +53,11 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "jobId";
     private static final String ARG_PARAM2 = "isFromFavouriteFragment";
+    private static final String ARG_PARAM3 = "showAppBarWhenFragmentClosed";
 
     private String jobId;
     private boolean isFromFavouriteFragment = false;
+    private boolean showAppBarWhenFragmentClosed = false;
     private boolean isFavourite;
     private boolean isApplied;
     SharedPreferences sp;
@@ -83,29 +85,24 @@ public class JobSeekerJobDetailsFragment extends Fragment {
      * @return A new instance of fragment JobSeekerJobDetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static JobSeekerJobDetailsFragment newInstance(String jobId, boolean isFromFavouriteFragment) {
+    public static JobSeekerJobDetailsFragment newInstance(String jobId, boolean isFromFavouriteFragment, boolean showAppBarWhenFragmentClosed) {
         JobSeekerJobDetailsFragment fragment = new JobSeekerJobDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, jobId);
         args.putBoolean(ARG_PARAM2, isFromFavouriteFragment);
+        args.putBoolean(ARG_PARAM3, showAppBarWhenFragmentClosed);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static JobSeekerJobDetailsFragment newInstance(String jobId) {
-        JobSeekerJobDetailsFragment fragment = new JobSeekerJobDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, jobId);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             jobId = getArguments().getString(ARG_PARAM1);
-            isFromFavouriteFragment = getArguments().getBoolean(ARG_PARAM2);
+            isFromFavouriteFragment = getArguments().getBoolean(ARG_PARAM2,false);
+            showAppBarWhenFragmentClosed = getArguments().getBoolean(ARG_PARAM3,false);
         }
     }
 
@@ -201,7 +198,9 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        ((MainActivity) requireActivity()).showBottomNav();
+        if(showAppBarWhenFragmentClosed){
+            ((MainActivity) requireActivity()).showBottomNav();
+        }
     }
 
     private void getJobDetails() {

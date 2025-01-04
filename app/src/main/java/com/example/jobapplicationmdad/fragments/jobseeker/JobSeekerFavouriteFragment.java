@@ -136,7 +136,7 @@ public class JobSeekerFavouriteFragment extends Fragment {
                     FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
                     fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 }
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId, true)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerJob, JobSeekerJobDetailsFragment.newInstance(jobId, true,true)).addToBackStack(null).commit();
             }
 
             @Override
