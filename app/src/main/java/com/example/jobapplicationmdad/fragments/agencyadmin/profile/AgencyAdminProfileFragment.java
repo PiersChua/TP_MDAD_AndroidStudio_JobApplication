@@ -299,7 +299,7 @@ public class AgencyAdminProfileFragment extends Fragment {
         if (user.getImage() != null) {
             ivAgencyAdminProfileImage.setVisibility(View.VISIBLE);
             ivAgencyAdminProfileImage.setImageBitmap(user.getImage());
-            tvAgencyAdminAgencyName.setVisibility(View.GONE);
+            tvName.setVisibility(View.GONE);
         }
         else{
             tvName.setVisibility(View.VISIBLE);

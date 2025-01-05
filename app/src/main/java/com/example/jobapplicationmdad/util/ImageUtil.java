@@ -18,6 +18,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 public class ImageUtil {
+    /**
+     * Encodes a bitmap to base64 string
+     * Used when sending image data to server
+     * @param bitmap The corresponding image
+     * @return A base64 encoded string of the image
+     */
     public static String encodeBase64(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -25,6 +31,12 @@ public class ImageUtil {
         return Base64.encodeToString(imageBytes, Base64.DEFAULT);
     }
 
+    /**
+     * Decodes a base64 string to a bitmap
+     * Used when retrieving image data from server
+     * @param base64Image The base64 encoded string of the image
+     * @return A bitmap that can be used to display the image
+     */
     public static Bitmap decodeBase64(String base64Image){
         if (base64Image == null || base64Image.isEmpty()) {
             return null;
@@ -33,6 +45,13 @@ public class ImageUtil {
         return BitmapFactory.decodeByteArray(imageBytes,0, imageBytes.length);
     }
 
+    /**
+     * Initialises UCrop with the relevant configurations(options)
+     * The aspect ratio is defaulted to 1:1 for a squared image, that will be displayed in a circular card
+     * @param sourceUri
+     * @param context
+     * @param fragment
+     */
     public static void startCrop(Uri sourceUri, Context context, Fragment fragment) {
         Uri destinationUri = Uri.fromFile(new File(context.getCacheDir(), "croppedImage.jpg"));
         UCrop.Options options = new UCrop.Options();

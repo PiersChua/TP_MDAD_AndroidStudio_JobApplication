@@ -71,7 +71,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities,
             tvAgentDetailsAgentName, tvAgentDetailsAgentEmail, tvAgentDetailsAgentPhoneNumber,
             tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail, tvAgencyDetailsAgencyPhoneNumber, tvAgencyDetailsAgencyAddress;
-    ImageView ivJobSeekerJobDetailsAgencyImage;
+    ImageView ivJobSeekerJobDetailsAgencyImage,ivJobSeekerJobDetailsAgentImage;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
     private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
     private static final String favourite_job_url = MainActivity.root_url + "/api/job-seeker/favourite-job.php";
@@ -146,6 +146,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvAgencyDetailsAgencyAddress = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyAddress);
 
         ivJobSeekerJobDetailsAgencyImage = view.findViewById(R.id.ivJobSeekerJobDetailsAgencyImage);
+        ivJobSeekerJobDetailsAgentImage = view.findViewById(R.id.ivJobSeekerJobDetailsAgentImage);
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,6 +240,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     user.setFullName(jobObject.getString("user_fullName"));
                     user.setEmail(jobObject.getString("user_email"));
                     user.setPhoneNumber(jobObject.getString("user_phoneNumber"));
+                    user.setImage(ImageUtil.decodeBase64(jobObject.getString("user_image")));
 
                     // init agency attributes
                     Agency agency = new Agency();
@@ -307,6 +309,10 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         if (job.getUser().getAgency().getImage() != null) {
             ivJobSeekerJobDetailsAgencyImage.setImageBitmap(job.getUser().getAgency().getImage());
             ivJobSeekerJobDetailsAgencyImage.setPadding(0,0,0,0);
+        }
+        if(job.getUser().getImage()!=null){
+            ivJobSeekerJobDetailsAgentImage.setImageBitmap(job.getUser().getImage());
+            ivJobSeekerJobDetailsAgentImage.setPadding(0,0,0,0);
         }
         // Toggle the loader
         nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);

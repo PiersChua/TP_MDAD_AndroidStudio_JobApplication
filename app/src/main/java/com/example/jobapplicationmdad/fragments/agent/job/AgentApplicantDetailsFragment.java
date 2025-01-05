@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jobapplicationmdad.R;
@@ -25,6 +26,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -58,6 +60,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
     ProfileAdapter profileAdapter;
     ArrayList<HashMap<String, String>> profileItems;
     SharedPreferences sp;
+    ImageView ivAgentApplicantProfileImage;
     private User user;
 
     public AgentApplicantDetailsFragment() {
@@ -102,6 +105,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarAgentApplicantProfile);
         tvName = view.findViewById(R.id.tvAgentApplicantProfileName);
+        ivAgentApplicantProfileImage = view.findViewById(R.id.ivAgentApplicantProfileImage);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
@@ -150,7 +154,6 @@ public class AgentApplicantDetailsFragment extends Fragment {
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
                 // retrieve user details
-                tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
                 user.setFullName(response.getString("fullName"));
                 user.setEmail(response.getString("email"));
@@ -159,6 +162,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
                 user.setRace(response.getString("race"));
                 user.setNationality(response.getString("nationality"));
                 user.setGender(response.getString("gender"));
+                user.setImage(ImageUtil.decodeBase64(response.getString("image")));
                 populateProfileItems(user);
 
                 // Set the adapter
@@ -186,6 +190,16 @@ public class AgentApplicantDetailsFragment extends Fragment {
     }
 
     private void populateProfileItems(User user) {
+        if (user.getImage() != null) {
+            ivAgentApplicantProfileImage.setVisibility(View.VISIBLE);
+            ivAgentApplicantProfileImage.setImageBitmap(user.getImage());
+            tvName.setVisibility(View.GONE);
+        }
+        else{
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(StringUtil.getNameInitials(user.getFullName()));
+            ivAgentApplicantProfileImage.setVisibility(View.GONE);
+        }
         profileItems.clear();
         addProfileItem("Full Name", user.getFullName());
         addProfileItem("Email Address", user.getEmail());
