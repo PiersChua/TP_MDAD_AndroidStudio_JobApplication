@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,6 +29,7 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -67,8 +69,9 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     Button btnApplyJob;
     MaterialButton btnFavouriteJob;
     TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities,
-            tvAgentDetailsAgentName, tvAgentDetailsAgentEmail,tvAgentDetailsAgentPhoneNumber,
-            tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail,tvAgencyDetailsAgencyPhoneNumber,tvAgencyDetailsAgencyAddress;
+            tvAgentDetailsAgentName, tvAgentDetailsAgentEmail, tvAgentDetailsAgentPhoneNumber,
+            tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail, tvAgencyDetailsAgencyPhoneNumber, tvAgencyDetailsAgencyAddress;
+    ImageView ivJobSeekerJobDetailsAgencyImage;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
     private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
     private static final String favourite_job_url = MainActivity.root_url + "/api/job-seeker/favourite-job.php";
@@ -101,8 +104,8 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             jobId = getArguments().getString(ARG_PARAM1);
-            isFromFavouriteFragment = getArguments().getBoolean(ARG_PARAM2,false);
-            showAppBarWhenFragmentClosed = getArguments().getBoolean(ARG_PARAM3,false);
+            isFromFavouriteFragment = getArguments().getBoolean(ARG_PARAM2, false);
+            showAppBarWhenFragmentClosed = getArguments().getBoolean(ARG_PARAM3, false);
         }
     }
 
@@ -141,6 +144,8 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvAgencyDetailsAgencyEmail = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyEmail);
         tvAgencyDetailsAgencyPhoneNumber = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyPhoneNumber);
         tvAgencyDetailsAgencyAddress = view.findViewById(R.id.tvJobSeekerAgencyDetailsAgencyAddress);
+
+        ivJobSeekerJobDetailsAgencyImage = view.findViewById(R.id.ivJobSeekerJobDetailsAgencyImage);
 
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,7 +203,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(showAppBarWhenFragmentClosed){
+        if (showAppBarWhenFragmentClosed) {
             ((MainActivity) requireActivity()).showBottomNav();
         }
     }
@@ -241,6 +246,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     agency.setEmail(jobObject.getString("agency_email"));
                     agency.setPhoneNumber(jobObject.getString("agency_phoneNumber"));
                     agency.setAddress(jobObject.getString("agency_address"));
+                    agency.setImage(ImageUtil.decodeBase64(jobObject.getString("agency_image")));
 
                     // link the entities
                     user.setAgency(agency);
@@ -298,6 +304,10 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvAgencyDetailsAgencyEmail.setText(job.getUser().getAgency().getEmail());
         tvAgencyDetailsAgencyPhoneNumber.setText(job.getUser().getAgency().getPhoneNumber());
         tvAgencyDetailsAgencyAddress.setText(job.getUser().getAgency().getAddress());
+        if (job.getUser().getAgency().getImage() != null) {
+            ivJobSeekerJobDetailsAgencyImage.setImageBitmap(job.getUser().getAgency().getImage());
+            ivJobSeekerJobDetailsAgencyImage.setPadding(0,0,0,0);
+        }
         // Toggle the loader
         nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);
         progressIndicator.setVisibility(View.GONE);

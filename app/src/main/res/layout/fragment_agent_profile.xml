@@ -42,13 +42,20 @@
                     android:layout_gravity="center_horizontal"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="4dp">
+                    <ImageView
+                        android:id="@+id/ivAgentProfileImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/tvAgentProfileName"
                         style="@style/Text"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="32sp" />
+                        android:textSize="32sp"
+                        android:visibility="gone"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView

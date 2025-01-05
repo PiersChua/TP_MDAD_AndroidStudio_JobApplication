@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jobapplicationmdad.R;
@@ -30,6 +31,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -68,6 +70,7 @@ public class JobSeekerProfileFragment extends Fragment {
     ArrayList<HashMap<String, String>> profileItems;
     Button btnNavigateToEditProfile;
     SharedPreferences sp;
+    ImageView ivJobSeekerProfileImage;
     private long mLastClickTime;
 
 
@@ -115,6 +118,7 @@ public class JobSeekerProfileFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarJobSeekerProfile);
         tvName = view.findViewById(R.id.tvJobSeekerProfileName);
+        ivJobSeekerProfileImage = view.findViewById(R.id.ivJobSeekerProfileImage);
         recyclerView = view.findViewById(R.id.rvJobSeekerProfile);
         btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditJobSeekerProfile);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
@@ -197,7 +201,6 @@ public class JobSeekerProfileFragment extends Fragment {
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
                 // retrieve user details
-                tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
                 user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
@@ -207,6 +210,7 @@ public class JobSeekerProfileFragment extends Fragment {
                 user.setRace(response.getString("race"));
                 user.setNationality(response.getString("nationality"));
                 user.setGender(response.getString("gender"));
+                user.setImage(ImageUtil.decodeBase64(response.getString("image")));
                 populateProfileItems(user);
 
 
@@ -232,6 +236,16 @@ public class JobSeekerProfileFragment extends Fragment {
     }
 
     private void populateProfileItems(User user) {
+        if (user.getImage() != null) {
+            ivJobSeekerProfileImage.setVisibility(View.VISIBLE);
+            ivJobSeekerProfileImage.setImageBitmap(user.getImage());
+            tvName.setVisibility(View.GONE);
+        }
+        else{
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(StringUtil.getNameInitials(user.getFullName()));
+            ivJobSeekerProfileImage.setVisibility(View.GONE);
+        }
         profileItems.clear();
         addProfileItem("Full Name", user.getFullName());
         addProfileItem("Email Address", user.getEmail());

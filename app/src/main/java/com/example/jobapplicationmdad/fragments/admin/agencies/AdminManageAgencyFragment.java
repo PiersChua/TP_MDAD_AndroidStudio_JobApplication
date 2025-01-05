@@ -32,6 +32,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -208,7 +209,7 @@ public class AdminManageAgencyFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditAgencyAdminAgencyProfileFragment.newInstance(agency, userId)).addToBackStack(null).commit();
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgency, EditAgencyAdminAgencyProfileFragment.newInstance(userId)).addToBackStack(null).commit();
             }
         });
 
@@ -289,6 +290,7 @@ public class AdminManageAgencyFragment extends Fragment {
                         response.getString("agency_phone_number"),
                         response.getString("agency_address")
                 );
+                agency.setImage(ImageUtil.decodeBase64(response.getString("agency_image")));
 
                 populateAgencyItems(agency);
 

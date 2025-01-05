@@ -27,7 +27,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:scaleType="centerCrop"
                 android:src="@drawable/job_hiring_icon"
@@ -235,7 +235,21 @@
                     android:layout_marginTop="8dp"
                     android:text="About this agency"
                     android:textStyle="bold" />
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:cardCornerRadius="25dp"
+                    app:cardElevation="2dp">
 
+                    <ImageView
+                        android:id="@+id/ivJobSeekerJobDetailsAgencyImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_building" />
+                </com.google.android.material.card.MaterialCardView>
                 <TextView
                     android:id="@+id/tvJobSeekerAgencyDetailsAgencyName"
                     style="@style/Text.Small"

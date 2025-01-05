@@ -2,7 +2,10 @@ package com.example.jobapplicationmdad.fragments.profile;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -13,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +25,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
@@ -32,16 +37,20 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
+import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,6 +88,10 @@ public class EditProfileFragment extends Fragment {
 
     TextInputLayout etFullNameProfileLayout, etEmailProfileLayout, etPhoneNumberProfileLayout, etDateOfBirthProfileLayout, etGenderProfileLayout, etNationalityProfileLayout, etRaceProfileLayout;
     AutoCompleteTextView actvGenderProfile, actvRaceProfile, actvNationalityprofile;
+    ImageView ivUserImageProfile;
+    private Bitmap imageBitmap;
+    private static final int IMAGE_PICK_CODE = 103;
+    MaterialCardView mcvImageProfile;
 
     public EditProfileFragment() {
         // Required empty public constructor
@@ -147,6 +160,8 @@ public class EditProfileFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarEditProfile);
         btnEditProfile = view.findViewById(R.id.btnEditProfile);
+        ivUserImageProfile = view.findViewById(R.id.ivUserImageProfile);
+        mcvImageProfile = view.findViewById(R.id.mcvImageProfile);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
@@ -211,7 +226,13 @@ public class EditProfileFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
-
+        mcvImageProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, IMAGE_PICK_CODE);
+            }
+        });
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -262,6 +283,41 @@ public class EditProfileFragment extends Fragment {
             }
         });
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == requireActivity().RESULT_OK) {
+            if (requestCode == IMAGE_PICK_CODE && data != null) {
+                Uri selectedImageUri = data.getData();
+                if (selectedImageUri == null) {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), "URI cannot be found", Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                ImageUtil.startCrop(selectedImageUri, requireContext(), this);
+            } else if (requestCode == UCrop.REQUEST_CROP) {
+                Uri croppedImageUri = UCrop.getOutput(data);
+                if (croppedImageUri != null) {
+                    try {
+                        // reset the imageview
+                        ivUserImageProfile.setImageDrawable(null);
+                        ivUserImageProfile.setImageURI(croppedImageUri);
+                        // update the bitmap
+                        imageBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), croppedImageUri);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else if (resultCode == UCrop.RESULT_ERROR) {
+                final Throwable cropError = UCrop.getError(data);
+                if (cropError != null) {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), "Crop error: " + cropError.getMessage(), Snackbar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), "Unknown crop error occurred.", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 
     private User getUserFromForm() {
         String fullName = etFullNameProfile.getText().toString().trim();
@@ -299,6 +355,10 @@ public class EditProfileFragment extends Fragment {
         params.put("gender", updatedUser.getGender());
         params.put("race", updatedUser.getRace());
         params.put("nationality", updatedUser.getNationality());
+        if (imageBitmap != null) {
+            String encodedImage = ImageUtil.encodeBase64(imageBitmap);
+            params.put("image", encodedImage);
+        }
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
 
@@ -344,6 +404,7 @@ public class EditProfileFragment extends Fragment {
                 user.setRace(response.getString("race"));
                 user.setNationality(response.getString("nationality"));
                 user.setGender(response.getString("gender"));
+                user.setImage(ImageUtil.decodeBase64(response.getString("image")));
                 populateUserItems();
 
             } catch (JSONException e) {
@@ -368,6 +429,10 @@ public class EditProfileFragment extends Fragment {
         actvGenderProfile.setText(user.getGender(), false);
         actvRaceProfile.setText(user.getRace(), false);
         actvNationalityprofile.setText(user.getNationality(), false);
+        if (user.getImage() != null) {
+            ivUserImageProfile.setImageBitmap(user.getImage());
+            ivUserImageProfile.setPadding(0, 0, 0, 0);
+        }
     }
 
     private void deleteUser() {

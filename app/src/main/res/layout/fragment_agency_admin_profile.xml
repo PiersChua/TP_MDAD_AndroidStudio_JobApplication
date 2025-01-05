@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/flAgencyAdminProfile"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flAgencyAdminProfile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".fragments.agencyadmin.profile.AgencyAdminProfileFragment">
 
@@ -13,24 +13,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarAgencyAdminProfile"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:menu="@menu/menu_agency_admin_profile"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_profile"
-            app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:background="@color/primary">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarAgencyAdminProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:menu="@menu/menu_agency_admin_profile"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_profile"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+        </com.google.android.material.appbar.AppBarLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,13 +45,19 @@
                     android:layout_gravity="center_horizontal"
                     app:cardCornerRadius="50dp"
                     app:cardElevation="4dp">
-
+                    <ImageView
+                        android:id="@+id/ivAgencyAdminProfileImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
                     <TextView
                         android:id="@+id/tvAgencyAdminProfileName"
                         style="@style/Text"
                         android:layout_gravity="center"
                         android:textColor="@color/black"
-                        android:textSize="32sp" />
+                        android:textSize="32sp"
+                        android:visibility="gone"/>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -92,6 +100,30 @@
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
+                <!-- Circular Profile Avatar -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="4dp">
+
+                    <ImageView
+                        android:id="@+id/ivAgencyAdminAgencyImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tvAgencyAdminAgencyName"
+                        style="@style/Text"
+                        android:layout_gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="32sp"
+                        android:visibility="gone" />
+                </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardAgentAgencyProfile"
                     android:layout_width="match_parent"
@@ -113,8 +145,8 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_weight="1"
                                 style="@style/Text.Large"
+                                android:layout_weight="1"
                                 android:text="@string/agency_profile_fragment_header_card"
                                 android:textStyle="bold" />
 

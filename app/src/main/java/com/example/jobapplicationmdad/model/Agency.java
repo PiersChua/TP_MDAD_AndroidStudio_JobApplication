@@ -1,5 +1,7 @@
 package com.example.jobapplicationmdad.model;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 public class Agency implements Serializable {
@@ -88,6 +90,7 @@ public class Agency implements Serializable {
     private User user;
     private String createdAt;
     private String updatedAt;
+    private Bitmap image;
     private int agentCount;
 
     public int getAgentCount() {
@@ -104,5 +107,13 @@ public class Agency implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

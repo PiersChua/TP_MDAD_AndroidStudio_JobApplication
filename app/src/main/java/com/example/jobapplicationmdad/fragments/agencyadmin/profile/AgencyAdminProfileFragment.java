@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jobapplicationmdad.R;
@@ -31,6 +32,7 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.StringUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -65,13 +67,14 @@ public class AgencyAdminProfileFragment extends Fragment {
     View dialogView;
     AlertDialog loadingDialog;
     MaterialToolbar topAppBar;
-    TextView tvName;
+    TextView tvName,tvAgencyAdminAgencyName;
     RecyclerView recyclerViewAgentProfile, recyclerViewAgencyProfile;
     ProfileAdapter profileAdapter;
     ProfileAdapter agencyProfileAdapter;
     List<HashMap<String, String>> profileItems;
     List<HashMap<String, String>> agencyProfileItems;
     Button btnNavigateToEditProfile, btnNavigateToEditAgencyProfile;
+    ImageView ivAgencyAdminAgencyImage,ivAgencyAdminProfileImage;
     SharedPreferences sp;
     private long mLastClickTime;
 
@@ -120,6 +123,9 @@ public class AgencyAdminProfileFragment extends Fragment {
         sp = requireActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         topAppBar = view.findViewById(R.id.topAppBarAgencyAdminProfile);
         tvName = view.findViewById(R.id.tvAgencyAdminProfileName);
+        tvAgencyAdminAgencyName = view.findViewById(R.id.tvAgencyAdminAgencyName);
+        ivAgencyAdminAgencyImage = view.findViewById(R.id.ivAgencyAdminAgencyImage);
+        ivAgencyAdminProfileImage = view.findViewById(R.id.ivAgencyAdminProfileImage);
         btnNavigateToEditProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminProfile);
         btnNavigateToEditAgencyProfile = view.findViewById(R.id.btnNavigateToEditAgencyAdminAgencyProfile);
         recyclerViewAgentProfile = view.findViewById(R.id.rvAgencyAdminProfile);
@@ -198,7 +204,7 @@ public class AgencyAdminProfileFragment extends Fragment {
                 }
                 mLastClickTime = System.currentTimeMillis();
                 // addToBackStack() allows the back button to return to the current page
-                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminAgencyProfileFragment.newInstance(agency,null)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAgencyAdminProfile, EditAgencyAdminAgencyProfileFragment.newInstance(null)).addToBackStack(null).commit();
             }
         });
 
@@ -238,7 +244,6 @@ public class AgencyAdminProfileFragment extends Fragment {
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
             try {
                 // retrieve user details
-                tvName.setText(StringUtil.getNameInitials(response.getString("fullName")));
                 user = new User();
                 user.setUserId(response.getString("userId"));
                 user.setFullName(response.getString("fullName"));
@@ -248,6 +253,7 @@ public class AgencyAdminProfileFragment extends Fragment {
                 user.setRace(response.getString("race"));
                 user.setNationality(response.getString("nationality"));
                 user.setGender(response.getString("gender"));
+                user.setImage(ImageUtil.decodeBase64(response.getString("image")));
                 populateProfileItems(user);
 
                 // retrieve agency details
@@ -257,7 +263,7 @@ public class AgencyAdminProfileFragment extends Fragment {
                         response.getString("agency_phone_number"),
                         response.getString("agency_address")
                 );
-
+                agency.setImage(ImageUtil.decodeBase64(response.getString("agency_image")));
                 populateAgencyItems(agency);
 
 
@@ -290,6 +296,16 @@ public class AgencyAdminProfileFragment extends Fragment {
     }
 
     private void populateProfileItems(User user) {
+        if (user.getImage() != null) {
+            ivAgencyAdminProfileImage.setVisibility(View.VISIBLE);
+            ivAgencyAdminProfileImage.setImageBitmap(user.getImage());
+            tvAgencyAdminAgencyName.setVisibility(View.GONE);
+        }
+        else{
+            tvName.setVisibility(View.VISIBLE);
+            tvName.setText(StringUtil.getNameInitials(user.getFullName()));
+            ivAgencyAdminProfileImage.setVisibility(View.GONE);
+        }
         profileItems.clear();
         addProfileItem("Full Name", user.getFullName());
         addProfileItem("Email Address", user.getEmail());
@@ -301,6 +317,16 @@ public class AgencyAdminProfileFragment extends Fragment {
     }
 
     private void populateAgencyItems(Agency agency) {
+        if (agency.getImage() != null) {
+            ivAgencyAdminAgencyImage.setVisibility(View.VISIBLE);
+            ivAgencyAdminAgencyImage.setImageBitmap(agency.getImage());
+            tvAgencyAdminAgencyName.setVisibility(View.GONE);
+        }
+        else{
+            tvAgencyAdminAgencyName.setVisibility(View.VISIBLE);
+            tvAgencyAdminAgencyName.setText(StringUtil.getNameInitials(agency.getName()));
+            ivAgencyAdminAgencyImage.setVisibility(View.GONE);
+        }
         agencyProfileItems.clear();
         addAgencyProfileItem("Name", agency.getName());
         addAgencyProfileItem("Email Address", agency.getEmail());
