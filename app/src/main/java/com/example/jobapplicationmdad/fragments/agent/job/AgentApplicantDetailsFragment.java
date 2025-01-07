@@ -114,6 +114,9 @@ public class AgentApplicantDetailsFragment extends Fragment {
         profileItems = new ArrayList<>();
         getApplicantDetails();
 
+        // Set the adapter
+        profileAdapter = new ProfileAdapter(profileItems);
+        recyclerView.setAdapter(profileAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -126,6 +129,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
                 return 1;
             }
         });
+
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,9 +169,6 @@ public class AgentApplicantDetailsFragment extends Fragment {
                 user.setImage(ImageUtil.decodeBase64(response.getString("image")));
                 populateProfileItems(user);
 
-                // Set the adapter
-                profileAdapter = new ProfileAdapter(profileItems);
-                recyclerView.setAdapter(profileAdapter);
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);

@@ -33,7 +33,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static String root_url = "http://192.168.0.5/job-application";
-    //public static String root_url = "http://172.30.133.194/job-application";
+    //public static String root_url = "http://172.30.133.162/job-application";
     NavigationBarView bottom_navigation;
     private Map<Integer, Fragment> fragments;
 

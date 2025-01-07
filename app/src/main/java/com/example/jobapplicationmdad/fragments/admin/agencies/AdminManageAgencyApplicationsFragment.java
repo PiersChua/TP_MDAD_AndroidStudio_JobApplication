@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -27,6 +28,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.AdminAgencyApplicationCardAdapter;
 import com.example.jobapplicationmdad.adapters.AgentJobApplicationCardAdapter;
+import com.example.jobapplicationmdad.fragments.agent.job.AgentManageJobApplicationsFragment;
 import com.example.jobapplicationmdad.model.AgencyApplication;
 import com.example.jobapplicationmdad.model.JobApplication;
 import com.example.jobapplicationmdad.model.User;
@@ -141,7 +143,12 @@ public class AdminManageAgencyApplicationsFragment extends Fragment {
         adminAgencyApplicationCardAdapter = new AdminAgencyApplicationCardAdapter(agencyApplicationList, new AdminAgencyApplicationCardAdapter.OnJobClickListener() {
             @Override
             public void onViewApplication(String agencyApplicationId) {
-
+                FragmentManager fragmentManager = getChildFragmentManager();
+                if (fragmentManager.getBackStackEntryCount() > 0) {
+                    FragmentManager.BackStackEntry first = fragmentManager.getBackStackEntryAt(0);
+                    fragmentManager.popBackStack(first.getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }
+                getChildFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminManageAgencyApplication, AdminApplicantDetailsFragment.newInstance(agencyApplicationId)).addToBackStack(null).commit();
             }
 
             @Override

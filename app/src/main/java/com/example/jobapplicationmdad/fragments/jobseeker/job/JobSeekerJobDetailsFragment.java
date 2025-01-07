@@ -2,7 +2,10 @@ package com.example.jobapplicationmdad.fragments.jobseeker.job;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -34,6 +38,7 @@ import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -72,6 +77,8 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             tvAgentDetailsAgentName, tvAgentDetailsAgentEmail, tvAgentDetailsAgentPhoneNumber,
             tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail, tvAgencyDetailsAgencyPhoneNumber, tvAgencyDetailsAgencyAddress;
     ImageView ivJobSeekerJobDetailsAgencyImage,ivJobSeekerJobDetailsAgentImage;
+    FloatingActionButton fabWhatsapp;
+    private String agentPhoneNumber;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
     private static final String create_job_application_url = MainActivity.root_url + "/api/job-seeker/create-job-application.php";
     private static final String favourite_job_url = MainActivity.root_url + "/api/job-seeker/favourite-job.php";
@@ -126,6 +133,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         nsvJobSeekerJobDetails = view.findViewById(R.id.nsvJobSeekerJobDetails);
         btnApplyJob = view.findViewById(R.id.btnApplyJob);
         btnFavouriteJob = view.findViewById(R.id.btnFavouriteJobJobDetails);
+        fabWhatsapp = view.findViewById(R.id.fabWhatsapp);
 
         // TextViews
         tvPosition = view.findViewById(R.id.tvJobSeekerJobDetailsPosition);
@@ -178,6 +186,26 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 favouriteJob();
+            }
+        });
+
+        fabWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "https://api.whatsapp.com/send?phone="+agentPhoneNumber;
+                try {
+                    PackageManager pm = requireContext().getPackageManager();
+                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
+                // Whatsapp not installed, go to web
+                catch (PackageManager.NameNotFoundException e) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                }
             }
         });
 
@@ -241,6 +269,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
                     user.setEmail(jobObject.getString("user_email"));
                     user.setPhoneNumber(jobObject.getString("user_phoneNumber"));
                     user.setImage(ImageUtil.decodeBase64(jobObject.getString("user_image")));
+                    agentPhoneNumber = jobObject.getString("user_phoneNumber");
 
                     // init agency attributes
                     Agency agency = new Agency();

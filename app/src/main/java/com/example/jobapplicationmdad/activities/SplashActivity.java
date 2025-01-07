@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +16,23 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.model.User;
+import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
+import com.example.jobapplicationmdad.network.VolleyErrorHandler;
+import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.ImageUtil;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+
+import org.json.JSONException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
     SharedPreferences sp;
+    boolean isValidCredentials;
     LinearProgressIndicator progressIndicator;
     private static final int SPLASH_DURATION = 2000; // Total duration: 2 seconds
 
