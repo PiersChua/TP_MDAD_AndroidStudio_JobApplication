@@ -319,7 +319,9 @@
         android:id="@+id/bottomAppBar"
         style="@style/Widget.Material3.BottomAppBar"
         android:layout_width="match_parent"
-        android:backgroundTint="@color/background"
+        android:backgroundTint="@color/white"
+        app:elevation="8dp"
+        app:addElevationShadow="true"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
 

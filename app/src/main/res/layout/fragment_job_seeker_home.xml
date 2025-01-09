@@ -45,6 +45,7 @@
                         style="@style/ButtonIcon"
                         app:icon="@drawable/ic_notification"
                         app:iconSize="30dp"
+                        app:iconTint="@color/foreground"
                         app:rippleColor="@color/ripple" />
                 </LinearLayout>
             </com.google.android.material.appbar.CollapsingToolbarLayout>

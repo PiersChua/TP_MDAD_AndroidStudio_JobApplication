@@ -127,6 +127,13 @@ public class CreateAgentJobFragment extends Fragment {
         topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                // Get the currently focused view
+                View currentFocus = requireActivity().getCurrentFocus();
+                // Hide the keyboard if a view is focused
+                if (currentFocus != null) {
+                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+                }
                 getParentFragmentManager().popBackStack();
             }
         });

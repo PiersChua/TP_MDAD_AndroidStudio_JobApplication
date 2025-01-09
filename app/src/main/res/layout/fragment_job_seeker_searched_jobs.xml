@@ -14,21 +14,22 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            app:liftOnScrollTargetViewId="@+id/srlJobSeekerSearchedJobs"
             android:layout_height="wrap_content"
-            android:background="@color/background">
+            android:background="@color/background"
+            app:liftOnScrollTargetViewId="@+id/srlJobSeekerSearchedJobs">
 
             <LinearLayout
-                android:paddingStart="16dp"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnBack"
                     style="@style/ButtonIcon"
                     app:icon="@drawable/ic_arrow_back"
                     app:iconSize="24dp"
+                    app:iconTint="@color/foreground"
                     app:rippleColor="@color/ripple" />
 
                 <com.google.android.material.search.SearchBar

@@ -21,8 +21,11 @@
     </style>
 
     <style name="TabLayout" parent="Widget.Material3.TabLayout">
-        <item name="tabIndicatorFullWidth">false</item>
         <item name="tabMode">scrollable</item>
+        <item name="android:background">@drawable/tab_background</item>
+        <item name="tabSelectedTextColor">@color/primary</item>
+        <item name="tabIndicatorColor">@color/primary</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
     </style>
     <!-- Button Styles-->
     <style name="Button">
@@ -73,9 +76,8 @@
         <item name="android:minHeight">0dp</item>
         <item name="android:padding">12dp</item>
         <item name="iconPadding">0dp</item>
-        <item name="backgroundTint">@color/background</item>
+        <item name="backgroundTint">@android:color/transparent</item>
         <item name="iconGravity">textStart</item>
-        <item name="iconTint">@color/foreground</item>
     </style>
 
     <style name="ButtonRoundedIconOutline" parent="Widget.Material3.Button">
