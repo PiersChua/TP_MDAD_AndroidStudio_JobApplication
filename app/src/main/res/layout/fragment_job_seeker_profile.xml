@@ -35,11 +35,13 @@
             android:padding="16dp">
             <!-- Circular Profile Avatar -->
             <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.App.CardView"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 app:cardCornerRadius="50dp"
                 app:cardElevation="4dp">
+
                 <ImageView
                     android:id="@+id/ivJobSeekerProfileImage"
                     android:layout_width="match_parent"
@@ -58,6 +60,7 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardJobSeekerProfile"
+                style="@style/Widget.App.CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

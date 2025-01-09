@@ -59,8 +59,8 @@
                             android:id="@+id/ivUserImageProfile"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
                             android:padding="6dp"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/ic_person" />
 
                         <View
@@ -142,6 +142,7 @@
                         app:boxBackgroundColor="@color/placeholder_background"
                         app:boxStrokeColor="@color/foreground"
                         app:cursorColor="@color/foreground"
+                        app:hintTextColor="@color/placeholder_foreground"
                         app:startIconDrawable="@drawable/ic_people">
 
                         <AutoCompleteTextView
@@ -163,6 +164,7 @@
                         app:boxBackgroundColor="@color/placeholder_background"
                         app:boxStrokeColor="@color/foreground"
                         app:cursorColor="@color/foreground"
+                        app:hintTextColor="@color/placeholder_foreground"
                         app:startIconDrawable="@drawable/ic_race">
 
                         <AutoCompleteTextView
@@ -179,7 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="@string/hint_nationality"
+                        android:hint="@string/hint_nationality" app:hintTextColor="@color/placeholder_foreground"
                         android:textColorHint="@color/placeholder_foreground"
                         app:boxBackgroundColor="@color/placeholder_background"
                         app:boxStrokeColor="@color/foreground"

@@ -37,6 +37,7 @@
                 android:padding="16dp">
                 <!-- Circular Profile Avatar -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.App.CardView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
@@ -58,6 +59,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.App.CardView"
                     android:id="@+id/cardAdminProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

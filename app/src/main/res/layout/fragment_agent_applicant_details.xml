@@ -34,17 +34,20 @@
         android:padding="16dp">
         <!-- Circular Profile Avatar -->
         <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.App.CardView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             app:cardCornerRadius="50dp"
             app:cardElevation="4dp">
+
             <ImageView
                 android:id="@+id/ivAgentApplicantProfileImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:visibility="gone" />
+
             <TextView
                 android:id="@+id/tvAgentApplicantProfileName"
                 style="@style/Text"
@@ -55,6 +58,7 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardApplicantProfile"
+            style="@style/Widget.App.CardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"

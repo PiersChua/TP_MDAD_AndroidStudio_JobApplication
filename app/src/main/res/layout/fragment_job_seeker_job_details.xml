@@ -193,6 +193,7 @@
                     android:text="About this agent"
                     android:textStyle="bold" />
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.App.CardView"
                     android:layout_marginTop="8dp"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -254,6 +255,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    style="@style/Widget.App.CardView"
                     app:cardCornerRadius="25dp"
                     app:cardElevation="2dp">
 

@@ -48,10 +48,10 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/etFullNameRegisterLayout"
                 style="@style/EditTextLayout"
-                app:counterEnabled="true"
-                app:counterMaxLength="100"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_full_name"
+                app:counterEnabled="true"
+                app:counterMaxLength="100"
                 app:startIconDrawable="@drawable/ic_person">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -109,12 +109,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_role"
-                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
-
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
+                app:hintTextColor="@color/placeholder_foreground"
                 app:startIconDrawable="@drawable/ic_role">
 
                 <AutoCompleteTextView
@@ -131,11 +130,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_gender"
-                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
+                app:hintTextColor="@color/placeholder_foreground"
                 app:startIconDrawable="@drawable/ic_people">
 
                 <AutoCompleteTextView
@@ -152,11 +151,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_race"
-                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
+                app:hintTextColor="@color/placeholder_foreground"
                 app:startIconDrawable="@drawable/ic_race">
 
                 <AutoCompleteTextView
@@ -173,11 +172,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:hint="@string/hint_nationality"
-                app:hintTextColor="@color/placeholder_foreground"
                 android:textColorHint="@color/placeholder_foreground"
                 app:boxBackgroundColor="@color/placeholder_background"
                 app:boxStrokeColor="@color/foreground"
                 app:cursorColor="@color/foreground"
+                app:hintTextColor="@color/placeholder_foreground"
                 app:startIconDrawable="@drawable/ic_nationality">
 
                 <AutoCompleteTextView

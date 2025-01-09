@@ -22,10 +22,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                app:theme="@style/ToolbarThemeLight"
-                app:title="@string/title_menu_applicant_details"
                 app:navigationIcon="@drawable/ic_arrow_back"
                 app:navigationIconTint="@color/background"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_applicant_details"
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -40,6 +40,7 @@
                 android:padding="16dp">
                 <!-- Circular Profile Avatar -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.App.CardView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
@@ -64,6 +65,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardAdminApplicantProfile"
+                    style="@style/Widget.App.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
@@ -91,6 +93,7 @@
 
                 <!-- Circular Profile Avatar -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.App.CardView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center_horizontal"
@@ -115,6 +118,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardAgentAgencyProfile"
+                    style="@style/Widget.App.CardView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
