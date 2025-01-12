@@ -50,9 +50,12 @@ import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -90,7 +93,10 @@ public class EditProfileFragment extends Fragment {
     AutoCompleteTextView actvGenderProfile, actvRaceProfile, actvNationalityprofile;
     ImageView ivUserImageProfile;
     private Bitmap imageBitmap;
-    private static final int IMAGE_PICK_CODE = 103;
+    private String photoPath;
+    private static final int IMAGE_PICK_CODE = 101;
+    private static final int IMAGE_CAPTURE_CODE = 102;
+    private static final int IMAGE_REMOVE_CODE = 103;
     MaterialCardView mcvImageProfile;
 
     public EditProfileFragment() {
@@ -122,16 +128,14 @@ public class EditProfileFragment extends Fragment {
             userId = getArguments().getString(ARG_PARAM1);
             showAppBarIfFragmentClosed = getArguments().getBoolean(ARG_PARAM2, true);
             isDeleteAgencyAdmin = getArguments().getBoolean(ARG_PARAM3, false);
-        }
-        else{
+        } else {
             showAppBarIfFragmentClosed = true;
             isDeleteAgencyAdmin = false;
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_edit_profile, container, false);
@@ -229,8 +233,36 @@ public class EditProfileFragment extends Fragment {
         mcvImageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, IMAGE_PICK_CODE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                List<String> options = new ArrayList<>();
+                options.add("Import from library");
+                options.add("Take photo");
+                if (user.getImage() != null) {
+                    options.add("Remove image");
+                }
+                builder.setItems(options.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0: {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, IMAGE_PICK_CODE);
+                                break;
+                            }
+                            case 1: {
+                                photoPath = ImageUtil.dispatchTakePictureIntent(EditProfileFragment.this, requireActivity(), requireContext(), IMAGE_CAPTURE_CODE);
+                                break;
+                            }
+
+                            case 2: {
+
+                            }
+                        }
+
+                    }
+                });
+                builder.create().show();
+
             }
         });
         btnEditProfile.setOnClickListener(new View.OnClickListener() {
@@ -261,11 +293,7 @@ public class EditProfileFragment extends Fragment {
                 CalendarConstraints.Builder constraintsBuilder = new CalendarConstraints.Builder();
                 constraintsBuilder.setStart(hundredYearsAgo);
                 constraintsBuilder.setEnd(sixteenYearsAgo);
-                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker()
-                        .setSelection(DateConverter.formatDateToMilliseconds(user.getDateOfBirth()))
-                        .setTitleText("Select Date of Birth")
-                        .setCalendarConstraints(constraintsBuilder.build())
-                        .build();
+                MaterialDatePicker<Long> datePicker = MaterialDatePicker.Builder.datePicker().setSelection(DateConverter.formatDateToMilliseconds(user.getDateOfBirth())).setTitleText("Select Date of Birth").setCalendarConstraints(constraintsBuilder.build()).build();
                 datePicker.show(getParentFragmentManager(), "DATE_PICKER");
 
                 datePicker.addOnPositiveButtonClickListener(selection -> {
@@ -273,6 +301,7 @@ public class EditProfileFragment extends Fragment {
                 });
             }
         });
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -283,6 +312,7 @@ public class EditProfileFragment extends Fragment {
             }
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -294,6 +324,16 @@ public class EditProfileFragment extends Fragment {
                     return;
                 }
                 ImageUtil.startCrop(selectedImageUri, requireContext(), this);
+            } else if (requestCode == IMAGE_CAPTURE_CODE && photoPath != null) {
+                File imgFile = new File(photoPath);
+                Uri capturedImageUri = null;
+                if (imgFile.exists()) {
+                    capturedImageUri = Uri.fromFile(imgFile);
+                }
+                if (capturedImageUri == null) {
+                    return;
+                }
+                ImageUtil.startCrop(capturedImageUri, requireContext(), this);
             } else if (requestCode == UCrop.REQUEST_CROP) {
                 Uri croppedImageUri = UCrop.getOutput(data);
                 if (croppedImageUri != null) {
