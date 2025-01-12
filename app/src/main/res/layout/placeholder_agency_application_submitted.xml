@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:visibility="gone"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -17,13 +17,12 @@
 
         <TextView
             android:gravity="center"
-            android:id="@+id/emptyStateText"
             style="@style/Text.Medium"
             android:textColor="@color/placeholder_foreground"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/placeholder_empty_state_header" />
+            android:text="@string/placeholder_agency_application_submitted_header" />
     </LinearLayout>
 </FrameLayout>

@@ -2,28 +2,34 @@
 package com.example.jobapplicationmdad.fragments.jobseeker.profile;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.AgencyApplication;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -31,7 +37,9 @@ import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.ApplicationValidation;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.util.ImageUtil;
+import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 import com.yalantis.ucrop.UCrop;
@@ -41,8 +49,10 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateAgencyApplicationFragment extends Fragment {
@@ -50,17 +60,23 @@ public class CreateAgencyApplicationFragment extends Fragment {
     private static final String ARG_PARAM1 = "userId";
     private static final String ARG_PARAM2 = "token";
     private static final String create_agency_application_url = MainActivity.root_url + "/api/job-seeker/create-agency-application.php";
-    private static final int IMAGE_PICK_CODE = 103;
+    private static final String get_agency_application_count_url = MainActivity.root_url + "/api/job-seeker/get-agency-application-count.php";
+    private static final int IMAGE_PICK_CODE = 101;
+    private static final int IMAGE_CAPTURE_CODE = 102;
 
     private String userId;
     private String token;
     private Bitmap imageBitmap;
+    private String photoPath;
 
     MaterialToolbar topAppBar;
     EditText etNameAgencyApplication, etEmailAgencyApplication, etPhoneNumberAgencyApplication, etAddressAgencyApplication;
     TextInputLayout etNameAgencyApplicationLayout, etEmailAgencyApplicationLayout, etPhoneNumberAgencyApplicationLayout, etAddressAgencyApplicationLayout;
-    Button btnCreateAgencyApplication, btnUploadImage;
-    ImageView ivSelectedImage;
+    Button btnCreateAgencyApplication;
+    ImageView ivAgencyApplicationAgencyImageProfile;
+    MaterialCardView mcvAgencyApplicationImage;
+    FrameLayout flContent, flAgencyApplicationSubmitted;
+    LinearLayout llCreateAgencyApplication;
 
     public CreateAgencyApplicationFragment() {
         // Required empty public constructor
@@ -106,8 +122,12 @@ public class CreateAgencyApplicationFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         topAppBar = view.findViewById(R.id.topAppBarAgencyApplication);
         btnCreateAgencyApplication = view.findViewById(R.id.btnCreateAgencyApplication);
-        btnUploadImage = view.findViewById(R.id.btnUploadImage);
-        ivSelectedImage = view.findViewById(R.id.ivSelectedImage);
+        ivAgencyApplicationAgencyImageProfile = view.findViewById(R.id.ivAgencyApplicationAgencyImageProfile);
+        mcvAgencyApplicationImage = view.findViewById(R.id.mcvImageProfile);
+        flContent = view.findViewById(R.id.flContent);
+        flAgencyApplicationSubmitted = view.findViewById(R.id.flAgencyApplicationSubmitted);
+        llCreateAgencyApplication = view.findViewById(R.id.llCreateAgencyApplication);
+        getAgencyApplicationCount();
 
         // Form
         etNameAgencyApplication = view.findViewById(R.id.etNameAgencyApplication);
@@ -130,9 +150,42 @@ public class CreateAgencyApplicationFragment extends Fragment {
             getParentFragmentManager().popBackStack();
         });
 
-        btnUploadImage.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, IMAGE_PICK_CODE);
+        mcvAgencyApplicationImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                List<String> options = new ArrayList<>();
+                options.add("Import from library");
+                options.add("Take photo");
+                if (imageBitmap != null) {
+                    options.add("Remove image");
+                }
+                builder.setItems(options.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0: {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, IMAGE_PICK_CODE);
+                                break;
+                            }
+                            case 1: {
+                                photoPath = ImageUtil.dispatchTakePictureIntent(CreateAgencyApplicationFragment.this, requireActivity(), requireContext(), IMAGE_CAPTURE_CODE);
+                                break;
+                            }
+
+                            case 2: {
+                                ivAgencyApplicationAgencyImageProfile.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_building));
+                                ivAgencyApplicationAgencyImageProfile.setPadding(6, 6, 6, 6);
+                                break;
+                            }
+                        }
+
+                    }
+                });
+                builder.create().show();
+
+            }
         });
 
         btnCreateAgencyApplication.setOnClickListener(v -> {
@@ -157,6 +210,30 @@ public class CreateAgencyApplicationFragment extends Fragment {
         boolean isValidPhoneNumber = AuthValidation.validatePhoneNumber(etPhoneNumberAgencyApplicationLayout, application.getPhoneNumber());
         boolean isValidAddress = ApplicationValidation.validateAddress(etAddressAgencyApplicationLayout, application.getAddress());
         return isValidName && isValidEmail && isValidPhoneNumber && isValidAddress;
+    }
+
+    private void getAgencyApplicationCount() {
+        Map<String, String> params = new HashMap<>();
+        params.put("userId", userId);
+        String url = UrlUtil.constructUrl(get_agency_application_count_url, params);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + token);
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, response -> {
+            try {
+                int agencyApplicationCount = response.getInt("data");
+                if(agencyApplicationCount>0){
+                    flAgencyApplicationSubmitted.setVisibility(View.VISIBLE);
+                    llCreateAgencyApplication.setVisibility(View.GONE);
+                    FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) flContent.getLayoutParams();
+                    layoutParams.gravity = Gravity.CENTER;
+                    flContent.setLayoutParams(layoutParams);
+                }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }, VolleyErrorHandler.newErrorListener(requireContext()));
+
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
     private void createAgencyApplication(AgencyApplication application) {
@@ -204,13 +281,23 @@ public class CreateAgencyApplicationFragment extends Fragment {
                     return;
                 }
                 ImageUtil.startCrop(selectedImageUri, requireContext(), this);
+            } else if (requestCode == IMAGE_CAPTURE_CODE && photoPath != null) {
+                File imgFile = new File(photoPath);
+                Uri capturedImageUri = null;
+                if (imgFile.exists()) {
+                    capturedImageUri = Uri.fromFile(imgFile);
+                }
+                if (capturedImageUri == null) {
+                    return;
+                }
+                ImageUtil.startCrop(capturedImageUri, requireContext(), this);
             } else if (requestCode == UCrop.REQUEST_CROP) {
                 Uri croppedImageUri = UCrop.getOutput(data);
                 if (croppedImageUri != null) {
                     try {
                         // reset the imageview
-                        ivSelectedImage.setImageDrawable(null);
-                        ivSelectedImage.setImageURI(croppedImageUri);
+                        ivAgencyApplicationAgencyImageProfile.setImageDrawable(null);
+                        ivAgencyApplicationAgencyImageProfile.setImageURI(croppedImageUri);
                         // update the bitmap
                         imageBitmap = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), croppedImageUri);
 

@@ -1,6 +1,7 @@
 package com.example.jobapplicationmdad.fragments.agencyadmin.profile;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -26,6 +28,7 @@ import android.widget.ImageView;
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.MainActivity;
+import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.Agency;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -47,9 +50,12 @@ import com.yalantis.ucrop.UCrop;
 
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -70,6 +76,7 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
     private Agency agency;
     private static final String update_agency_url = MainActivity.root_url + "/api/auth/update-agency-details.php";
     private static final String get_agency_url = MainActivity.root_url + "/api/auth/get-agency-details.php";
+    private static final String remove_agency_image_url = MainActivity.root_url + "/api/auth/remove-agency-image.php";
     // User that is passed from profile fragment
     MaterialToolbar topAppBar;
     Button btnEditProfile;
@@ -82,8 +89,10 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
     AlertDialog loadingDialog;
     ImageView ivAgencyImageProfile;
     private Bitmap imageBitmap;
+    private String photoPath;
     SharedPreferences sp;
-    private static final int IMAGE_PICK_CODE = 103;
+    private static final int IMAGE_PICK_CODE = 101;
+    private static final int IMAGE_CAPTURE_CODE = 102;
 
 
     public EditAgencyAdminAgencyProfileFragment() {
@@ -185,8 +194,36 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
         mcvImageProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, IMAGE_PICK_CODE);
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                List<String> options = new ArrayList<>();
+                options.add("Import from library");
+                options.add("Take photo");
+                if (agency.getImage() != null) {
+                    options.add("Remove image");
+                }
+                builder.setItems(options.toArray(new String[0]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0: {
+                                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(intent, IMAGE_PICK_CODE);
+                                break;
+                            }
+                            case 1: {
+                                photoPath = ImageUtil.dispatchTakePictureIntent(EditAgencyAdminAgencyProfileFragment.this, requireActivity(), requireContext(), IMAGE_CAPTURE_CODE);
+                                break;
+                            }
+
+                            case 2: {
+                                removeAgencyImage();
+                                break;
+                            }
+                        }
+
+                    }
+                });
+                builder.create().show();
             }
         });
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
@@ -210,7 +247,19 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
                     return;
                 }
                 ImageUtil.startCrop(selectedImageUri, requireContext(), this);
-            } else if (requestCode == UCrop.REQUEST_CROP) {
+            }
+            else if (requestCode == IMAGE_CAPTURE_CODE && photoPath != null) {
+                File imgFile = new File(photoPath);
+                Uri capturedImageUri = null;
+                if (imgFile.exists()) {
+                    capturedImageUri = Uri.fromFile(imgFile);
+                }
+                if (capturedImageUri == null) {
+                    return;
+                }
+                ImageUtil.startCrop(capturedImageUri, requireContext(), this);
+            }
+            else if (requestCode == UCrop.REQUEST_CROP) {
                 Uri croppedImageUri = UCrop.getOutput(data);
                 if (croppedImageUri != null) {
                     try {
@@ -287,6 +336,34 @@ public class EditAgencyAdminAgencyProfileFragment extends Fragment {
             }
 
         }, VolleyErrorHandler.newErrorListener(requireContext()));
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+    private void removeAgencyImage(){
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("agencyAdminUserId", userId != null ? userId : sp.getString("userId", ""));
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, remove_agency_image_url, params, headers, response -> {
+            try {
+                // reset the drawable back to default image
+                ivAgencyImageProfile.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_building));
+                ivAgencyImageProfile.setPadding(6, 6, 6, 6);
+                agency.setImage(null);
+                Bundle result = new Bundle();
+                result.putBoolean("isUpdated", true);
+                getParentFragmentManager().setFragmentResult("editAgencyResult", result);
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
+        });
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 

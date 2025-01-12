@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -77,6 +78,7 @@ public class EditProfileFragment extends Fragment {
     private static final String update_user_url = MainActivity.root_url + "/api/auth/update-user-details.php";
     private static final String get_user_url = MainActivity.root_url + "/api/auth/get-user-details.php";
     private static final String delete_user_url = MainActivity.root_url + "/api/auth/delete-user.php";
+    private static final String remove_user_image_url = MainActivity.root_url + "/api/auth/remove-user-image.php";
     // User that is passed from profile fragment
     private String userId;
     private boolean showAppBarIfFragmentClosed;
@@ -96,7 +98,6 @@ public class EditProfileFragment extends Fragment {
     private String photoPath;
     private static final int IMAGE_PICK_CODE = 101;
     private static final int IMAGE_CAPTURE_CODE = 102;
-    private static final int IMAGE_REMOVE_CODE = 103;
     MaterialCardView mcvImageProfile;
 
     public EditProfileFragment() {
@@ -255,7 +256,8 @@ public class EditProfileFragment extends Fragment {
                             }
 
                             case 2: {
-
+                                removeUserImage();
+                                break;
                             }
                         }
 
@@ -460,6 +462,35 @@ public class EditProfileFragment extends Fragment {
 
     }
 
+    private void removeUserImage() {
+        loadingDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userId", sp.getString("userId", ""));
+        params.put("userIdToBeUpdated", userId != null ? userId : sp.getString("userId", ""));
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("Authorization", "Bearer " + sp.getString("token", ""));
+        JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, remove_user_image_url, params, headers, response -> {
+            try {
+                // reset the drawable back to default image
+                ivUserImageProfile.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_person));
+                ivUserImageProfile.setPadding(6, 6, 6, 6);
+                user.setImage(null);
+                Bundle result = new Bundle();
+                result.putBoolean("isUpdated", true);
+                getParentFragmentManager().setFragmentResult("editProfileResult", result);
+                Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).show();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            // toggle the visibility of loader
+            loadingDialog.dismiss();
+        }, error -> {
+            loadingDialog.dismiss();
+            VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);
+        });
+        VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
+    }
+
     private void populateUserItems() {
         // Populate fields
         etFullNameProfile.setText(user.getFullName());
@@ -476,7 +507,6 @@ public class EditProfileFragment extends Fragment {
     }
 
     private void deleteUser() {
-
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
