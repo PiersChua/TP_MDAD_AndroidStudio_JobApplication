@@ -87,9 +87,7 @@ public class JsonObjectRequestWithParams extends Request<JSONObject> {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(new JSONObject(jsonString), HttpHeaderParser.parseCacheHeaders(response));
-        } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
-        } catch (JSONException e) {
+        } catch (UnsupportedEncodingException | JSONException e) {
             return Response.error(new ParseError(e));
         }
     }

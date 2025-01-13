@@ -1,18 +1,23 @@
 package com.example.jobapplicationmdad.fragments.agent.job;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -136,6 +141,34 @@ public class AgentApplicantDetailsFragment extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.agent_applicant_details_item_1) {
+                    String url = "https://api.whatsapp.com/send?phone=" + user.getPhoneNumber();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                    return true;
+                } else if (id == R.id.agent_applicant_details_item_2) {
+                    try {
+                        Intent i = new Intent(Intent.ACTION_SENDTO);
+                        i.setData(Uri.parse("mailto:"));
+                        i.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                        i.putExtra(Intent.EXTRA_TEXT, String.format("Dear %s, \n\n", user.getFullName()));
+                        startActivity(i);
+                    } catch (android.content.ActivityNotFoundException e) {
+                        String url = "https://mail.google.com/";
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -151,7 +184,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
         loadingDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
-        params.put("applicantUserId",userId);
+        params.put("applicantUserId", userId);
         String url = UrlUtil.constructUrl(get_applicant_details_url, params);
         Map<String, String> headers = new HashMap<String, String>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
@@ -195,8 +228,7 @@ public class AgentApplicantDetailsFragment extends Fragment {
             ivAgentApplicantProfileImage.setVisibility(View.VISIBLE);
             ivAgentApplicantProfileImage.setImageBitmap(user.getImage());
             tvName.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(StringUtil.getNameInitials(user.getFullName()));
             ivAgentApplicantProfileImage.setVisibility(View.GONE);

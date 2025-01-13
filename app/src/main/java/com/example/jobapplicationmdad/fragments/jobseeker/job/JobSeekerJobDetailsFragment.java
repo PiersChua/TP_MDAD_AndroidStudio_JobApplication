@@ -76,7 +76,7 @@ public class JobSeekerJobDetailsFragment extends Fragment {
     TextView tvPosition, tvAgencyName, tvLocation, tvSalary, tvEmploymentType, tvOrganisation, tvSchedule, tvDescription, tvResponsibilities,
             tvAgentDetailsAgentName, tvAgentDetailsAgentEmail, tvAgentDetailsAgentPhoneNumber,
             tvAgencyDetailsAgencyName, tvAgencyDetailsAgencyEmail, tvAgencyDetailsAgencyPhoneNumber, tvAgencyDetailsAgencyAddress;
-    ImageView ivJobSeekerJobDetailsAgencyImage,ivJobSeekerJobDetailsAgentImage;
+    ImageView ivJobSeekerJobDetailsAgencyImage, ivJobSeekerJobDetailsAgentImage;
     FloatingActionButton fabWhatsapp;
     private String agentPhoneNumber;
     private static final String get_job_url = MainActivity.root_url + "/api/job-seeker/get-job.php";
@@ -192,20 +192,11 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         fabWhatsapp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://api.whatsapp.com/send?phone="+agentPhoneNumber;
-                try {
-                    PackageManager pm = requireContext().getPackageManager();
-                    pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
+                String url = "https://api.whatsapp.com/send?phone=" + agentPhoneNumber;
                 // Whatsapp not installed, go to web
-                catch (PackageManager.NameNotFoundException e) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
-                }
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
         });
 
@@ -337,11 +328,11 @@ public class JobSeekerJobDetailsFragment extends Fragment {
         tvAgencyDetailsAgencyAddress.setText(job.getUser().getAgency().getAddress());
         if (job.getUser().getAgency().getImage() != null) {
             ivJobSeekerJobDetailsAgencyImage.setImageBitmap(job.getUser().getAgency().getImage());
-            ivJobSeekerJobDetailsAgencyImage.setPadding(0,0,0,0);
+            ivJobSeekerJobDetailsAgencyImage.setPadding(0, 0, 0, 0);
         }
-        if(job.getUser().getImage()!=null){
+        if (job.getUser().getImage() != null) {
             ivJobSeekerJobDetailsAgentImage.setImageBitmap(job.getUser().getImage());
-            ivJobSeekerJobDetailsAgentImage.setPadding(0,0,0,0);
+            ivJobSeekerJobDetailsAgentImage.setPadding(0, 0, 0, 0);
         }
         // Toggle the loader
         nsvJobSeekerJobDetails.setVisibility(View.VISIBLE);

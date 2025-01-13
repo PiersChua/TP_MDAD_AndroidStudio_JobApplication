@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -40,8 +43,13 @@ public class VolleyErrorHandler {
                     errorMessage = "Error parsing error response";
                 }
             } else {
+                if (!isInternetAvailable(context)) {
+                    // Show a dialog for no internet connection
+                    displayDialog(context, false, "No internet connection. Please check your network and try again.");
+                    return;
+                }
                 // Handle network or client-side errors
-                errorMessage = "Network error: " + volleyError.getMessage();
+                errorMessage = "Network error: " + "Something went wrong, please try again later";
             }
             boolean requireLogin = false;
             String dialogMessage = errorMessage;
@@ -60,6 +68,19 @@ public class VolleyErrorHandler {
             displayDialog(context,requireLogin,dialogMessage);
 
         };
+    }
+    private static boolean isInternetAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            Network network = connectivityManager.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                return networkCapabilities != null &&
+                        (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR));
+            }
+        }
+        return false;
     }
 
     private static void clearSharedPreferences(Context context) {

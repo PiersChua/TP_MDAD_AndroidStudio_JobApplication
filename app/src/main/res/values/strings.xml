@@ -20,6 +20,8 @@
     <string name="app_bar_user_delete">Delete user</string>
     <string name="app_bar_listings_delete">Delete listing</string>
     <string name="app_bar_applications_manage">Manage applications</string>
+    <string name="app_bar_applicant_whatsapp">Whatsapp applicant</string>
+    <string name="app_bar_applicant_email">Email applicant</string>
 
     <!-- Menu Title -->
     <string name="title_menu_home">Home</string>
