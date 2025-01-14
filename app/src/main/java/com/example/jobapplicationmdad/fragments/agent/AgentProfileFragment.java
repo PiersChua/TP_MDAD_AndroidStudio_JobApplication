@@ -145,8 +145,6 @@ public class AgentProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.agent_profile_item_1) {
-                    return true;
-                } else if (id == R.id.agent_profile_item_2) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);

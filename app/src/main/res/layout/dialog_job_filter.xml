@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        style="@style/Text.Medium"
+        android:layout_marginBottom="8dp"
+        android:text="@string/filter_job_type"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/rgJobType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rbPartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_part_time" />
+
+        <RadioButton
+            android:id="@+id/rbFullTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hint_full_time" />
+    </RadioGroup>
+
+    <TextView
+        style="@style/Text.Medium"
+        android:layout_marginBottom="8dp"
+        android:text="@string/filter_salary_range"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etMinSalaryFilterLayout"
+        style="@style/EditTextLayout"
+        android:hint="@string/filter_min_salary"
+        app:helperTextEnabled="true"
+        app:startIconDrawable="@drawable/ic_dollar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMinSalaryFilter"
+            style="@style/EditText"
+            android:inputType="number|numberDecimal"
+            android:text="0.00" />
+    </com.google.android.material.textfield.TextInputLayout>
+</LinearLayout>

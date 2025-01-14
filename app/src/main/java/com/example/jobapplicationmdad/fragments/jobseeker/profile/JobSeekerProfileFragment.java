@@ -138,8 +138,6 @@ public class JobSeekerProfileFragment extends Fragment {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId", ""), sp.getString("token", ""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
-                    return true;
-                } else if (id == R.id.job_seeker_profile_item_3) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
@@ -240,8 +238,7 @@ public class JobSeekerProfileFragment extends Fragment {
             ivJobSeekerProfileImage.setVisibility(View.VISIBLE);
             ivJobSeekerProfileImage.setImageBitmap(user.getImage());
             tvName.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(StringUtil.getNameInitials(user.getFullName()));
             ivJobSeekerProfileImage.setVisibility(View.GONE);
