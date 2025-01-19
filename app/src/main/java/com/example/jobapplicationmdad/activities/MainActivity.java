@@ -33,7 +33,9 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static String root_url = "http://192.168.0.5/job-application";
-    //public static String root_url = "http://172.30.133.162/job-application";
+    public static String email = "legionchua@gmail.com";
+    public static String password = "nbku qyae nvtg smam";
+    //public static String root_url = "http://172.30.90.147/job-application";
     NavigationBarView bottom_navigation;
     private Map<Integer, Fragment> fragments;
 
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Initialise the appropriate navigation based on the user's role
+     *
      * @param role The role of the user when logged in
      */
     private void initBottomNavMenu(String role) {
@@ -105,29 +108,29 @@ public class MainActivity extends AppCompatActivity {
         switch (role) {
             case "Job Seeker":
                 fragments.put(R.id.bottom_nav_job_seeker_item_1, new JobSeekerHomeFragment());
-                fragments.put(R.id.bottom_nav_job_seeker_item_2,new JobSeekerJobsFragment());
-                fragments.put(R.id.bottom_nav_job_seeker_item_3,new JobSeekerProfileFragment());
+                fragments.put(R.id.bottom_nav_job_seeker_item_2, new JobSeekerJobsFragment());
+                fragments.put(R.id.bottom_nav_job_seeker_item_3, new JobSeekerProfileFragment());
                 break;
             case "Agent":
                 fragments.put(R.id.bottom_nav_agent_item_1, new AgentHomeFragment());
                 fragments.put(R.id.bottom_nav_agent_item_2, new AgentJobsFragment());
                 fragments.put(R.id.bottom_nav_agent_item_3, new AgentProfileFragment());
             case "Agency Admin":
-                fragments.put(R.id.bottom_nav_agency_admin_item_1,new AgencyAdminHomeFragment());
+                fragments.put(R.id.bottom_nav_agency_admin_item_1, new AgencyAdminHomeFragment());
                 fragments.put(R.id.bottom_nav_agency_admin_item_2, new AgencyAdminAgentsFragment());
                 fragments.put(R.id.bottom_nav_agency_admin_item_3, new AgencyAdminProfileFragment());
-            case"Admin":
-                fragments.put(R.id.bottom_nav_admin_item_1,new AdminHomeFragment());
-                fragments.put(R.id.bottom_nav_admin_item_2,new AdminAgenciesFragment());
-                fragments.put(R.id.bottom_nav_admin_item_3,new AdminUsersFragment());
-                fragments.put(R.id.bottom_nav_admin_item_4,new AdminProfileFragment());
+            case "Admin":
+                fragments.put(R.id.bottom_nav_admin_item_1, new AdminHomeFragment());
+                fragments.put(R.id.bottom_nav_admin_item_2, new AdminAgenciesFragment());
+                fragments.put(R.id.bottom_nav_admin_item_3, new AdminUsersFragment());
+                fragments.put(R.id.bottom_nav_admin_item_4, new AdminProfileFragment());
         }
     }
 
     /**
-     *  Loads the first fragment in the 'fragments' map
+     * Loads the first fragment in the 'fragments' map
      */
-    private void loadDefaultFragment(){
+    private void loadDefaultFragment() {
         // loads the first fragment inserted in the LinkedHashMap
         Fragment defaultFragment = fragments.values().iterator().next();
         getSupportFragmentManager().beginTransaction().replace(R.id.flMain, defaultFragment).commit();
@@ -136,10 +139,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * To be used in overridden methods like onResume and onPause in fragments to hide bottom nav
      */
-    public void showBottomNav(){
+    public void showBottomNav() {
         bottom_navigation.setVisibility(View.VISIBLE);
     }
-    public void hideBottomNav(){
+
+    public void hideBottomNav() {
         bottom_navigation.setVisibility(View.GONE);
     }
 }

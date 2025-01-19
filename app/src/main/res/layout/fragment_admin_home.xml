@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.admin.AdminHomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,8 +27,62 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:text="Proportion of users by nationality"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <com.github.mikephil.charting.charts.PieChart
-            android:id="@+id/pcAdminUserRoles"
+            android:id="@+id/pcAdminUserNationalityProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:text="User role distribution"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcAdminUserRoleProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:paddingHorizontal="16dp"
+            android:text="Top 3 agencies with the most jobs"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcAdminAgencyJobProportion"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />

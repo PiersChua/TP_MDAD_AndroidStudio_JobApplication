@@ -22,9 +22,18 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.ChartUtil;
+import com.example.jobapplicationmdad.util.DateConverter;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.BubbleChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -36,8 +45,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -57,9 +69,13 @@ public class AdminHomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     PieChart pieChart;
+    BarChart barChart;
+    BarChart barChart2;
     View dialogView;
     AlertDialog loadingDialog;
     SharedPreferences sp;
+    ArrayList<String> roles = new ArrayList<>();
+    ArrayList<String> agencyNames = new ArrayList<>();
 
     public AdminHomeFragment() {
         // Required empty public constructor
@@ -107,7 +123,9 @@ public class AdminHomeFragment extends Fragment {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext());
         builder.setView(dialogView).setCancelable(false);
         loadingDialog = builder.create();
-        pieChart = view.findViewById(R.id.pcAdminUserRoles);
+        pieChart = view.findViewById(R.id.pcAdminUserNationalityProportion);
+        barChart = view.findViewById(R.id.bcAdminUserRoleProportion);
+        barChart2 = view.findViewById(R.id.bcAdminAgencyJobProportion);
         getChartData();
 
 
@@ -115,41 +133,55 @@ public class AdminHomeFragment extends Fragment {
 
     private void getChartData() {
         loadingDialog.show();
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("userId", sp.getString("userId", ""));
         String url = UrlUtil.constructUrl(get_admin_chart_data_url, params);
-        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + sp.getString("token", ""));
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(url, headers, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    ArrayList<PieEntry> entries = new ArrayList<>();
-
-                    JSONArray usersArray = response.getJSONArray("data");
+                    ArrayList<PieEntry> nationalityProportion = new ArrayList<>();
+                    ArrayList<BarEntry> roleProportion = new ArrayList<>();
+                    ArrayList<BarEntry> jobProportion = new ArrayList<>();
                     int totalUsers = 0;
-                    for (int i = 0; i < usersArray.length(); i++) {
-                        JSONObject userObject = usersArray.getJSONObject(i);
-                        entries.add(new PieEntry(userObject.getInt("user_count"), userObject.getString("nationality")));
-                        totalUsers += (userObject.getInt("user_count"));
+                    JSONArray nationalityProportionArray = response.getJSONArray("nationality_data");
+                    JSONArray roleProportionArray = response.getJSONArray("role_data");
+                    JSONArray jobProportionArray = response.getJSONArray("job_data");
+                    for (int i = 0; i < nationalityProportionArray.length(); i++) {
+                        JSONObject chartObject = nationalityProportionArray.getJSONObject(i);
+                        nationalityProportion.add(new PieEntry(chartObject.getInt("nationality_user_count"), chartObject.getString("nationality")));
+                        totalUsers += (chartObject.getInt("nationality_user_count"));
                     }
-                    PieDataSet dataSet = new PieDataSet(entries, "Proportion of users by nationality");
-                    dataSet.setValueFormatter(new ValueFormatter() {
-                        @Override
-                        public String getFormattedValue(float value) {
-                            return String.valueOf((int) value);
-                        }
 
-                    });
-                    dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                    dataSet.setValueTextSize(32);
-                    PieData data = new PieData(dataSet);
-                    pieChart.setData(data);
-                    pieChart.getDescription().setEnabled(false);
-                    pieChart.setCenterText(String.valueOf(totalUsers));
-                    pieChart.setCenterTextSize(20f);
-                    pieChart.invalidate();
-                    pieChart.animateY(1000, Easing.EaseInOutQuad);
+                    roles.clear();
+                    for (int i = 0; i < roleProportionArray.length(); i++) {
+                        JSONObject chartObject = roleProportionArray.getJSONObject(i);
+                        roles.add(chartObject.getString("role"));
+                        roleProportion.add(new BarEntry(i, chartObject.getInt("role_user_count")));
+                    }
+
+
+                    for (int i = 0; i < jobProportionArray.length(); i++) {
+                        JSONObject chartObject = jobProportionArray.getJSONObject(i);
+                        agencyNames.add(chartObject.getString("name"));
+                        jobProportion.add(new BarEntry(i, chartObject.getInt("agency_job_count")));
+                    }
+
+                    // Pie chart
+
+                    PieDataSet pieDataSet = new PieDataSet(nationalityProportion, "Proportion of users by nationality");
+                    ChartUtil.initPieChart(pieChart, pieDataSet, String.valueOf(totalUsers), ColorTemplate.COLORFUL_COLORS);
+
+                    // Bar chart
+                    BarDataSet barDataSet = new BarDataSet(roleProportion, "User role distribution");
+                    ChartUtil.initBarChart(barChart, barDataSet, roles, ColorTemplate.COLORFUL_COLORS);
+
+
+                    // Bar chart 2
+                    BarDataSet barDataSet2 = new BarDataSet(jobProportion, "Top 3 agencies with the most jobs");
+                    ChartUtil.initBarChart(barChart2, barDataSet2, agencyNames, ColorTemplate.JOYFUL_COLORS);
 
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
