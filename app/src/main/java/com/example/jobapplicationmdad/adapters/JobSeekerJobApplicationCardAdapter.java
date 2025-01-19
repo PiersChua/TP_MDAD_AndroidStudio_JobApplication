@@ -88,6 +88,12 @@ public class JobSeekerJobApplicationCardAdapter extends RecyclerView.Adapter<Job
             }
             tvJobApplicationCardLocations.setText(jobApplication.getJob().getLocation());
             tvJobApplicationCardStatus.setText(jobApplication.getStatus().toString());
+            if (jobApplication.getStatus() == JobApplication.Status.ACCEPTED) {
+                tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_18, 0, 0, 0);
+            }
+            else if(jobApplication.getStatus() == JobApplication.Status.REJECTED) {
+                tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel_18, 0, 0, 0);
+            }
             tvJobApplicationCardCreatedAt.setText("Submitted on " + DateConverter.formatDate(DateConverter.convertDateTimeToDate(jobApplication.getCreatedAt())));
         }
 

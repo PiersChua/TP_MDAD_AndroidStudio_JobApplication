@@ -102,6 +102,12 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
             tvJobApplicationCardUserEmail.setText(jobApplication.getUser().getEmail());
             tvJobApplicationCardUserPhoneNumber.setText(jobApplication.getUser().getPhoneNumber());
             tvJobApplicationCardStatus.setText(jobApplication.getStatus().toString());
+            if (jobApplication.getStatus() == JobApplication.Status.ACCEPTED) {
+                tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_18, 0, 0, 0);
+            }
+            else if(jobApplication.getStatus() == JobApplication.Status.REJECTED) {
+                tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel_18, 0, 0, 0);
+            }
             tvJobApplicationCardUpdatedAt.setText("Updated on " + DateConverter.formatDateFromSql(jobApplication.getUpdatedAt()));
             if (jobApplication.getStatus() == JobApplication.Status.PENDING) {
                 llJobApplicationCardButtons.setVisibility(View.VISIBLE);

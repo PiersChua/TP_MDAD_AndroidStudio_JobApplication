@@ -29,13 +29,8 @@
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:paddingHorizontal="16dp"
-            android:text="Proportion of users by nationality"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            style="@style/Text.ChartTitle"
+            android:text="Proportion of users by nationality" />
 
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pcAdminUserNationalityProportion"
@@ -50,13 +45,8 @@
             app:dividerColor="@color/placeholder_background" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:paddingHorizontal="16dp"
-            android:text="User role distribution"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            style="@style/Text.ChartTitle"
+            android:text="User role distribution" />
 
 
         <com.github.mikephil.charting.charts.BarChart
@@ -72,13 +62,8 @@
             app:dividerColor="@color/placeholder_background" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:paddingHorizontal="16dp"
-            android:text="Top 3 agencies with the most jobs"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            style="@style/Text.ChartTitle"
+            android:text="Top 3 agencies (Most Jobs)" />
 
 
         <com.github.mikephil.charting.charts.BarChart

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/flAgencyAdminHome"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flAgencyAdminHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.agencyadmin.AgencyAdminHomeFragment">
@@ -27,6 +27,50 @@
                 app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Job Applications overview" />
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pcAgencyAdminJobApplicationProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Proportion of agents by race" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pcAgencyAdminAgentRaceProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Top 3 agents (Most Jobs)" />
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcAgencyAdminAgentJobProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
     </LinearLayout>
 
 </FrameLayout>
