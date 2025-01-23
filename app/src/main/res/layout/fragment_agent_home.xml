@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.agent.AgentHomeFragment">
 
     <LinearLayout
@@ -11,21 +11,65 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary">
-
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBarAgentHome"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarThemeLight"
-            app:title="@string/title_menu_home"
-            app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+            android:background="@color/primary">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarAgentHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:theme="@style/ToolbarThemeLight"
+                app:title="@string/title_menu_home"
+                app:titleTextAppearance="@style/AppBarTitleTextAppearance" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Job Applications overview" />
+
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pcAgentJobApplicationProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Top 3 jobs (Most Applied)" />
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcAgentJobAppliedProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
+
+        <TextView
+            style="@style/Text.ChartTitle"
+            android:text="Top 3 jobs (Most favourited)" />
+
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bcAgentJobFavouritedProportion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
 </FrameLayout>

@@ -97,6 +97,7 @@ public class AgencyAdminHomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        dialogView = inflater.inflate(R.layout.dialog_loader, container, false);
         return inflater.inflate(R.layout.fragment_agency_admin_home, container, false);
     }
 
@@ -155,11 +156,11 @@ public class AgencyAdminHomeFragment extends Fragment {
                     PieDataSet pieDataSet = new PieDataSet(jobApplicationProportion, "Job Applications overview");
                     ChartUtil.initPieChart(pieChart, pieDataSet, String.valueOf(totalApplications), ColorTemplate.COLORFUL_COLORS);
 
-                    // Pie chart
+                    // Pie chart 2
                     PieDataSet pieDataSet2 = new PieDataSet(raceProportion, "Proportion of agents by race");
                     ChartUtil.initPieChart(pieChart2, pieDataSet2, String.valueOf(totalUsers), ColorTemplate.JOYFUL_COLORS);
 
-                    // Bar chart 2
+                    // Bar chart
                     BarDataSet barDataSet = new BarDataSet(jobProportion, "Top 3 agents (Most Jobs)");
                     ChartUtil.initBarChart(barChart, barDataSet, agentNames, ColorTemplate.JOYFUL_COLORS);
 
