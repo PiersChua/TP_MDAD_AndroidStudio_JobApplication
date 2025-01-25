@@ -3,6 +3,8 @@ package com.example.jobapplicationmdad.util;
 import android.text.InputFilter;
 import android.text.Spanned;
 
+import java.text.DecimalFormat;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +24,10 @@ public class StringUtil {
 
         }
         return initials.toString().toUpperCase();
+    }
+
+    public static String generateOTP(){
+        return new DecimalFormat("000000").format(new Random().nextInt(999999));
     }
 
     /**

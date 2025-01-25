@@ -5,6 +5,12 @@ plugins {
 android {
     namespace 'com.example.jobapplicationmdad'
     compileSdk 34
+    packagingOptions {
+        resources {
+            pickFirsts.add('META-INF/NOTICE.md')
+            pickFirsts.add('META-INF/LICENSE.md')
+        }
+    }
 
     defaultConfig {
         applicationId "com.example.jobapplicationmdad"
@@ -48,5 +54,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01"
     implementation 'com.github.yalantis:ucrop:2.2.8'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-    implementation 'com.github.yesidlazaro:GmailBackground:1.2.0'
+    implementation 'com.sun.mail:android-mail:1.6.6'
+    implementation 'com.sun.mail:android-activation:1.6.6'
 }

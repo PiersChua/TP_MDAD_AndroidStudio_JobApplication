@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.OTPVerificationActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBarAccountVerification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/foreground"
+            app:theme="@style/ToolbarThemeLight"
+            app:title="@string/title_menu_otp"
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/AppBarTitleTextAppearance"
+            app:titleTextColor="@color/foreground" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/ivAgencyApplicationIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="16dp"
+                android:src="@drawable/account_verification_icon" />
+
+            <TextView
+                style="@style/Text.FormHeader"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:text="@string/otp_verification_activity_header" />
+
+            <TextView
+                style="@style/Text.FormDescription"
+                android:layout_gravity="center"
+                android:layout_marginBottom="16dp"
+                android:text="@string/otp_verification_activity_sub_header" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpFirstLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpFirst"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpSecondLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpSecond"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpThirdLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpThird"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpFourthLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpFourth"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpFifthLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpFifth"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etOtpSixthLayout"
+                    style="@style/EditTextLayout"
+                    android:layout_width="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etOtpSixth"
+                        style="@style/EditText"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="1" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvResendOtp"
+                style="@style/Text"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:autoLink="none"
+                android:clickable="true"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/otp_verification_activity_resend"
+                android:textSize="14sp" />
+
+            <android.widget.Button
+                android:id="@+id/btnVerifyAccount"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/btn_text_verify"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

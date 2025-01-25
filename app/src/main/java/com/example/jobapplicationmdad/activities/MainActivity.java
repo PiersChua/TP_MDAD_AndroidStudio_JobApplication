@@ -32,10 +32,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    //public static String root_url = "http://192.168.0.5/job-application";
+    public static String root_url = "http://192.168.0.5/job-application";
     public static String email = "legionchua@gmail.com";
     public static String password = "nbku qyae nvtg smam";
-    public static String root_url = "http://172.30.89.32/job-application";
+    //public static String root_url = "http://mdad-job-application.atspace.cc/job-application";
     NavigationBarView bottom_navigation;
     private Map<Integer, Fragment> fragments;
 

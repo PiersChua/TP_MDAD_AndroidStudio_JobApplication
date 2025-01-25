@@ -76,7 +76,7 @@ public class ImageUtil {
         options.setAspectRatioOptions(0,
                 new AspectRatio("1:1", 1, 1));
         options.setCircleDimmedLayer(true);
-        options.withMaxResultSize(300, 300);
+        options.withMaxResultSize(200, 200);
         options.setShowCropGrid(false);
         options.setShowCropFrame(false);
         UCrop.of(sourceUri, destinationUri)
@@ -104,6 +104,7 @@ public class ImageUtil {
                         "com.example.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 fragment.startActivityForResult(takePictureIntent, captureCode);
                 return (String) resultObject[1];
             }

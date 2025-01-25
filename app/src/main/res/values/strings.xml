@@ -23,6 +23,7 @@
     <string name="app_bar_applicant_email">Email applicant</string>
 
     <!-- Menu Title -->
+    <string name="title_menu_otp">OTP</string>
     <string name="title_menu_home">Home</string>
     <string name="title_menu_profile">My Profile</string>
     <string name="title_menu_profile_edit">Edit Profile</string>
@@ -96,6 +97,7 @@
     <string name="btn_text_create">Create</string>
     <string name="btn_text_delete">Delete</string>
     <string name="btn_text_apply">Apply</string>
+    <string name="btn_text_verify">Verify</string>
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>
     <string name="btn_text_manage">Manage</string>
@@ -118,6 +120,11 @@
     <string name="register_activity_header">Sign Up</string>
     <string name="register_activity_redirect_prompt">Already have an account?</string>
     <string name="register_activity_redirect"><u>Login here</u></string>
+
+    <!-- OTPVerification Activity -->
+    <string name="otp_verification_activity_header">Verify your account</string>
+    <string name="otp_verification_activity_sub_header">We\'ve sent a 6-digit OTP to your registered email address.</string>
+    <string name="otp_verification_activity_resend"><u>Resend OTP</u></string>
 
     <!-- Job Seeker Home Fragment -->
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>

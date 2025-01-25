@@ -24,6 +24,8 @@ import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
+import com.example.jobapplicationmdad.util.EmailSender;
+import com.example.jobapplicationmdad.util.StringUtil;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
@@ -48,10 +50,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        boolean isAccountCreated = getIntent().getBooleanExtra("isAccountCreated", false);
-        if (isAccountCreated) {
-            Snackbar.make(findViewById(android.R.id.content), "Account created successfully", Snackbar.LENGTH_SHORT).show();
-        }
         tvRedirectToRegister = findViewById(R.id.tvRedirectToRegister);
         btnLogin = findViewById(R.id.btnLogin);
 
@@ -110,8 +108,23 @@ public class LoginActivity extends AppCompatActivity {
         Map<String, String> params = new HashMap<String, String>();
         params.put("email", user.getEmail());
         params.put("password", user.getPassword());
+        String otp = StringUtil.generateOTP();
+        params.put("otp", otp);
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, login_url, params, response -> {
             try {
+                if (response.getString("message").equals("Account verification needed")) {
+                    String recipientEmail = user.getEmail();
+                    String subject = "Account verification - One time Password";
+                    String messageBody = String.format("Dear valued user of SGJobMarket, \n\nYour one time password is %s", otp);
+
+                    EmailSender emailSender = new EmailSender(recipientEmail, subject, messageBody);
+                    emailSender.execute();
+                    Intent i = new Intent(LoginActivity.this, OTPVerificationActivity.class);
+                    i.putExtra("email", user.getEmail());
+                    startActivity(i);
+                    loadingDialog.dismiss();
+                    return;
+                }
                 // retrieve user details and token from response
                 String name = response.getString("fullName");
                 String userId = response.getString("userId");
@@ -132,10 +145,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (currentFocus != null) {
                     imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
                 }
+
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);
                 finish();
-
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

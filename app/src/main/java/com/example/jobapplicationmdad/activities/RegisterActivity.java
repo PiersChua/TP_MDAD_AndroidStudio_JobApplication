@@ -26,6 +26,8 @@ import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
 import com.example.jobapplicationmdad.util.AuthValidation;
 import com.example.jobapplicationmdad.util.DateConverter;
+import com.example.jobapplicationmdad.util.EmailSender;
+import com.example.jobapplicationmdad.util.StringUtil;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -181,6 +183,8 @@ public class RegisterActivity extends AppCompatActivity {
         params.put("gender", user.getGender());
         params.put("race", user.getRace());
         params.put("nationality", user.getNationality());
+        String otp = StringUtil.generateOTP();
+        params.put("otp", otp);
         JsonObjectRequestWithParams req = new JsonObjectRequestWithParams(Request.Method.POST, register_url, params, response -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             // Get the currently focused view
@@ -190,10 +194,16 @@ public class RegisterActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
 
             }
-            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-            i.putExtra("isAccountCreated", true);
+
+            String recipientEmail = user.getEmail();
+            String subject = "Account verification - One time Password";
+            String messageBody = String.format("Dear valued user of SGJobMarket, \n\nYour one time password is %s", otp);
+
+            EmailSender emailSender = new EmailSender(recipientEmail, subject, messageBody);
+            emailSender.execute();
+            Intent i = new Intent(RegisterActivity.this, OTPVerificationActivity.class);
+            i.putExtra("email", user.getEmail());
             startActivity(i);
-            finish();
             loadingDialog.dismiss();
         }, error -> {
             loadingDialog.dismiss();

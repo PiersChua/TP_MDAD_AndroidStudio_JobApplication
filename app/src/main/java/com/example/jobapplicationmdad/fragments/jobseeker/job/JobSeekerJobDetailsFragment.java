@@ -33,6 +33,7 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.EmailSender;
 import com.example.jobapplicationmdad.util.ImageUtil;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -349,6 +350,12 @@ public class JobSeekerJobDetailsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    String recipientEmail = tvAgentDetailsAgentEmail.getText().toString();
+                    String subject = String.format("Job Application for %s",tvPosition.getText().toString());
+                    String messageBody = String.format("Dear %s, \n\nYou have received a new job application.",tvAgentDetailsAgentName.getText().toString());
+
+                    EmailSender emailSender = new EmailSender(recipientEmail, subject, messageBody);
+                    emailSender.execute();
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).setAnchorView(requireActivity().findViewById(R.id.bottom_navigation)).show();
                     getParentFragmentManager().popBackStack();
 
