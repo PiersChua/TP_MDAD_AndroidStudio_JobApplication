@@ -19,6 +19,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.fragments.auth.ForgotPasswordFragment;
+import com.example.jobapplicationmdad.fragments.auth.VerifyUserFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleySingleton;
@@ -37,7 +39,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String login_url = MainActivity.root_url + "/api/auth/login.php";
-    TextView tvRedirectToRegister;
+    TextView tvRedirectToRegister, tvForgotPassword;
     Button btnLogin;
     EditText etEmailLogin, etPasswordLogin;
     TextInputLayout etEmailLoginLayout, etPasswordLoginLayout;
@@ -51,7 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         tvRedirectToRegister = findViewById(R.id.tvRedirectToRegister);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
         btnLogin = findViewById(R.id.btnLogin);
+
+        boolean isPasswordReset = getIntent().getBooleanExtra("isPasswordReset", false);
+        if (isPasswordReset) {
+            Snackbar.make(findViewById(android.R.id.content), "Password reset successfully", Snackbar.LENGTH_SHORT).show();
+        }
 
         dialogView = getLayoutInflater().inflate(R.layout.dialog_loader, findViewById(android.R.id.content), false);
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
@@ -72,6 +80,12 @@ public class LoginActivity extends AppCompatActivity {
                 Intent i = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(i);
                 finish();
+            }
+        });
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flLogin, new ForgotPasswordFragment()).addToBackStack(null).commit();
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -119,10 +133,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     EmailSender emailSender = new EmailSender(recipientEmail, subject, messageBody);
                     emailSender.execute();
-                    Intent i = new Intent(LoginActivity.this, OTPVerificationActivity.class);
-                    i.putExtra("email", user.getEmail());
-                    startActivity(i);
                     loadingDialog.dismiss();
+                    getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flLogin, VerifyUserFragment.newInstance(user.getEmail(),false)).addToBackStack(null).commit();
                     return;
                 }
                 // retrieve user details and token from response
@@ -138,13 +150,6 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("role", role);
                 editor.putString("token", token);
                 editor.apply(); // use apply to write update asynchronously, alternatively can use commit()
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                // Get the currently focused view
-                View currentFocus = getCurrentFocus();
-                // Hide the keyboard if a view is focused
-                if (currentFocus != null) {
-                    imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-                }
 
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(i);

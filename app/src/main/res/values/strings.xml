@@ -24,6 +24,8 @@
 
     <!-- Menu Title -->
     <string name="title_menu_otp">OTP</string>
+    <string name="title_menu_forgot_password">Forgot Password</string>
+    <string name="title_menu_reset_password">Reset Password</string>
     <string name="title_menu_home">Home</string>
     <string name="title_menu_profile">My Profile</string>
     <string name="title_menu_profile_edit">Edit Profile</string>
@@ -98,6 +100,7 @@
     <string name="btn_text_delete">Delete</string>
     <string name="btn_text_apply">Apply</string>
     <string name="btn_text_verify">Verify</string>
+    <string name="btn_text_confirm">Confirm</string>
     <string name="btn_text_view">View</string>
     <string name="btn_text_apply_now">Apply now</string>
     <string name="btn_text_manage">Manage</string>
@@ -115,16 +118,25 @@
     <string name="login_activity_header">Login</string>
     <string name="login_activity_redirect_prompt">Don\'t have an account?</string>
     <string name="login_activity_redirect"><u>Register here</u></string>
+    <string name="login_activity_forgot_password">Forgot password</string>
 
     <!-- Register Activity -->
     <string name="register_activity_header">Sign Up</string>
     <string name="register_activity_redirect_prompt">Already have an account?</string>
     <string name="register_activity_redirect"><u>Login here</u></string>
 
-    <!-- OTPVerification Activity -->
-    <string name="otp_verification_activity_header">Verify your account</string>
-    <string name="otp_verification_activity_sub_header">We\'ve sent a 6-digit OTP to your registered email address.</string>
-    <string name="otp_verification_activity_resend"><u>Resend OTP</u></string>
+    <!-- Verify User Fragment -->
+    <string name="verify_user_fragment_header">Verify your account</string>
+    <string name="verify_user_fragment_sub_header">We\'ve sent a 6-digit OTP to your registered email address.</string>
+    <string name="verify_user_fragment_resend"><u>Resend OTP</u></string>
+
+    <!-- Forgot Password Fragment -->
+    <string name="forgot_password_fragment_header">Recover your account</string>
+    <string name="forgot_password_fragment_sub_header">We will send you an OTP to verify your email address.</string>
+
+    <!-- New Password Fragment -->
+    <string name="new_password_fragment_header">Set a new password</string>
+    <string name="new_password_fragment_sub_header">You are one step away from regaining access.</string>
 
     <!-- Job Seeker Home Fragment -->
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>

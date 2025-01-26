@@ -1,118 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/llLogin"
+    android:id="@+id/flLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/background"
+    android:fitsSystemWindows="true"
     tools:context=".activities.LoginActivity">
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/app_icon" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:dividerColor="@color/placeholder_background" />
 
     <LinearLayout
-        android:id="@+id/llLoginForm"
+        android:id="@+id/llLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        android:paddingHorizontal="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvLogin"
-            style="@style/Text.FormHeader"
-            android:layout_marginBottom="16dp"
-            android:text="@string/login_activity_header" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/app_icon" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etEmailLoginLayout"
-            style="@style/EditTextLayout"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            app:startIconDrawable="@drawable/ic_email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmailLogin"
-                style="@style/EditText" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPasswordLoginLayout"
-            style="@style/EditTextLayout"
-            android:layout_marginBottom="16dp"
-            android:hint="@string/hint_password"
-            app:passwordToggleEnabled="true"
-            app:startIconDrawable="@drawable/ic_lock">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPasswordLogin"
-                style="@style/EditText"
-                android:inputType="textPassword" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <android.widget.Button
-            android:layout_marginTop="16dp"
-            android:id="@+id/btnLogin"
-            style="@style/Button.Primary"
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:text="@string/login_activity_header"
-            android:textSize="18sp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:dividerColor="@color/placeholder_background" />
 
         <LinearLayout
+            android:id="@+id/llLoginForm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
 
-            <!-- Left line -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/indicator_active" />
-
-            <!-- Text -->
             <TextView
+                android:id="@+id/tvLogin"
+                style="@style/Text.FormHeader"
+                android:layout_marginBottom="16dp"
+                android:text="@string/login_activity_header" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etEmailLoginLayout"
+                style="@style/EditTextLayout"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                app:startIconDrawable="@drawable/ic_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmailLogin"
+                    style="@style/EditText" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/etPasswordLoginLayout"
+                style="@style/EditTextLayout"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/hint_password"
+                app:passwordToggleEnabled="true"
+                app:startIconDrawable="@drawable/ic_lock">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPasswordLogin"
+                    style="@style/EditText"
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                style="@style/Text.Medium"
+                android:layout_gravity="end"
+                android:autoLink="none"
+                android:clickable="true"
+                android:text="@string/login_activity_forgot_password"
+                android:textStyle="bold" />
+
+            <android.widget.Button
+                android:id="@+id/btnLogin"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
+                android:text="@string/login_activity_header"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <!-- Left line -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/indicator_active" />
+
+                <!-- Text -->
+                <TextView
+                    style="@style/Text"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="@string/login_activity_redirect_prompt"
+                    android:textColor="@color/indicator_active"
+                    android:textSize="14sp" />
+
+                <!-- Right line -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/indicator_active" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvRedirectToRegister"
                 style="@style/Text"
-                android:layout_marginHorizontal="8dp"
-                android:text="@string/login_activity_redirect_prompt"
-                android:textColor="@color/indicator_active"
+                android:layout_gravity="center"
+                android:autoLink="none"
+                android:clickable="true"
+                android:fontFamily="@font/inter_medium"
+                android:text="@string/login_activity_redirect"
                 android:textSize="14sp" />
-
-            <!-- Right line -->
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/indicator_active" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/tvRedirectToRegister"
-            style="@style/Text"
-            android:layout_gravity="center"
-            android:autoLink="none"
-            android:clickable="true"
-            android:fontFamily="@font/inter_medium"
-            android:text="@string/login_activity_redirect"
-            android:textSize="14sp" />
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

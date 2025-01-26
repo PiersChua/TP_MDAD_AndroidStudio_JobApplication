@@ -1,274 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:fitsSystemWindows="true"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flRegister"
+    android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="16dp">
+    android:fitsSystemWindows="true"
+    tools:context=".activities.RegisterActivity">
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/llRegister"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        tools:context=".activities.RegisterActivity">
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            app:srcCompat="@drawable/app_icon" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:dividerColor="@color/placeholder_background" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16dp">
 
         <LinearLayout
-            android:id="@+id/llRegisterForm"
+            android:id="@+id/llRegister"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:focusable="true"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvRegister"
-                style="@style/Text.FormHeader"
-                android:layout_marginBottom="16dp"
-                android:text="@string/register_activity_header" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etFullNameRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_full_name"
-                app:counterEnabled="true"
-                app:counterMaxLength="100"
-                app:startIconDrawable="@drawable/ic_person">
+            <ImageView
+                android:id="@+id/imageView"
+                app:srcCompat="@drawable/app_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etFullNameRegister"
-                    style="@style/EditText" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etEmailRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_email"
-                android:inputType="textEmailAddress"
-                app:startIconDrawable="@drawable/ic_email">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmailRegister"
-                    style="@style/EditText" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etPhoneNumberRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_phone_number"
-                app:prefixText="+65 "
-                app:startIconDrawable="@drawable/ic_phone">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPhoneNumberRegister"
-                    style="@style/EditText"
-                    android:inputType="phone"
-                    android:maxLength="8" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etDateOfBirthRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_date_of_birth"
-                app:startIconDrawable="@drawable/ic_calendar">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etDateOfBirthRegister"
-                    style="@style/EditText"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:inputType="none" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etRoleRegisterLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            <com.google.android.material.divider.MaterialDivider
+                app:dividerColor="@color/placeholder_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_role"
-                android:textColorHint="@color/placeholder_foreground"
-                app:boxBackgroundColor="@color/placeholder_background"
-                app:boxStrokeColor="@color/foreground"
-                app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/placeholder_foreground"
-                app:startIconDrawable="@drawable/ic_role">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    app:simpleItems="@array/role_items" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etGenderRegisterLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_gender"
-                android:textColorHint="@color/placeholder_foreground"
-                app:boxBackgroundColor="@color/placeholder_background"
-                app:boxStrokeColor="@color/foreground"
-                app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/placeholder_foreground"
-                app:startIconDrawable="@drawable/ic_people">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    app:simpleItems="@array/gender_items" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etRaceRegisterLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_race"
-                android:textColorHint="@color/placeholder_foreground"
-                app:boxBackgroundColor="@color/placeholder_background"
-                app:boxStrokeColor="@color/foreground"
-                app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/placeholder_foreground"
-                app:startIconDrawable="@drawable/ic_race">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    app:simpleItems="@array/race_items" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etNationalityRegisterLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_nationality"
-                android:textColorHint="@color/placeholder_foreground"
-                app:boxBackgroundColor="@color/placeholder_background"
-                app:boxStrokeColor="@color/foreground"
-                app:cursorColor="@color/foreground"
-                app:hintTextColor="@color/placeholder_foreground"
-                app:startIconDrawable="@drawable/ic_nationality">
-
-                <AutoCompleteTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    app:simpleItems="@array/nationality_items" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etPasswordRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_password"
-                app:helperText="We will never share your password"
-                app:helperTextEnabled="true"
-                app:passwordToggleEnabled="true"
-                app:startIconDrawable="@drawable/ic_lock">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPasswordRegister"
-                    style="@style/EditText"
-                    android:inputType="textPassword" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etConfirmPasswordRegisterLayout"
-                style="@style/EditTextLayout"
-                android:layout_marginBottom="16dp"
-                android:hint="@string/hint_confirm_password"
-                app:passwordToggleEnabled="true"
-                app:startIconDrawable="@drawable/ic_lock">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etConfirmPasswordRegister"
-                    style="@style/EditText"
-                    android:inputType="textPassword"
-                    android:singleLine="true" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <android.widget.Button
-                android:id="@+id/btnRegister"
-                style="@style/Button.Primary"
-                android:layout_width="match_parent"
-                android:layout_marginTop="16dp"
-                android:text="@string/register_activity_header"
-                android:textSize="18sp" />
+                android:layout_marginTop="8dp" />
 
             <LinearLayout
+                android:id="@+id/llRegisterForm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
-                <!-- Left line -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/indicator_active" />
-
-                <!-- Text -->
                 <TextView
+                    android:id="@+id/tvRegister"
+                    style="@style/Text.FormHeader"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/register_activity_header" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etFullNameRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="100"
+                    app:startIconDrawable="@drawable/ic_person"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_full_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFullNameRegister"
+                        style="@style/EditText" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etEmailRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:startIconDrawable="@drawable/ic_email"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_email"
+                    android:inputType="textEmailAddress">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmailRegister"
+                        style="@style/EditText" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etPhoneNumberRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:prefixText="+65 "
+                    app:startIconDrawable="@drawable/ic_phone"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_phone_number">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhoneNumberRegister"
+                        style="@style/EditText"
+                        android:inputType="phone"
+                        android:maxLength="8" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etDateOfBirthRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:startIconDrawable="@drawable/ic_calendar"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_date_of_birth">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateOfBirthRegister"
+                        style="@style/EditText"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etRoleRegisterLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@color/placeholder_background"
+                    app:boxStrokeColor="@color/foreground"
+                    app:cursorColor="@color/foreground"
+                    app:hintTextColor="@color/placeholder_foreground"
+                    app:startIconDrawable="@drawable/ic_role"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_role"
+                    android:textColorHint="@color/placeholder_foreground">
+
+                    <AutoCompleteTextView
+                        app:simpleItems="@array/role_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etGenderRegisterLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@color/placeholder_background"
+                    app:boxStrokeColor="@color/foreground"
+                    app:cursorColor="@color/foreground"
+                    app:hintTextColor="@color/placeholder_foreground"
+                    app:startIconDrawable="@drawable/ic_people"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_gender"
+                    android:textColorHint="@color/placeholder_foreground">
+
+                    <AutoCompleteTextView
+                        app:simpleItems="@array/gender_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etRaceRegisterLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@color/placeholder_background"
+                    app:boxStrokeColor="@color/foreground"
+                    app:cursorColor="@color/foreground"
+                    app:hintTextColor="@color/placeholder_foreground"
+                    app:startIconDrawable="@drawable/ic_race"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_race"
+                    android:textColorHint="@color/placeholder_foreground">
+
+                    <AutoCompleteTextView
+                        app:simpleItems="@array/race_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etNationalityRegisterLayout"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    app:boxBackgroundColor="@color/placeholder_background"
+                    app:boxStrokeColor="@color/foreground"
+                    app:cursorColor="@color/foreground"
+                    app:hintTextColor="@color/placeholder_foreground"
+                    app:startIconDrawable="@drawable/ic_nationality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_nationality"
+                    android:textColorHint="@color/placeholder_foreground">
+
+                    <AutoCompleteTextView
+                        app:simpleItems="@array/nationality_items"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etPasswordRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:helperText="We will never share your password"
+                    app:helperTextEnabled="true"
+                    app:passwordToggleEnabled="true"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPasswordRegister"
+                        style="@style/EditText"
+                        android:inputType="textPassword" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/etConfirmPasswordRegisterLayout"
+                    style="@style/EditTextLayout"
+                    app:passwordToggleEnabled="true"
+                    app:startIconDrawable="@drawable/ic_lock"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_confirm_password">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etConfirmPasswordRegister"
+                        style="@style/EditText"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <android.widget.Button
+                    android:id="@+id/btnRegister"
+                    style="@style/Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/register_activity_header"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- Left line -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/indicator_active" />
+
+                    <!-- Text -->
+                    <TextView
+                        style="@style/Text"
+                        android:layout_marginHorizontal="8dp"
+                        android:text="@string/register_activity_redirect_prompt"
+                        android:textColor="@color/indicator_active"
+                        android:textSize="14sp" />
+
+                    <!-- Right line -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/indicator_active" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tvRedirectToLogin"
                     style="@style/Text"
-                    android:layout_marginHorizontal="8dp"
-                    android:text="@string/register_activity_redirect_prompt"
-                    android:textColor="@color/indicator_active"
+                    android:layout_gravity="center"
+                    android:autoLink="none"
+                    android:clickable="true"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="@string/register_activity_redirect"
                     android:textSize="14sp" />
 
-                <!-- Right line -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="@color/indicator_active" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/tvRedirectToLogin"
-                style="@style/Text"
-                android:layout_gravity="center"
-                android:autoLink="none"
-                android:clickable="true"
-                android:fontFamily="@font/inter_medium"
-                android:text="@string/register_activity_redirect"
-                android:textSize="14sp" />
-
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</FrameLayout>

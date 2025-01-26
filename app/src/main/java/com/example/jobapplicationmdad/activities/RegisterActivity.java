@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.android.volley.Request;
 import com.example.jobapplicationmdad.R;
+import com.example.jobapplicationmdad.fragments.auth.VerifyUserFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
@@ -192,18 +193,14 @@ public class RegisterActivity extends AppCompatActivity {
             // Hide the keyboard if a view is focused
             if (currentFocus != null) {
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
-
             }
-
             String recipientEmail = user.getEmail();
             String subject = "Account verification - One time Password";
             String messageBody = String.format("Dear valued user of SGJobMarket, \n\nYour one time password is %s", otp);
 
             EmailSender emailSender = new EmailSender(recipientEmail, subject, messageBody);
             emailSender.execute();
-            Intent i = new Intent(RegisterActivity.this, OTPVerificationActivity.class);
-            i.putExtra("email", user.getEmail());
-            startActivity(i);
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flRegister, VerifyUserFragment.newInstance(user.getEmail(), false)).addToBackStack(null).commit();
             loadingDialog.dismiss();
         }, error -> {
             loadingDialog.dismiss();
