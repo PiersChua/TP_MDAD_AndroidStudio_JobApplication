@@ -4,5 +4,8 @@
         android:title="@string/app_bar_profile_apply_agency" />
     <item
         android:id="@+id/job_seeker_profile_item_2"
+        android:title="@string/app_bar_change_password" />
+    <item
+        android:id="@+id/job_seeker_profile_item_3"
         android:title="@string/app_bar_profile_logout" />
 </menu>

@@ -15,6 +15,7 @@
 
     <!-- Top App Bar -->
     <string name="app_bar_profile_apply_agency">Apply for agency</string>
+    <string name="app_bar_change_password">Change password</string>
     <string name="app_bar_profile_logout">Logout</string>
     <string name="app_bar_user_delete">Delete user</string>
     <string name="app_bar_listings_delete">Delete listing</string>
@@ -29,6 +30,7 @@
     <string name="title_menu_home">Home</string>
     <string name="title_menu_profile">My Profile</string>
     <string name="title_menu_profile_edit">Edit Profile</string>
+    <string name="title_menu_change_password">Change Password</string>
     <string name="title_menu_agent_edit">Edit Agent</string>
     <string name="title_menu_agency_edit">Edit Agency</string>
     <string name="title_menu_agency_application">Agency Application</string>
@@ -67,6 +69,7 @@
     <!-- Form hints -->
     <string name="hint_email">Email*</string>
     <string name="hint_password">Password*</string>
+    <string name="hint_new_password">New Password*</string>
     <string name="hint_confirm_password">Confirm Password*</string>
     <string name="hint_full_name">Full Name*</string>
     <string name="hint_name">Name*</string>
@@ -137,6 +140,10 @@
     <!-- New Password Fragment -->
     <string name="new_password_fragment_header">Set a new password</string>
     <string name="new_password_fragment_sub_header">You are one step away from regaining access.</string>
+
+    <!-- Change Password Fragment -->
+    <string name="change_password_fragment_header">Change your password</string>
+    <string name="change_password_fragment_sub_header">Update your password to keep your account secure.</string>
 
     <!-- Job Seeker Home Fragment -->
     <string name="home_job_seeker_fragment_header">Singapore\'s #1 job platform</string>

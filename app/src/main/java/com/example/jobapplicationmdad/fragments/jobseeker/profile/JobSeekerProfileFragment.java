@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.fragments.profile.ChangePasswordFragment;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -138,6 +139,9 @@ public class JobSeekerProfileFragment extends Fragment {
                     getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, CreateAgencyApplicationFragment.newInstance(sp.getString("userId", ""), sp.getString("token", ""))).addToBackStack(null).commit();
                     return true;
                 } else if (id == R.id.job_seeker_profile_item_2) {
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flJobSeekerProfile, new ChangePasswordFragment()).addToBackStack(null).commit();
+                    return true;
+                } else if (id == R.id.job_seeker_profile_item_3) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);

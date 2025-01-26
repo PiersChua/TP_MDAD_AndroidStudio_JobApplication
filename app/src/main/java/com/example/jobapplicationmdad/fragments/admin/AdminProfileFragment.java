@@ -25,6 +25,7 @@ import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.activities.LoginActivity;
 import com.example.jobapplicationmdad.activities.MainActivity;
 import com.example.jobapplicationmdad.adapters.ProfileAdapter;
+import com.example.jobapplicationmdad.fragments.profile.ChangePasswordFragment;
 import com.example.jobapplicationmdad.fragments.profile.EditProfileFragment;
 import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
@@ -135,6 +136,9 @@ public class AdminProfileFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.admin_profile_item_1) {
+                    getParentFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_right_to_left, R.anim.exit_right_to_left, R.anim.slide_left_to_right, R.anim.exit_left_to_right).replace(R.id.flAdminProfile, new ChangePasswordFragment()).addToBackStack(null).commit();
+                    return true;
+                } else if (id == R.id.admin_profile_item_2) {
                     // clear shared preferences
                     sp.edit().clear().apply();
                     Intent i = new Intent(getActivity(), LoginActivity.class);
@@ -235,8 +239,7 @@ public class AdminProfileFragment extends Fragment {
             ivAdminProfileImage.setVisibility(View.VISIBLE);
             ivAdminProfileImage.setImageBitmap(user.getImage());
             tvName.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             tvName.setVisibility(View.VISIBLE);
             tvName.setText(StringUtil.getNameInitials(user.getFullName()));
             ivAdminProfileImage.setVisibility(View.GONE);

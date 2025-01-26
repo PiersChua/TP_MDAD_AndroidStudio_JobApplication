@@ -10,7 +10,8 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/background">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBarAccountVerification"
@@ -20,7 +21,6 @@
             app:navigationIcon="@drawable/ic_arrow_back"
             app:navigationIconTint="@color/foreground"
             app:theme="@style/ToolbarThemeLight"
-            android:background="@color/background"
             app:title="@string/title_menu_otp"
             app:titleCentered="true"
             app:titleTextAppearance="@style/AppBarTitleTextAppearance"

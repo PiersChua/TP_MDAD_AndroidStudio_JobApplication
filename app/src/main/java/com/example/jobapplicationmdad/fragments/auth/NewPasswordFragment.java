@@ -126,14 +126,6 @@ public class NewPasswordFragment extends Fragment {
                 imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
             }
             loadingDialog.dismiss();
-            FragmentManager fragmentManager = getParentFragmentManager();
-            if (fragmentManager.getBackStackEntryCount() > 0) {
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            }
-            Intent i = new Intent(requireActivity(), LoginActivity.class);
-            i.putExtra("isPasswordReset", true);
-            startActivity(i);
-            requireActivity().finish();
         }, error -> {
             loadingDialog.dismiss();
             VolleyErrorHandler.newErrorListener(requireContext()).onErrorResponse(error);

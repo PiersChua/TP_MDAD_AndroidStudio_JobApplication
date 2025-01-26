@@ -155,8 +155,6 @@ public class EditProfileFragment extends Fragment {
         if (showAppBarIfFragmentClosed) {
             ((MainActivity) requireActivity()).showBottomNav();
         }
-
-
     }
 
     @Override
