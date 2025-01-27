@@ -34,6 +34,7 @@ import com.example.jobapplicationmdad.model.User;
 import com.example.jobapplicationmdad.network.JsonObjectRequestWithParams;
 import com.example.jobapplicationmdad.network.VolleyErrorHandler;
 import com.example.jobapplicationmdad.network.VolleySingleton;
+import com.example.jobapplicationmdad.util.EmailSender;
 import com.example.jobapplicationmdad.util.UrlUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -148,11 +149,11 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             }
 
             @Override
-            public void onAcceptJobApplication(String userId) {
+            public void onAcceptJobApplication(String userId, String applicantName, String email) {
                 new MaterialAlertDialogBuilder(requireContext()).setTitle("Accept Job Application").setMessage("You are about to accept this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        updateJobApplication(userId, JobApplication.Status.ACCEPTED);
+                        updateJobApplication(userId, applicantName, email, JobApplication.Status.ACCEPTED);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -164,11 +165,11 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             }
 
             @Override
-            public void onRejectJobApplication(String userId) {
+            public void onRejectJobApplication(String userId, String applicantName, String email) {
                 new MaterialAlertDialogBuilder(requireContext()).setTitle("Reject Job Application").setMessage("You are about to reject this application.\nDo you wish to proceed?").setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int i) {
-                        updateJobApplication(userId, JobApplication.Status.REJECTED);
+                        updateJobApplication(userId, applicantName, email, JobApplication.Status.REJECTED);
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -272,7 +273,7 @@ public class AgentManageJobApplicationsFragment extends Fragment {
         VolleySingleton.getInstance(requireContext()).addToRequestQueue(req);
     }
 
-    private void updateJobApplication(String userId, JobApplication.Status status) {
+    private void updateJobApplication(String userId, String applicantName, String email, JobApplication.Status status) {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userId", sp.getString("userId", ""));
         params.put("jobApplicationUserId", userId);
@@ -285,6 +286,11 @@ public class AgentManageJobApplicationsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    String messageBody;
+                    String subject = "Job Application Outcome";
+                    messageBody = String.format("Dear %s, \n\nYour job application outcome has been released. Please log in to the SGJobMarket application for more info.", applicantName);
+                    EmailSender emailSender = new EmailSender(email, subject, messageBody);
+                    emailSender.execute();
                     Snackbar.make(requireActivity().findViewById(android.R.id.content), response.getString("message"), Snackbar.LENGTH_SHORT).show();
                     refreshApplications();
                     Bundle result = new Bundle();

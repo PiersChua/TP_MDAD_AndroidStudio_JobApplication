@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jobapplicationmdad.R;
 import com.example.jobapplicationmdad.model.AgencyApplication;
+import com.example.jobapplicationmdad.model.JobApplication;
 import com.example.jobapplicationmdad.util.DateConverter;
 
 import java.util.List;
@@ -106,6 +107,11 @@ public class AdminAgencyApplicationCardAdapter extends RecyclerView.Adapter<Admi
             tvAgencyApplicationCardAddress.setText(agencyApplication.getAddress());
             tvAgencyApplicationCardStatus.setText(agencyApplication.getStatus().toString());
             tvAgencyApplicationCardUpdatedAt.setText("Updated on "+DateConverter.formatDateFromSql(agencyApplication.getUpdatedAt()));
+            if (agencyApplication.getStatus() == AgencyApplication.Status.ACCEPTED) {
+                tvAgencyApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_18, 0, 0, 0);
+            } else if (agencyApplication.getStatus() == AgencyApplication.Status.REJECTED) {
+                tvAgencyApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel_18, 0, 0, 0);
+            }
             if (agencyApplication.getStatus() == AgencyApplication.Status.PENDING) {
                 llAgencyApplicationCardButtons.setVisibility(View.VISIBLE);
                 llAgencyApplicationCardStatusDetails.setVisibility(View.GONE);

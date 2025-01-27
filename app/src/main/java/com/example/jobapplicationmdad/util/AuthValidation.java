@@ -33,7 +33,7 @@ public class AuthValidation extends Validation {
             layout.setError("Name is too short");
             return false;
         }
-        if(!isValidMaxCharacterLength(name,100)){
+        if (!isValidMaxCharacterLength(name, 100)) {
             layout.setError("Name is too long");
             return false;
         }
@@ -116,6 +116,14 @@ public class AuthValidation extends Validation {
             return false;
         }
         layout.setError(null);
+        return true;
+    }
+
+    public static boolean validateNewAdmin(TextInputLayout layout, String email) {
+        if (!email.toLowerCase().endsWith("@student.tp.edu.sg")) {
+            layout.setError("Invalid email for admin role");
+            return false;
+        }
         return true;
     }
 

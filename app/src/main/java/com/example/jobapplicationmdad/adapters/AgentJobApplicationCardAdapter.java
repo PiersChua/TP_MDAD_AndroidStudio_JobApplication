@@ -26,9 +26,9 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
     public interface OnJobClickListener {
         void onViewUser(String userId);
 
-        void onAcceptJobApplication(String userId);
+        void onAcceptJobApplication(String userId, String applicantName, String email);
 
-        void onRejectJobApplication(String userId);
+        void onRejectJobApplication(String userId, String applicantName, String email);
     }
 
     /**
@@ -82,7 +82,7 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentJobApplication != null) {
-                        listener.onAcceptJobApplication(currentJobApplication.getUserId());
+                        listener.onAcceptJobApplication(currentJobApplication.getUserId(), currentJobApplication.getUser().getFullName(), currentJobApplication.getUser().getEmail());
                     }
                 }
             });
@@ -90,7 +90,7 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
                 @Override
                 public void onClick(View view) {
                     if (listener != null && currentJobApplication != null) {
-                        listener.onRejectJobApplication(currentJobApplication.getUserId());
+                        listener.onRejectJobApplication(currentJobApplication.getUserId(), currentJobApplication.getUser().getFullName(), currentJobApplication.getUser().getEmail());
                     }
                 }
             });
@@ -104,8 +104,7 @@ public class AgentJobApplicationCardAdapter extends RecyclerView.Adapter<AgentJo
             tvJobApplicationCardStatus.setText(jobApplication.getStatus().toString());
             if (jobApplication.getStatus() == JobApplication.Status.ACCEPTED) {
                 tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_18, 0, 0, 0);
-            }
-            else if(jobApplication.getStatus() == JobApplication.Status.REJECTED) {
+            } else if (jobApplication.getStatus() == JobApplication.Status.REJECTED) {
                 tvJobApplicationCardStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_cancel_18, 0, 0, 0);
             }
             tvJobApplicationCardUpdatedAt.setText("Updated on " + DateConverter.formatDateFromSql(jobApplication.getUpdatedAt()));

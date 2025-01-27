@@ -169,8 +169,12 @@ public class RegisterActivity extends AppCompatActivity {
         boolean isValidRace = AuthValidation.validateEnum(etRaceRegisterLayout, "Race", user.getRace(), getResources().getStringArray(R.array.race_items));
         boolean isValidNationality = AuthValidation.validateEnum(etNationalityRegisterLayout, "Nationality", user.getNationality(), getResources().getStringArray(R.array.nationality_items));
         ;
+        boolean isValidAdmin = true;
+        if (user.getRole().equals("Admin")) {
+            isValidAdmin = AuthValidation.validateNewAdmin(etEmailRegisterLayout, user.getEmail());
+        }
 
-        return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality;
+        return isValidName && isValidEmail && isValidPhoneNumber && isValidRole && isValidPassword && isValidConfirmPassword && isValidDateOfBirth && isValidGender && isValidRace && isValidNationality && isValidAdmin;
     }
 
     private void registerUser(User user) {
