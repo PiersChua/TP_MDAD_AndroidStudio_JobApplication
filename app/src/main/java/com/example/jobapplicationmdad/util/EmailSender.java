@@ -21,7 +21,7 @@ public class EmailSender extends AsyncTask<Void, Void, Void> {
 
     // email credentials
     private final String senderEmail = "legionchua@gmail.com";
-    private final String senderPassword = "nbku qyae nvtg smam"; // app password
+    private final String senderPassword = ""; // app password
 
     public EmailSender(String recipientEmail, String subject, String messageBody) {
         this.recipientEmail = recipientEmail;
